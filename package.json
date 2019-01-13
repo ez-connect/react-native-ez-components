@@ -11,6 +11,8 @@
     "build": "yarn tsc"
   },
   "dependencies": {
+    "react": "^16.7.0",
+    "react-native": "^0.57.8",
     "react-native-elements": "^1.0.0-beta7"
   },
   "devDependencies": {
