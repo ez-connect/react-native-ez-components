@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "es6",
-    "target": "es6",
-    "lib": ["es2016"],
+    "module": "esnext",
+    "target": "esnext",
+    "lib": ["esnext"],
     "jsx": "react-native",
     "skipLibCheck": true,
     "noImplicitAny": false,
