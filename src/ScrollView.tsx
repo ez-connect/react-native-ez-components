@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { SafeAreaView as BSafeAreaView, StyleSheet, ViewStyle } from 'react-native';
+import { ScrollView as BScrollView, StyleSheet } from 'react-native';
 
 import theme from './Theme';
 
 interface IProps {
-  style: ViewStyle;
+  style: any;
 }
 
-// TODO: Use View instead of SafeAreaView because it has a placeholder for statusbar although it's hidden
-export const SafeAreaView = (props: IProps) => {
+export const ScrollView = (props: IProps) => {
   const { style, ...rest } = props;
   const backgroundColor = (style && style.backgroundColor) || theme.surface;
   const themeStyle = StyleSheet.flatten([
@@ -17,7 +16,7 @@ export const SafeAreaView = (props: IProps) => {
   ]);
 
   return (
-    <BSafeAreaView
+    <ScrollView
       style={themeStyle}
       {...rest}
     />

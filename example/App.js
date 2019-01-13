@@ -1,13 +1,16 @@
 import React from 'react';
 import { StyleSheet,  } from 'react-native';
-import { SafeAreaView, View, Text, theme } from 'react-native-ez-components';
+import { SafeAreaView, View, Text, TouchableIcon, theme } from 'react-native-ez-components';
+
+console.debug(TouchableIcon)
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     theme.init(kThemes);
-    theme.setTheme('Dark');
+    theme.setTheme('Default');
+    // theme.setTheme('Dark');
 
   }
 
@@ -23,6 +26,8 @@ export default class App extends React.Component {
           <View isSecondary>
             <Text>On secondary text</Text>
           </View>
+
+          <TouchableIcon icon={{ name: 'react', type: 'material-community' }} onPress={() => console.debug('Clicked TouchableIcon!')} />
 
         </View>
 

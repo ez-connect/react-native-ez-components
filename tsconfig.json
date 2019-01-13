@@ -5,7 +5,7 @@
     "lib": ["es2016"],
     "jsx": "react-native",
     "skipLibCheck": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "removeComments": true,
     "preserveConstEnums": true,
     "outDir": "./dist",

@@ -8,14 +8,14 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import * as React from 'react';
-import { SafeAreaView as BSafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import theme from './Theme';
-export const SafeAreaView = (props) => {
+export const ScrollView = (props) => {
     const { style } = props, rest = __rest(props, ["style"]);
     const backgroundColor = (style && style.backgroundColor) || theme.surface;
     const themeStyle = StyleSheet.flatten([
         { backgroundColor },
         style && style,
     ]);
-    return (<BSafeAreaView style={themeStyle} {...rest}/>);
+    return (<ScrollView style={themeStyle} {...rest}/>);
 };

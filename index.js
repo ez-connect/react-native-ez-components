@@ -1,6 +1,7 @@
 import { SafeAreaView } from './dist/SafeAreaView';
 import { View } from './dist/View';
 import { Text } from './dist/Text';
+import TouchableIcon from './dist/TouchableIcon';
 
 import theme from './dist/Theme';
 
@@ -9,4 +10,5 @@ export {
   View,
   theme,
   Text,
+  TouchableIcon,
 };
