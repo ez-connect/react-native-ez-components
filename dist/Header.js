@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
-import { Text, View } from './Components';
+import { Text } from './Text';
 import theme from './Theme';
-import TouchableIcon from './TouchableIcon';
+import { TouchableIcon } from './TouchableIcon';
+import { View } from './View';
 const kAnimatedInterval = 200;
 const kAnimatedStep = 20;
 const kAnimatedFinish = 100;
 export class Header extends React.PureComponent {
     constructor(props) {
         super(props);
+        this._search = (text) => {
+            this._debounceOnSearch(text);
+        };
         this._handleAnimated = () => {
             let { loading } = this.state;
             loading += kAnimatedStep;
@@ -28,13 +32,10 @@ export class Header extends React.PureComponent {
                 this.props.onBack();
             }
         };
-        this._handleOnPressSearch = (text) => {
-            this._debounceOnSearch(text);
-        };
-        this._search = () => {
+        this._handleOnPressSearch = () => {
             const { isSearching } = this.state;
             if (isSearching) {
-                this._handleOnPressSearch('');
+                this._search('');
             }
             this.setState({ isSearching: !isSearching });
         };
@@ -66,13 +67,13 @@ export class Header extends React.PureComponent {
         clearInterval(this._animated);
     }
     render() {
-        const { icon, rightComponent } = this.props;
+        const { icon, searchable, rightComponent } = this.props;
         return (<View style={styles.mainContainer}>
         <View style={styles.container}>
           <TouchableIcon icon={icon || { name: 'arrow-back' }} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
-            {this._renderSearchComponent()}
+            {searchable && this._renderSearchComponent()}
             {rightComponent}
           </View>
         </View>
@@ -86,24 +87,24 @@ export class Header extends React.PureComponent {
         if (title && !isSearching) {
             return <Text style={styles.title} numberOfLines={1}>{title}</Text>;
         }
-        return (<TextInput style={styles.input} placeholder={placeholder} autoFocus={true} underlineColorAndroid='transparent' onChangeText={this._handleOnPressSearch}/>);
+        return (<TextInput style={styles.input} placeholder={placeholder} autoFocus={true} underlineColorAndroid='transparent' onChangeText={this._search}/>);
     }
     _renderSearchComponent() {
-        const { searchComponent } = this.props;
+        const { searchable } = this.props;
         const { isSearching } = this.state;
-        if (searchComponent) {
-            return (<TouchableIcon icon={{ name: isSearching ? 'close' : 'search', color: theme.secondary }} onPress={this._search} style={styles.icon}/>);
+        if (searchable) {
+            return (<TouchableIcon icon={{ name: isSearching ? 'close' : 'search', color: theme.secondary }} onPress={this._handleOnPressSearch} style={styles.icon}/>);
         }
         return null;
     }
     _renderLoading() {
-        const { ready, loading } = this.state;
-        if (!ready) {
+        const { loading } = this.state;
+        if (!this.props.ready) {
             if (loading === 0) {
                 clearInterval(this._animated);
                 this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
             }
-            return (<View style={[styles.progress, { width: `${loading}%`, backgroundColor: theme.secondaryLight }]}/>);
+            return (<View style={StyleSheet.flatten([styles.progress, { width: `${loading}%`, backgroundColor: theme.secondaryLight }])}/>);
         }
         return null;
     }

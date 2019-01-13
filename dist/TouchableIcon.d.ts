@@ -6,7 +6,7 @@ interface IProps {
     icon?: IconProps;
     onPress?(): void;
 }
-export default class TouchableIcon extends React.PureComponent<IProps, {}> {
+export declare class TouchableIcon extends React.PureComponent<IProps, {}> {
     render(): JSX.Element;
 }
 export {};

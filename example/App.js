@@ -1,8 +1,18 @@
 import React from 'react';
-import { StyleSheet,  } from 'react-native';
-import { SafeAreaView, View, Text, TouchableIcon, theme } from 'react-native-ez-components';
-
-console.debug(TouchableIcon)
+import { StyleSheet, StatusBar } from 'react-native';
+import { Header,
+  Badge,
+  Button,
+  Divider,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableFeedback,
+  TouchableIcon,
+  TouchableText,
+  View,
+  theme
+} from 'react-native-ez-components';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -16,32 +26,84 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <View>
-          <Text isOnSurface>On Surface text</Text>
-          <Text>Default text</Text>
-          <View isPrimary>
-            <Text isPrimary fontSize={20}>On primary text</Text>
+      <SafeAreaView style={styles.mainContainer}>
+        <StatusBar hidden={true} />
+        <ScrollView>
+          <Header
+            title="Example"
+            ready
+            searchable
+            placeholder="Seach here..."
+            onBack={this._handleOnBack}
+            onSearch={this._handleOnSearch}
+          />
+
+          <View style={styles.container}>
+            <Text isOnSurface>On Surface text</Text>
+            <Text>Default text</Text>
+            <View isPrimary>
+              <Text isPrimary fontSize={20}>On primary text</Text>
+            </View>
+            <View isSecondary>
+              <Text>On secondary text</Text>
+            </View>
           </View>
-          <View isSecondary>
-            <Text>On secondary text</Text>
+
+          <View style={styles.container}>
+            <View>
+              <TouchableText onPress={() => console.log('Click on TouchableText')}>TouchableText</TouchableText>
+            </View>
+            <TouchableIcon style={styles.icon} icon={{ name: 'react', type: 'material-community' }} onPress={() => console.debug('Clicked TouchableIcon!')} />
+            <View>
+              <TouchableFeedback onPress={() => console.log('TouchableFeedback')}>
+                <View style={{ flex: 1 }}>
+                  <Text>TouchableFeedback</Text>
+                </View>
+              </TouchableFeedback>
+            </View>
           </View>
 
-          <TouchableIcon icon={{ name: 'react', type: 'material-community' }} onPress={() => console.debug('Clicked TouchableIcon!')} />
+          <View style={styles.container}>
+            <Button title="Button" />
+            <Divider />
+            <Button title="Button" clear />
 
-        </View>
-
+            <View style={styles.row}>
+              <Badge value="Badge" />
+              <Badge value="Badge with textStyle" textStyle={{ fontSize: 20 }} />
+            </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
+
+  _handleOnBack = () => {
+    console.log('Back');
+  };
+
+  _handleOnSearch = text => {
+    console.log(text);
+  };
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 12,
+    margin: 6,
   },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  icon: {
+    width: 48,
+    height: 48,
+  }
 });
 
 const kThemes = [

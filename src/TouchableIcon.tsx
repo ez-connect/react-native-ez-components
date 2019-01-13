@@ -11,6 +11,7 @@ import {
 import { Icon } from 'react-native-elements';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 import theme from './Theme';
+import { TouchableFeedback } from './TouchableFeedback';
 
 let Component: any;
 const attributes: any = {};
@@ -18,7 +19,7 @@ const attributes: any = {};
 if (Platform.OS === 'android') {
   Component = TouchableNativeFeedback;
   if (Platform.Version >= 21) {
-    attributes.background = TouchableNativeFeedback.Ripple('ThemeAttrAndroid', true);
+    attributes.background = TouchableNativeFeedback.Ripple(theme.secondary, true);
   } else {
     attributes.background = TouchableNativeFeedback.SelectableBackground();
   }
@@ -32,23 +33,21 @@ interface IProps {
   onPress?(): void;
 }
 
-export default class TouchableIcon extends React.PureComponent<IProps, {}> {
+export class TouchableIcon extends React.PureComponent<IProps, {}> {
   public render() {
     const { style, icon, onPress } = this.props;
     icon && !icon.color && Object.assign(icon, { color: theme.secondary });
 
     if (onPress) {
       return (
-        <Component
-          {...attributes}
-          underlayColor='transparent'
+        <TouchableFeedback
           onPress={onPress}
           style={[styles.container, style]}
         >
           <View style={[styles.container, style]} pointerEvents={'box-none'}>
             <Icon {...icon} />
           </View>
-        </Component>
+        </TouchableFeedback>
       );
     }
 

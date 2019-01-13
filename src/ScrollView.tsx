@@ -16,7 +16,7 @@ export const ScrollView = (props: IProps) => {
   ]);
 
   return (
-    <ScrollView
+    <BScrollView
       style={themeStyle}
       {...rest}
     />

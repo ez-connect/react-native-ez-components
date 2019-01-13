@@ -1,9 +1,10 @@
 /// <reference types="react" />
 import { ViewStyle } from 'react-native';
-interface IProps {
-    style: ViewStyle;
-    isPrimary: boolean;
-    isSecondary: boolean;
+interface IViewProps {
+    style?: ViewStyle;
+    isPrimary?: boolean;
+    isSecondary?: boolean;
+    children?: any;
 }
-export declare const View: (props: IProps) => JSX.Element;
+export declare const View: (props: IViewProps) => JSX.Element;
 export {};

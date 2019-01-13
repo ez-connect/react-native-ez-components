@@ -2,9 +2,10 @@ import * as React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 
-import { Text, View } from './Components';
+import { Text } from './Text';
 import theme from './Theme';
-import TouchableIcon from './TouchableIcon';
+import { TouchableIcon } from './TouchableIcon';
+import { View } from './View';
 
 const kAnimatedInterval = 200;
 const kAnimatedStep = 20;
@@ -17,7 +18,6 @@ export interface IHeaderProps {
   title?: string;
   searchable?: boolean;
   placeholder?: string;
-  searchComponent?: React.Component;
   rightComponent?: React.Component;
   onSearch?(): void;
   onBack?(): void;
@@ -75,7 +75,7 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
   }
 
   public render() {
-    const { icon, rightComponent } = this.props;
+    const { icon, searchable, rightComponent } = this.props;
     return (
       <View style={styles.mainContainer}>
         <View style={styles.container}>
@@ -86,7 +86,7 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
           />
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
-            {this._renderSearchComponent()}
+            {searchable && this._renderSearchComponent()}
             {rightComponent}
           </View>
         </View>
@@ -95,6 +95,8 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
       </View>
     );
   }
+
+  ///////////////////////////////////////////////////////////////////
 
   private _renderTitle() {
     const { title, placeholder } = this.props;
@@ -110,20 +112,20 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
         placeholder={placeholder}
         autoFocus={true}
         underlineColorAndroid='transparent'
-        onChangeText={this._handleOnPressSearch}
+        onChangeText={this._search}
       />
     );
   }
 
   private _renderSearchComponent() {
-    const { searchComponent } = this.props;
+    const { searchable } = this.props;
     const { isSearching } = this.state;
 
-    if (searchComponent) {
+    if (searchable) {
       return (
         <TouchableIcon
           icon={{ name: isSearching ? 'close' : 'search', color: theme.secondary }}
-          onPress={this._search}
+          onPress={this._handleOnPressSearch}
           style={styles.icon}
         />
       );
@@ -133,21 +135,29 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
   }
 
   private _renderLoading() {
-    const { ready, loading } = this.state;
-    if (!ready) {
+    const { loading } = this.state;
+    if (!this.props.ready) {
       if (loading === 0) {
         clearInterval(this._animated);
         this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
       }
       return (
         <View
-          style={[styles.progress, { width: `${loading}%`, backgroundColor: theme.secondaryLight }]}
+          style={StyleSheet.flatten([styles.progress, { width: `${loading}%`, backgroundColor: theme.secondaryLight }])}
         />
       );
     }
 
     return null;
   }
+
+  ///////////////////////////////////////////////////////////////////
+
+  private _search = (text: string) => {
+    this._debounceOnSearch(text);
+  }
+
+  ///////////////////////////////////////////////////////////////////
 
   private _handleAnimated = () => {
     let { loading } = this.state;
@@ -170,15 +180,11 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
     }
   }
 
-  private _handleOnPressSearch = (text: string) => {
-    this._debounceOnSearch(text);
-  }
-
-  private _search = () => {
+  private _handleOnPressSearch = () => {
     const { isSearching } = this.state;
 
     if (isSearching) {
-      this._handleOnPressSearch('');
+      this._search('');
     }
 
     this.setState({ isSearching: !isSearching });

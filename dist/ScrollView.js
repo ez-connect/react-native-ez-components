@@ -8,7 +8,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { ScrollView as BScrollView, StyleSheet } from 'react-native';
 import theme from './Theme';
 export const ScrollView = (props) => {
     const { style } = props, rest = __rest(props, ["style"]);
@@ -17,5 +17,5 @@ export const ScrollView = (props) => {
         { backgroundColor },
         style && style,
     ]);
-    return (<ScrollView style={themeStyle} {...rest}/>);
+    return (<BScrollView style={themeStyle} {...rest}/>);
 };

@@ -7,7 +7,6 @@ export interface IHeaderProps {
     title?: string;
     searchable?: boolean;
     placeholder?: string;
-    searchComponent?: React.Component;
     rightComponent?: React.Component;
     onSearch?(): void;
     onBack?(): void;
@@ -28,8 +27,8 @@ export declare class Header extends React.PureComponent<IHeaderProps, IHeaderSta
     private _renderTitle;
     private _renderSearchComponent;
     private _renderLoading;
+    private _search;
     private _handleAnimated;
     private _handleOnPressBack;
     private _handleOnPressSearch;
-    private _search;
 }

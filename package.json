@@ -12,14 +12,12 @@
     "copy": "copy index.js example\\node_modules\\react-native-ez-components\\ /y & copy dist\\*.* example\\node_modules\\react-native-ez-components\\dist\\ /y"
   },
   "dependencies": {
-    "react-native-elements": "^1.0.0-beta7"
+    "react-native-elements": "^1.0.0-beta7",
+    "react-native-modal": "^7.0.2"
   },
   "devDependencies": {
     "@types/react": "^16.7.18",
     "@types/react-native": "^0.57.27",
-    "@types/react-navigation": "^3.0.1",
-    "babel-plugin-transform-remove-console": "^6.9.4",
-    "babel-preset-expo": "^5.0.0",
     "jest-expo": "^32.0.0",
     "prettier": "^1.15.3",
     "prettier-eslint": "^8.8.2",

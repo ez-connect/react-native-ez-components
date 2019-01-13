@@ -13,7 +13,7 @@ import theme from './Theme';
 export const View = (props) => {
     const { style, isPrimary, isSecondary } = props, rest = __rest(props, ["style", "isPrimary", "isSecondary"]);
     const backgroundColor = (style && style.backgroundColor) || theme.background;
-    let borderColor = isPrimary ? theme.primary : isSecondary ? theme.secondary : theme.background;
+    let borderColor = isPrimary ? theme.primary : isSecondary ? theme.secondary : theme.primaryDark;
     borderColor = (style && style.borderColor) || borderColor;
     const themeStyle = StyleSheet.flatten([
         { backgroundColor },

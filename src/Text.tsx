@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, Text as BText, TextStyle } from 'react-native';
+import { StyleSheet, Text as BText, TextProps, TextStyle } from 'react-native';
 
 import theme from './Theme';
 
-interface IProps {
-  style?: TextStyle;
+export interface ITextProps extends TextProps {
+  style: TextStyle;
+  color?: string;
   isPrimary?: boolean;
   isSecondary?: boolean;
   isSurface?: boolean;
@@ -14,8 +15,7 @@ interface IProps {
   textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
 }
 
-// TODO: Use View instead of SafeAreaView because it has a placeholder for statusbar although it's hidden
-export const Text = (props: IProps) => {
+export const Text = (props: ITextProps) => {
   const {
     style,
     isPrimary,
