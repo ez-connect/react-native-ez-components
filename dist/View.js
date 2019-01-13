@@ -7,14 +7,18 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
+import * as React from 'react';
 import { StyleSheet, View as BView } from 'react-native';
 import theme from './Theme';
-export var View = function (props) {
-    var style = props.style, rest = __rest(props, ["style"]);
-    var borderColor = (style && style.borderColor) || theme.surfaceText;
-    return (<BView style={StyleSheet.flatten([
-        (style && style.backgroundColor) || { backgroundColor: theme.background },
-        { borderColor: borderColor },
+export const View = (props) => {
+    const { style, isPrimary, isSecondary } = props, rest = __rest(props, ["style", "isPrimary", "isSecondary"]);
+    const backgroundColor = (style && style.backgroundColor) || theme.background;
+    let borderColor = isPrimary ? theme.primary : isSecondary ? theme.secondary : theme.background;
+    borderColor = (style && style.borderColor) || borderColor;
+    const themeStyle = StyleSheet.flatten([
+        { backgroundColor },
+        { borderColor },
         style && style,
-    ])} {...rest}/>);
+    ]);
+    return (<BView style={themeStyle} {...rest}/>);
 };

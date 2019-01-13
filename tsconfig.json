@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "es6",
+    "target": "es6",
     "lib": ["es2016"],
     "jsx": "react-native",
     "skipLibCheck": true,

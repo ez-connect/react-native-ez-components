@@ -7,12 +7,14 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
+import * as React from 'react';
 import { SafeAreaView as BSafeAreaView, StyleSheet } from 'react-native';
 import theme from './Theme';
 export var SafeAreaView = function (props) {
     var style = props.style, rest = __rest(props, ["style"]);
-    return (<BSafeAreaView style={StyleSheet.flatten([
+    var themeStyle = StyleSheet.flatten([
         (style && style.backgroundColor) || { backgroundColor: theme.surface },
         style && style,
-    ])} {...rest}/>);
+    ]);
+    return (<BSafeAreaView style={themeStyle} {...rest}/>);
 };

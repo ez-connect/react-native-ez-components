@@ -1,17 +1,14 @@
-var Theme = (function () {
-    function Theme() {
-    }
-    Theme.prototype.init = function (themes) {
+class Theme {
+    init(themes) {
         this.themes = themes;
-    };
-    Theme.prototype.setTheme = function (name) {
-        var item = this.themes.find(function (x) { return x.name === name; });
+    }
+    setTheme(name) {
+        const item = this.themes.find((x) => x.name === name);
         Object.assign(this, item);
-    };
-    Theme.prototype.getAllThemes = function () {
+    }
+    getAllThemes() {
         return this.themes;
-    };
-    return Theme;
-}());
-var theme = new Theme();
+    }
+}
+const theme = new Theme();
 export default theme;
