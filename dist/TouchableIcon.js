@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Platform, StyleSheet, TouchableNativeFeedback, TouchableOpacity, View, } from 'react-native';
 import { Icon } from 'react-native-elements';
-import theme from './Theme';
+import { theme } from './Theme';
 import { TouchableFeedback } from './TouchableFeedback';
 let Component;
 const attributes = {};

@@ -3,7 +3,7 @@ import {  StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Button as BButton } from 'react-native-elements';
 import { ButtonProps } from '../node_modules/react-native-elements/src/index';
 
-import theme from './Theme';
+import { theme } from './Theme';
 
 export interface IButtonProps extends ButtonProps {
   clear?: boolean;

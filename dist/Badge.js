@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Badge as BBadge } from 'react-native-elements';
-import theme from './Theme';
+import { theme } from './Theme';
 export const Badge = (props) => {
     const { containerStyle, textStyle, ...rest } = props;
     const themeContainerStyle = StyleSheet.flatten([{ backgroundColor: theme.secondaryLight }, containerStyle]);

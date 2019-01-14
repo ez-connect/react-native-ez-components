@@ -1,3 +1,5 @@
+import EventListener from './EventListener';
+
 interface ITheme {
   name: string;
 
@@ -18,7 +20,12 @@ interface ITheme {
   surfaceText: string;
 }
 
-class Theme implements ITheme {
+enum ThemeEvent {
+  OnInit = 1,
+  OnChange = 2,
+}
+
+class Theme extends EventListener implements ITheme {
   public name: string;
 
   public primary: string;
@@ -41,11 +48,13 @@ class Theme implements ITheme {
 
   public init(themes: ITheme[]) {
     this.themes = themes;
+    super.emmit(ThemeEvent.OnInit);
   }
 
   public setTheme(name: string) {
     const item = this.themes.find((x) => x.name === name);
     Object.assign(this, item);
+    super.emmit(ThemeEvent.OnChange, name);
   }
 
   public getAllThemes() {
@@ -54,4 +63,8 @@ class Theme implements ITheme {
 }
 
 const theme = new Theme();
-export default theme;
+export {
+  theme,
+  ITheme,
+  ThemeEvent,
+};

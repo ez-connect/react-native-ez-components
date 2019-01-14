@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SafeAreaView as BSafeAreaView, StyleSheet, ViewStyle } from 'react-native';
 
-import theme from './Theme';
+import { theme } from './Theme';
 
 interface IProps {
   style: ViewStyle;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from './Text';
-import theme from './Theme';
+import { theme } from './Theme';
 import { TouchableFeedback } from './TouchableFeedback';
 export const TouchableText = (props) => {
     const { style, onPress, ...rest } = props;

@@ -1,3 +1,4 @@
+import EventListener from './EventListener';
 interface ITheme {
     name: string;
     primary: string;
@@ -13,7 +14,11 @@ interface ITheme {
     surface: string;
     surfaceText: string;
 }
-declare class Theme implements ITheme {
+declare enum ThemeEvent {
+    OnInit = 1,
+    OnChange = 2
+}
+declare class Theme extends EventListener implements ITheme {
     name: string;
     primary: string;
     primaryLight: string;
@@ -33,4 +38,4 @@ declare class Theme implements ITheme {
     getAllThemes(): ITheme[];
 }
 declare const theme: Theme;
-export default theme;
+export { theme, ITheme, ThemeEvent, };

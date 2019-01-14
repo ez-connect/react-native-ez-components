@@ -13,7 +13,8 @@ import { TouchableIcon } from './dist/TouchableIcon';
 import { TouchableText } from './dist/TouchableText';
 import { View } from './dist/View';
 
-import theme from './dist/Theme';
+import EventListener from './dist/EventListener';
+import { theme, ThemeEvent } from './dist/Theme';
 
 export {
   Badge,
@@ -30,5 +31,8 @@ export {
   TouchableIcon,
   TouchableText,
   View,
+
+  EventListener,
   theme,
+  ThemeEvent,
 };

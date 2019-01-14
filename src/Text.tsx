@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text as BText, TextProps, TextStyle } from 'react-native';
 
-import theme from './Theme';
+import { theme } from './Theme';
 
 export interface ITextProps extends TextProps {
   style: TextStyle;

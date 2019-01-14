@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View, ViewProps } from 'react-native';
 
-import theme from './Theme';
+import { theme } from './Theme';
 
 const kInterval = 500; // check all items every 0.5s
 const kDefaultTimeOut = 3000; // 3 sec

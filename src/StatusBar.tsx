@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StatusBar as Status, StatusBarProps, View } from 'react-native';
-import theme from './Theme';
+import { theme } from './Theme';
 
 export interface IStatusBarProps extends StatusBarProps {
   height: number;

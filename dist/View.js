@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View as BView } from 'react-native';
-import theme from './Theme';
+import { theme } from './Theme';
 export const View = (props) => {
     const { style, primary, secondary, ...rest } = props;
     let backgroundColor = primary ? theme.primary : secondary ? theme.secondary : theme.background;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button as BButton } from 'react-native-elements';
-import theme from './Theme';
+import { theme } from './Theme';
 export const Button = (props) => {
     const { containerStyle, buttonStyle, titleStyle, clear, ...rest } = props;
     const backgroundColor = clear ? theme.background : theme.secondary;

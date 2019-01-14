@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import theme from './Theme';
+import { theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 const kAnimatedInterval = 200;
 const kAnimatedStep = 20;

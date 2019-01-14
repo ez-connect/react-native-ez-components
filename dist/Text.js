@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text as BText } from 'react-native';
-import theme from './Theme';
+import { theme } from './Theme';
 export const Text = (props) => {
     const { style, primary, secondary, surface, fontSize, fontStyle, fontWeight, textAlign, ...rest } = props;
     const themeStyle = StyleSheet.flatten([

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
-import theme from './Theme';
+import { theme } from './Theme';
 import { TouchableFeedback } from './TouchableFeedback';
 
 let Component: any;

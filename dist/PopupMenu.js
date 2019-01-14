@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { Text } from './Text';
-import theme from './Theme';
+import { theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 import { View } from './View';
 export class PopupMenu extends React.PureComponent {

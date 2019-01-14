@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
-import theme from './Theme';
+import { theme } from './Theme';
 let Component;
 if (Platform.OS === 'android') {
     Component = TouchableNativeFeedback;

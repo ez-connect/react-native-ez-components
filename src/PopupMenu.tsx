@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 
 import { Text } from './Text';
-import theme from './Theme';
+import { theme } from './Theme';
 import {TouchableIcon} from './TouchableIcon';
 import { View } from './View';
 

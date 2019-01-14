@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import theme from './Theme';
+import { theme } from './Theme';
 const kInterval = 500;
 const kDefaultTimeOut = 3000;
 export var ToastType;

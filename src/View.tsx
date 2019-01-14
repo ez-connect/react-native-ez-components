@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View as BView, ViewStyle } from 'react-native';
 
-import theme from './Theme';
+import { theme } from './Theme';
 
 interface IViewProps {
   style?: ViewStyle;

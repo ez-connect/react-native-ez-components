@@ -32,6 +32,10 @@ export default class App extends React.Component {
     theme.setTheme(this.state.selectedTheme);
   }
 
+  componentDidMount() {
+    theme.addListener(theme)
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.mainContainer}>

@@ -3,7 +3,7 @@ import {  StyleSheet } from 'react-native';
 import { Badge as BBadge } from 'react-native-elements';
 import { BadgeProps } from '../node_modules/react-native-elements/src/index';
 
-import theme from './Theme';
+import { theme } from './Theme';
 
 export const Badge = (props: BadgeProps) => {
   const { containerStyle, textStyle, ...rest } = props;

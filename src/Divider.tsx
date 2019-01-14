@@ -3,7 +3,7 @@ import {  StyleSheet } from 'react-native';
 import { Divider as BDivider } from 'react-native-elements';
 import { DividerProps } from '../node_modules/react-native-elements/src/index';
 
-import theme from './Theme';
+import { theme } from './Theme';
 
 export const Divider = (props: DividerProps) => {
   const themeStyle = StyleSheet.flatten([styles.container, { backgroundColor: theme.primaryDark }]);
