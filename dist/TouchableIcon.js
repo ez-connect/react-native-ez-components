@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TouchableHighlight, TouchableNativeFeedback, View, } from 'react-native';
+import { Platform, StyleSheet, TouchableNativeFeedback, TouchableOpacity, View, } from 'react-native';
 import { Icon } from 'react-native-elements';
 import theme from './Theme';
 import { TouchableFeedback } from './TouchableFeedback';
@@ -15,7 +15,7 @@ if (Platform.OS === 'android') {
     }
 }
 else {
-    Component = TouchableHighlight;
+    Component = TouchableOpacity;
 }
 export class TouchableIcon extends React.PureComponent {
     render() {

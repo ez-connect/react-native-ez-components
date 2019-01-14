@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 
-import { Text } from './Text';
 import theme from './Theme';
 import { TouchableIcon } from './TouchableIcon';
-import { View } from './View';
 
 const kAnimatedInterval = 200;
 const kAnimatedStep = 20;
@@ -57,6 +55,9 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
 
   // tslint:disable-next-line:variable-name
   private static s_debounceTimeout = null;
+
+  ///////////////////////////////////////////////////////////////////
+
   private _debounceOnSearch: any;
   private _animated: any;
 
@@ -76,11 +77,15 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
 
   public render() {
     const { icon, searchable, rightComponent } = this.props;
+    const backgroundColor = theme.primary;
+    const borderColor = theme.primaryDark;
+    const color = theme.primaryText;
+
     return (
-      <View style={styles.mainContainer}>
+      <View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
           <TouchableIcon
-            icon={icon || { name: 'arrow-back' }}
+            icon={icon || { name: 'arrow-back', color }}
             onPress={this._handleOnPressBack}
             style={styles.closeIcon}
           />
@@ -103,7 +108,7 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
     const { isSearching } = this.state;
     if (title && !isSearching) {
       // eslint-disable-next-line prettier/prettier
-      return <Text style={styles.title} numberOfLines={1}>{title}</Text>;
+      return <Text style={[styles.title, { color: theme.primaryText }]} numberOfLines={1}>{title}</Text>;
     }
 
     return (
@@ -124,7 +129,7 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
     if (searchable) {
       return (
         <TouchableIcon
-          icon={{ name: isSearching ? 'close' : 'search', color: theme.secondary }}
+          icon={{ name: isSearching ? 'close' : 'search', color: theme.primaryText }}
           onPress={this._handleOnPressSearch}
           style={styles.icon}
         />
@@ -141,11 +146,13 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
         clearInterval(this._animated);
         this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
       }
-      return (
-        <View
-          style={StyleSheet.flatten([styles.progress, { width: `${loading}%`, backgroundColor: theme.secondaryLight }])}
-        />
-      );
+
+      const style = StyleSheet.flatten([
+        styles.progress,
+        { width: `${loading}%`, backgroundColor: theme.primaryText },
+      ]);
+
+      return <View style={style} />;
     }
 
     return null;

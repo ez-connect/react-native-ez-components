@@ -4,8 +4,8 @@ import {
   StyleProp,
   StyleSheet,
   TextStyle,
-  TouchableHighlight,
   TouchableNativeFeedback,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -24,7 +24,7 @@ if (Platform.OS === 'android') {
     attributes.background = TouchableNativeFeedback.SelectableBackground();
   }
 } else {
-  Component = TouchableHighlight;
+  Component = TouchableOpacity;
 }
 
 interface IProps {

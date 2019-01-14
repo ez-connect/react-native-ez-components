@@ -2,8 +2,8 @@
 import { ViewStyle } from 'react-native';
 interface IViewProps {
     style?: ViewStyle;
-    isPrimary?: boolean;
-    isSecondary?: boolean;
+    primary?: boolean;
+    secondary?: boolean;
     children?: any;
 }
 export declare const View: (props: IViewProps) => JSX.Element;

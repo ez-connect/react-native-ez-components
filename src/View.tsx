@@ -5,15 +5,16 @@ import theme from './Theme';
 
 interface IViewProps {
   style?: ViewStyle;
-  isPrimary?: boolean;
-  isSecondary?: boolean;
+  primary?: boolean;
+  secondary?: boolean;
   children?: any;
 }
 
 export const View = (props: IViewProps) => {
-  const { style, isPrimary, isSecondary, ...rest } = props;
-  const backgroundColor = (style && style.backgroundColor) || theme.background;
-  let borderColor = isPrimary ? theme.primary : isSecondary ? theme.secondary : theme.primaryDark;
+  const { style, primary, secondary, ...rest } = props;
+  let backgroundColor = primary ? theme.primary : secondary ? theme.secondary : theme.background;
+  backgroundColor = (style && style.backgroundColor) || backgroundColor;
+  let borderColor = primary ? theme.primary : secondary ? theme.secondary : theme.primaryDark;
   borderColor = (style && style.borderColor) || borderColor;
 
   const themeStyle = StyleSheet.flatten([

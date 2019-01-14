@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, TouchableHighlight, TouchableNativeFeedback, TouchableOpacityProps } from 'react-native';
+import { Platform, TouchableNativeFeedback, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import theme from './Theme';
 
 let Component;
@@ -7,7 +7,7 @@ let Component;
 if (Platform.OS === 'android') {
   Component = TouchableNativeFeedback;
 } else {
-  Component = TouchableHighlight;
+  Component = TouchableOpacity;
 }
 
 export class TouchableFeedback extends React.PureComponent<TouchableOpacityProps, {}> {

@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
-import { Text } from './Text';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import theme from './Theme';
 import { TouchableIcon } from './TouchableIcon';
-import { View } from './View';
 const kAnimatedInterval = 200;
 const kAnimatedStep = 20;
 const kAnimatedFinish = 100;
@@ -68,9 +66,12 @@ export class Header extends React.PureComponent {
     }
     render() {
         const { icon, searchable, rightComponent } = this.props;
-        return (<View style={styles.mainContainer}>
+        const backgroundColor = theme.primary;
+        const borderColor = theme.primaryDark;
+        const color = theme.primaryText;
+        return (<View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
-          <TouchableIcon icon={icon || { name: 'arrow-back' }} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
+          <TouchableIcon icon={icon || { name: 'arrow-back', color }} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
             {searchable && this._renderSearchComponent()}
@@ -85,7 +86,7 @@ export class Header extends React.PureComponent {
         const { title, placeholder } = this.props;
         const { isSearching } = this.state;
         if (title && !isSearching) {
-            return <Text style={styles.title} numberOfLines={1}>{title}</Text>;
+            return <Text style={[styles.title, { color: theme.primaryText }]} numberOfLines={1}>{title}</Text>;
         }
         return (<TextInput style={styles.input} placeholder={placeholder} autoFocus={true} underlineColorAndroid='transparent' onChangeText={this._search}/>);
     }
@@ -93,7 +94,7 @@ export class Header extends React.PureComponent {
         const { searchable } = this.props;
         const { isSearching } = this.state;
         if (searchable) {
-            return (<TouchableIcon icon={{ name: isSearching ? 'close' : 'search', color: theme.secondary }} onPress={this._handleOnPressSearch} style={styles.icon}/>);
+            return (<TouchableIcon icon={{ name: isSearching ? 'close' : 'search', color: theme.primaryText }} onPress={this._handleOnPressSearch} style={styles.icon}/>);
         }
         return null;
     }
@@ -104,7 +105,11 @@ export class Header extends React.PureComponent {
                 clearInterval(this._animated);
                 this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
             }
-            return (<View style={StyleSheet.flatten([styles.progress, { width: `${loading}%`, backgroundColor: theme.secondaryLight }])}/>);
+            const style = StyleSheet.flatten([
+                styles.progress,
+                { width: `${loading}%`, backgroundColor: theme.primaryText },
+            ]);
+            return <View style={style}/>;
         }
         return null;
     }

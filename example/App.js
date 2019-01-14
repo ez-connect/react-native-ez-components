@@ -1,33 +1,41 @@
 import React from 'react';
-import { StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Constants } from 'expo';
 import { Header,
   Badge,
   Button,
   Divider,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   Text,
+  Toast,
   TouchableFeedback,
   TouchableIcon,
   TouchableText,
   View,
-  theme
+  theme,
+
 } from 'react-native-ez-components';
+import colors from './Colors';
+import { ToastType } from 'react-native-ez-components/dist/Toast';
 
 export default class App extends React.Component {
+  state = {
+    selectedTheme: 'Blue Red',
+  }
+
   constructor(props) {
     super(props);
 
-    theme.init(kThemes);
-    theme.setTheme('Default');
-    // theme.setTheme('Dark');
-
+    theme.init(colors);
+    theme.setTheme(this.state.selectedTheme);
   }
 
   render() {
     return (
       <SafeAreaView style={styles.mainContainer}>
-        <StatusBar hidden={true} />
+        <StatusBar height={Constants.statusBarHeight} hidden={true} />
         <ScrollView>
           <Header
             title="Example"
@@ -38,14 +46,18 @@ export default class App extends React.Component {
             onSearch={this._handleOnSearch}
           />
 
+          <View style={styles.row}>
+            {this._renderThemes()}
+          </View>
+
           <View style={styles.container}>
             <Text isOnSurface>On Surface text</Text>
             <Text>Default text</Text>
-            <View isPrimary>
-              <Text isPrimary fontSize={20}>On primary text</Text>
+            <View primary>
+              <Text primary fontSize={20}>On primary text size 20</Text>
             </View>
-            <View isSecondary>
-              <Text>On secondary text</Text>
+            <View secondary>
+              <Text secondary fontSize={28}>On secondary text size 28</Text>
             </View>
           </View>
 
@@ -73,10 +85,52 @@ export default class App extends React.Component {
               <Badge value="Badge with textStyle" textStyle={{ fontSize: 20 }} />
             </View>
           </View>
+
+          <View style={styles.container}>
+            <Button title="Toast" onPress={this._handleOnPressToast} />
+          </View>
+          <Toast ref={x => Toast.setInstance(x)} />
         </ScrollView>
       </SafeAreaView>
     );
   }
+
+  ///////////////////////////////////////////////////////////////////
+
+  _renderThemes() {
+    return theme.getAllThemes().map(item => {
+      const borderWidth = item.name == this.state.selectedTheme ? 1 : 0;
+      return (
+        <TouchableFeedback key={item.name} onPress={this._handleOnPressTheme(item.name)}>
+          <View style={[styles.item, { borderWidth, borderColor: theme.secondaryLight }]}>
+            <Text
+              style={StyleSheet.flatten([
+                styles.theme,
+                { backgroundColor: item.primary, color: item.primaryText },
+              ])}>
+              P
+            </Text>
+            <Text
+              style={StyleSheet.flatten([
+                styles.theme,
+                { backgroundColor: item.secondary, color: item.secondaryText },
+              ])}>
+              S
+            </Text>
+            <Text
+              style={StyleSheet.flatten([
+                styles.theme,
+                { backgroundColor: item.background, color: item.backgroundText },
+              ])}>
+              {item.name}
+            </Text>
+          </View>
+        </TouchableFeedback>
+      );
+    });
+  }
+
+  ///////////////////////////////////////////////////////////////////
 
   _handleOnBack = () => {
     console.log('Back');
@@ -84,6 +138,18 @@ export default class App extends React.Component {
 
   _handleOnSearch = text => {
     console.log(text);
+  };
+
+  _handleOnPressTheme = selectedTheme => () => {
+    console.log(`Select theme: ${selectedTheme}`);
+    this.setState({ selectedTheme });
+    theme.setTheme(selectedTheme);
+  };
+
+  _toastMessageIndex = 1;
+  _handleOnPressToast = () => {
+    Toast.show({ title: `Title ${this._toastMessageIndex}`, message: 'Message', type: ToastType.Info, timeout: 5000 });
+    this._toastMessageIndex++;
   };
 }
 
@@ -97,74 +163,20 @@ const styles = StyleSheet.create({
     margin: 6,
   },
   row: {
+    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    padding: 12,
+    margin: 6,
   },
   icon: {
     width: 48,
     height: 48,
-  }
+  },
+  theme: {
+    width: 90,
+    height: 30,
+    textAlign: 'center',
+    textAlignVertical: 'center', //android
+  },
 });
-
-const kThemes = [
-  {
-    name: 'Default',
-    primary: '#fafafa',
-    primaryLight: '#ffffff',
-    primaryDark: '#c7c7c7',
-    primaryText: '#000000',
-
-    secondary: '#212121',
-    secondaryLight: '#484848',
-    secondaryDark: '#000000',
-    secondaryText: '#ffffff',
-
-    background: '#ffffff',
-    surface: '#fafafa',
-    backgroundText: '#000000',
-    surfaceText: '#fafafa',
-
-    // // errorText: 'red',
-  },
-  {
-    name: 'Dark',
-    primary: '#212121',
-    primaryLight: '#484848',
-    primaryDark: '#000000',
-    primaryText: '#ffffff',
-
-    secondary: '#fafafa',
-    secondaryLight: '#ffffff',
-    secondaryDark: '#c7c7c7',
-    secondaryText: '#000000',
-
-    background: '#000000',
-    surface: '#212121',
-    backgroundText: '#ffffff',
-    surfaceText: '#c6c6c6',
-  },
-  {
-    name: 'Blue',
-    primary: '#fafafa',
-    primaryLight: '#ffffff',
-    primaryDark: '#c7c7c7',
-    primaryText: '#000000',
-
-    secondary: '#ef5350',
-    secondaryLight: '#ff867c',
-    secondaryDark: '#b61827',
-    secondaryText: '#ffffff',
-  },
-  {
-    name: 'Red',
-    primary: '#fafafa',
-    primaryLight: '#ffffff',
-    primaryDark: '#c7c7c7',
-    primaryText: '#000000',
-
-    secondary: '#ef5350',
-    secondaryLight: '#ff867c',
-    secondaryDark: '#b61827',
-    secondaryText: '#ffffff',
-  },
-];

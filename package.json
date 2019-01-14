@@ -7,7 +7,7 @@
   "author": "Ez-Connect",
   "license": "MIT",
   "scripts": {
-    "lint": "yarn tslint ./src/**/*.ts",
+    "lint": "yarn tslint ./src/**/*",
     "build": "yarn tsc",
     "copy": "copy index.js example\\node_modules\\react-native-ez-components\\ /y & copy dist\\*.* example\\node_modules\\react-native-ez-components\\dist\\ /y"
   },
