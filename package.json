@@ -1,6 +1,6 @@
 {
   "name": "react-native-ez-components",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Component collections",
   "main": "index.js",
   "repository": "https://github.com/ez-connect/react-native-ez-components.git",
@@ -9,15 +9,17 @@
   "scripts": {
     "lint": "yarn tslint ./src/**/*",
     "build": "yarn tsc",
-    "copy": "copy index.js example\\node_modules\\react-native-ez-components\\ /y & copy dist\\*.* example\\node_modules\\react-native-ez-components\\dist\\ /y"
+    "copy": "copy index.js example\\node_modules\\react-native-ez-components\\ /y & copy dist\\*.* ..\\ereader\\node_modules\\react-native-ez-components\\dist\\ /y"
   },
   "dependencies": {
     "react-native-elements": "^1.0.0-beta7",
-    "react-native-modal": "^7.0.2"
+    "react-native-modal": "^7.0.2",
+    "react-navigation": "3.0.6"
   },
   "devDependencies": {
     "@types/react": "^16.7.18",
     "@types/react-native": "^0.57.27",
+    "@types/react-navigation": "^3.0.1",
     "jest-expo": "^32.0.0",
     "prettier": "^1.15.3",
     "prettier-eslint": "^8.8.2",

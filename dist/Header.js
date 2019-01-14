@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
+import NavigationService from './NavigationService';
 import { theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 const kAnimatedInterval = 200;
@@ -26,8 +27,11 @@ export class Header extends React.PureComponent {
             if (this.state.isSearching) {
                 this.setState({ isSearching: false });
             }
-            else {
+            else if (this.props.onBack) {
                 this.props.onBack();
+            }
+            else {
+                NavigationService.goBack();
             }
         };
         this._handleOnPressSearch = () => {
@@ -100,7 +104,7 @@ export class Header extends React.PureComponent {
     }
     _renderLoading() {
         const { loading } = this.state;
-        if (!this.props.ready) {
+        if (!this.props.ready && loading > 0) {
             if (loading === 0) {
                 clearInterval(this._animated);
                 this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
