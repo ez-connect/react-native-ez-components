@@ -3,6 +3,7 @@ import { Button } from './dist/Button';
 import { Divider } from './dist/Divider';
 import { Header } from './dist/Header';
 import { Icon } from './dist/Icon';
+import { ListItem } from './dist/ListItem';
 import { PopupMenu } from './dist/PopupMenu';
 import { SafeAreaView } from './dist/SafeAreaView';
 import { ScrollView } from './dist/ScrollView';
@@ -24,6 +25,7 @@ export {
   Divider,
   Header,
   Icon,
+  ListItem,
   PopupMenu,
   SafeAreaView,
   ScrollView,

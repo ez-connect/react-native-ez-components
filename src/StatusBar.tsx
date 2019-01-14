@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StatusBar as Status, StatusBarProps, View } from 'react-native';
+import { theme, ThemeEvent } from './Theme';
 
 export interface IStatusBarProps extends StatusBarProps {
   height: number;
@@ -29,12 +30,30 @@ export class StatusBar extends React.PureComponent<IStatusBarProps, IStatusBarSt
     this.state = { hidden: false };
   }
 
+  public componentDidMount() {
+    theme.addListener(ThemeEvent.OnChange, this._handleOnThemeChange);
+  }
+
+  public componentWillUnmount() {
+    theme.removeListener(ThemeEvent.OnChange, this._handleOnThemeChange);
+  }
+
   public render() {
-    const height = this.props.isIphoneX ? this.props.height : this.state.hidden ? 0 : this.props.height;
+    const { isIphoneX, ...rest } = this.props;
+    let { backgroundColor, height } = this.props;
+    backgroundColor = backgroundColor || theme.primaryDark;
+    height = isIphoneX ? height : this.state.hidden ? 0 : height;
+
     return (
-      <View style={{ height }}>
-        <Status hidden={this.state.hidden} />
+      <View style={{ backgroundColor, height }}>
+        <Status hidden={this.state.hidden} {...rest} />
       </View>
     );
+  }
+
+  ///////////////////////////////////////////////////////////////////
+
+  private _handleOnThemeChange = () => {
+    this.forceUpdate();
   }
 }

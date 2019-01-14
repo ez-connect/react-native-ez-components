@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { ListItem } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 
+import { ListItem } from './ListItem';
 import { Text } from './Text';
 import { theme } from './Theme';
 import {TouchableIcon} from './TouchableIcon';
 import { View } from './View';
 
 export interface IPopupMenuItem {
-  icon?: IconProps;
+  icon?: string;
   title?: string;
   subtitle?: string;
   value?: string|number;
@@ -104,7 +104,7 @@ export class PopupMenu extends React.PureComponent<IPopupMenuProps, IPopupMenuSt
       const headerStyle = { backgroundColor: theme.primaryDark, color: theme.primaryText };
       return (
         <View>
-          <Text style={StyleSheet.flatten([styles.header, headerStyle])} fontWeight='bold'>
+          <Text style={StyleSheet.flatten([styles.header, headerStyle])} fontWeight='bold' fontSize={16}>
             {header}
           </Text>
           {menuItems}

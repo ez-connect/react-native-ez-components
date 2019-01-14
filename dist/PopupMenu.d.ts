@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 export interface IPopupMenuItem {
-    icon?: IconProps;
+    icon?: string;
     title?: string;
     subtitle?: string;
     value?: string | number;

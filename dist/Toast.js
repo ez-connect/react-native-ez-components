@@ -86,7 +86,10 @@ const styles = StyleSheet.create({
     item: {
         flex: 1,
         padding: 12,
-        margin: 12,
+        marginLeft: 12,
+        marginRight: 12,
+        marginTop: 6,
+        marginBottom: 6,
     },
     title: {
         fontWeight: 'bold',

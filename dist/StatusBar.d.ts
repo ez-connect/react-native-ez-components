@@ -12,5 +12,8 @@ export declare class StatusBar extends React.PureComponent<IStatusBarProps, ISta
     static setHidden(hidden: boolean): void;
     private static s_instance;
     constructor(props: IStatusBarProps);
+    componentDidMount(): void;
+    componentWillUnmount(): void;
     render(): JSX.Element;
+    private _handleOnThemeChange;
 }

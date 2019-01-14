@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { ListItem } from 'react-native-elements';
 import Modal from 'react-native-modal';
+import { ListItem } from './ListItem';
 import { Text } from './Text';
 import { theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
@@ -56,7 +56,7 @@ export class PopupMenu extends React.PureComponent {
             });
             const headerStyle = { backgroundColor: theme.primaryDark, color: theme.primaryText };
             return (<View>
-          <Text style={StyleSheet.flatten([styles.header, headerStyle])} fontWeight='bold'>
+          <Text style={StyleSheet.flatten([styles.header, headerStyle])} fontWeight='bold' fontSize={16}>
             {header}
           </Text>
           {menuItems}

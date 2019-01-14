@@ -1,3 +1,6 @@
 /// <reference types="react" />
 import { BadgeProps } from '../node_modules/react-native-elements/src/index';
-export declare const Badge: (props: BadgeProps) => JSX.Element;
+export interface IBadgeProps extends BadgeProps {
+    clear?: boolean;
+}
+export declare const Badge: (props: IBadgeProps) => JSX.Element;
