@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import NavigationService from './NavigationService';
+import { NavigationService } from './NavigationService';
 import { theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 const kAnimatedInterval = 200;

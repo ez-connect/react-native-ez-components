@@ -10,7 +10,7 @@ export class NavigationService {
       NavigationActions.navigate({
         routeName,
         params,
-      })
+      }),
     );
   }
 
@@ -19,7 +19,7 @@ export class NavigationService {
       StackActions.push({
         routeName,
         params,
-      })
+      }),
     );
   }
 

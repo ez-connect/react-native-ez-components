@@ -30,6 +30,11 @@ export interface IPopupMenuState {
 }
 
 export class PopupMenu extends React.PureComponent<IPopupMenuProps, IPopupMenuState> {
+  constructor(props: IPopupMenuProps) {
+    super(props);
+    this.state = { visible: false };
+  }
+
   public show() {
     this.setState({ visible: true });
   }
@@ -79,7 +84,7 @@ export class PopupMenu extends React.PureComponent<IPopupMenuProps, IPopupMenuSt
       const menuItems = items.map((item, index) => {
         const { icon, title, value, component, disabled } = item;
         if (title) {
-          const color = disabled ? theme.primaryDark : theme.primaryText;
+          const color = disabled ? theme.surfaceText : theme.backgroundText;
           return (
             <ListItem
               key={index}

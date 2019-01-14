@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 
-import NavigationService from './NavigationService';
+import { NavigationService } from './NavigationService';
 import { theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 

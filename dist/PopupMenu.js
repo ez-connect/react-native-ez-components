@@ -7,8 +7,8 @@ import { theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 import { View } from './View';
 export class PopupMenu extends React.PureComponent {
-    constructor() {
-        super(...arguments);
+    constructor(props) {
+        super(props);
         this._handleOnHide = () => {
             this.hide();
         };
@@ -19,6 +19,7 @@ export class PopupMenu extends React.PureComponent {
             this.hide();
             setTimeout(() => this.props.onSelect(value), 500);
         };
+        this.state = { visible: false };
     }
     show() {
         this.setState({ visible: true });
@@ -46,7 +47,7 @@ export class PopupMenu extends React.PureComponent {
             const menuItems = items.map((item, index) => {
                 const { icon, title, value, component, disabled } = item;
                 if (title) {
-                    const color = disabled ? theme.primaryDark : theme.primaryText;
+                    const color = disabled ? theme.surfaceText : theme.backgroundText;
                     return (<ListItem key={index} leftIcon={{ name: icon, color }} title={title} titleStyle={{ color }} bottomDivider={true} subtitle={item.subtitle} onPress={disabled ? null : this._handleOnPressItem(value)}/>);
                 }
                 else if (component) {

@@ -14,7 +14,7 @@ export default [
     secondaryText: '#ffffff',
 
     background: '#ffffff',
-    surface: '#c7c7c7',
+    surface: '#fafafa',
     backgroundText: '#000000',
     surfaceText: '#fafafa',
 
@@ -53,7 +53,7 @@ export default [
     background: '#ffffff',
     surface: '#fafafa',
     backgroundText: '#000000',
-    surfaceText: '#fafafa',
+    surfaceText: '#c7c7c7',
   },
   {
     name: 'Purple',

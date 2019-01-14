@@ -18,6 +18,7 @@ export interface IPopupMenuState {
     visible?: boolean;
 }
 export declare class PopupMenu extends React.PureComponent<IPopupMenuProps, IPopupMenuState> {
+    constructor(props: IPopupMenuProps);
     show(): void;
     hide(): void;
     render(): JSX.Element;

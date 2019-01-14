@@ -13,11 +13,13 @@ export const Button = (props: IButtonProps) => {
   const { containerStyle, buttonStyle, titleStyle, clear, ...rest } = props;
   const backgroundColor = clear ? theme.background : theme.secondary;
   const color = clear ? theme.backgroundText : theme.secondaryText;
+  const borderWidth = clear ? 1 : 0;
+  const borderColor = theme.secondary;
 
   const themeContainerStyle = StyleSheet.flatten([styles.container, containerStyle ]);
   const themeButtonStyle = StyleSheet.flatten([
     styles.button,
-    { backgroundColor, borderColor: theme.secondary },
+    { backgroundColor, borderWidth, borderColor },
     buttonStyle,
   ]);
   const themeTitleStyle = StyleSheet.flatten([styles.title, { color }, titleStyle]);
@@ -34,6 +36,7 @@ export const Button = (props: IButtonProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 12,
   },
   button: {
