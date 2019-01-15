@@ -5,12 +5,13 @@ import { IconProps } from '../node_modules/react-native-elements/src/index';
 import { theme } from './Theme';
 
 export const Icon = (props: IconProps) => {
-  const { color, ...rest } = props;
-  const themeColor = color || theme.backgroundText;
+  const { color, reverse, ...rest } = props;
+  const themeColor = color || reverse ? theme.secondary : theme.backgroundText;
 
   return (
     <BIcon
       color={themeColor}
+      reverse={reverse}
       {...rest}
     />
   );
