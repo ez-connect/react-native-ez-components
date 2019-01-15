@@ -16,12 +16,13 @@ export class Header extends React.PureComponent {
             let { loading } = this.state;
             loading += kAnimatedStep;
             if (loading > kAnimatedFinish) {
-                loading = kAnimatedStep;
+                loading = 0;
             }
-            this.setState({ loading });
             if (this.props.ready) {
+                loading = -1;
                 clearInterval(this._animated);
             }
+            this.setState({ loading });
         };
         this._handleOnPressBack = () => {
             if (this.state.isSearching) {
@@ -42,7 +43,8 @@ export class Header extends React.PureComponent {
             this.setState({ isSearching: !isSearching });
         };
         this.state = {
-            loading: 0,
+            ready: true,
+            loading: -1,
             isSearching: false,
         };
         this._debounceOnSearch = Header.debounce(this.props.onSearch);
@@ -104,8 +106,8 @@ export class Header extends React.PureComponent {
     }
     _renderLoading() {
         const { loading } = this.state;
-        if (!this.props.ready && loading > 0) {
-            if (loading === 0) {
+        if (!this.props.ready) {
+            if (loading === -1) {
                 clearInterval(this._animated);
                 this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
             }

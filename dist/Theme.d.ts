@@ -13,6 +13,7 @@ interface ITheme {
     backgroundText: string;
     surface: string;
     surfaceText: string;
+    transparent?: string;
 }
 declare enum ThemeEvent {
     OnInit = 1,
@@ -32,6 +33,7 @@ declare class Theme extends EventListener implements ITheme {
     backgroundText: string;
     surface: string;
     surfaceText: string;
+    transparent?: string;
     protected themes: ITheme[];
     init(themes: ITheme[]): void;
     setTheme(name: string): void;

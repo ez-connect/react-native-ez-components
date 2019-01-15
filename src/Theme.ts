@@ -18,6 +18,8 @@ interface ITheme {
 
   surface: string;
   surfaceText: string;
+
+  transparent?: string;
 }
 
 enum ThemeEvent {
@@ -44,9 +46,12 @@ class Theme extends EventListener implements ITheme {
   public surface: string;
   public surfaceText: string;
 
+  public transparent?: string;
+
   protected themes: ITheme[];
 
   public init(themes: ITheme[]) {
+    this.transparent = 'transparent';
     this.themes = themes;
     super.emmit(ThemeEvent.OnInit);
   }

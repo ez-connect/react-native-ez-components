@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 export interface IHeaderProps {
-    ready: boolean;
+    ready?: boolean;
     icon?: IconProps;
     height?: number;
     title?: string;
@@ -12,7 +12,7 @@ export interface IHeaderProps {
     onBack?(): void;
 }
 export interface IHeaderState {
-    ready?: boolean;
+    ready: boolean;
     loading?: number;
     isSearching?: boolean;
 }

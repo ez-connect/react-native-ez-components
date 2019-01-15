@@ -11,7 +11,7 @@ const kAnimatedStep = 20;
 const kAnimatedFinish = 100;
 
 export interface IHeaderProps {
-  ready: boolean;
+  ready?: boolean;
   icon?: IconProps;
   height?: number;
   title?: string;
@@ -23,7 +23,7 @@ export interface IHeaderProps {
 }
 
 export interface IHeaderState {
-  ready?: boolean;
+  ready: boolean;
   loading?: number;
   isSearching?: boolean;
 }
@@ -65,7 +65,8 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
   constructor(props: IHeaderProps) {
     super(props);
     this.state = {
-      loading: 0,
+      ready: true,
+      loading: -1,
       isSearching: false,
     };
 
@@ -142,8 +143,8 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
 
   private _renderLoading() {
     const { loading } = this.state;
-    if (!this.props.ready && loading > 0) {
-      if (loading === 0) {
+    if (!this.props.ready) {
+      if (loading === -1) {
         clearInterval(this._animated);
         this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
       }
@@ -171,13 +172,15 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
     let { loading } = this.state;
     loading += kAnimatedStep;
     if (loading > kAnimatedFinish) {
-      loading = kAnimatedStep;
+      loading = 0;
+    }
+
+    if (this.props.ready) {
+      loading = -1;
+      clearInterval(this._animated);
     }
 
     this.setState({ loading });
-    if (this.props.ready) {
-      clearInterval(this._animated);
-    }
   }
 
   private _handleOnPressBack = () => {

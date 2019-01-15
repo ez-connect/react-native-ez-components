@@ -96,6 +96,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     message: {
+        paddingTop: 6,
+        paddingBottom: 6,
         fontSize: 14,
     },
 });

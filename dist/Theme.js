@@ -6,6 +6,7 @@ var ThemeEvent;
 })(ThemeEvent || (ThemeEvent = {}));
 class Theme extends EventListener {
     init(themes) {
+        this.transparent = 'transparent';
         this.themes = themes;
         super.emmit(ThemeEvent.OnInit);
     }
