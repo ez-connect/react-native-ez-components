@@ -18,7 +18,7 @@ export class Header extends React.PureComponent {
             if (loading > kAnimatedFinish) {
                 loading = 0;
             }
-            if (this.props.ready) {
+            if (!this.props.loadingEnabled) {
                 loading = -1;
                 clearInterval(this._animated);
             }
@@ -43,7 +43,6 @@ export class Header extends React.PureComponent {
             this.setState({ isSearching: !isSearching });
         };
         this.state = {
-            ready: true,
             loading: -1,
             isSearching: false,
         };
@@ -106,7 +105,7 @@ export class Header extends React.PureComponent {
     }
     _renderLoading() {
         const { loading } = this.state;
-        if (!this.props.ready) {
+        if (this.props.loadingEnabled) {
             if (loading === -1) {
                 clearInterval(this._animated);
                 this._animated = setInterval(this._handleAnimated, kAnimatedInterval);

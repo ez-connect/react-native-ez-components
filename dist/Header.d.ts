@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { IconProps } from '../node_modules/react-native-elements/src/index';
 export interface IHeaderProps {
-    ready?: boolean;
     icon?: IconProps;
     height?: number;
     title?: string;
     searchable?: boolean;
     placeholder?: string;
     rightComponent?: React.Component;
+    loadingEnabled?: boolean;
     onSearch?(): void;
     onBack?(): void;
 }
 export interface IHeaderState {
-    ready: boolean;
     loading?: number;
     isSearching?: boolean;
 }

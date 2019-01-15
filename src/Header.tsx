@@ -11,19 +11,18 @@ const kAnimatedStep = 20;
 const kAnimatedFinish = 100;
 
 export interface IHeaderProps {
-  ready?: boolean;
   icon?: IconProps;
   height?: number;
   title?: string;
   searchable?: boolean;
   placeholder?: string;
   rightComponent?: React.Component;
+  loadingEnabled?: boolean;
   onSearch?(): void;
   onBack?(): void;
 }
 
 export interface IHeaderState {
-  ready: boolean;
   loading?: number;
   isSearching?: boolean;
 }
@@ -65,7 +64,6 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
   constructor(props: IHeaderProps) {
     super(props);
     this.state = {
-      ready: true,
       loading: -1,
       isSearching: false,
     };
@@ -143,7 +141,7 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
 
   private _renderLoading() {
     const { loading } = this.state;
-    if (!this.props.ready) {
+    if (this.props.loadingEnabled) {
       if (loading === -1) {
         clearInterval(this._animated);
         this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
@@ -175,7 +173,7 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
       loading = 0;
     }
 
-    if (this.props.ready) {
+    if (!this.props.loadingEnabled) {
       loading = -1;
       clearInterval(this._animated);
     }
@@ -207,7 +205,6 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
 const styles = StyleSheet.create({
   mainContainer: {
     borderBottomWidth: 0.5,
-    // marginBottom: 6,
   },
   container: {
     flexDirection: 'row',
