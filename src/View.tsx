@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, View as BView, ViewStyle } from 'react-native';
+import { StyleSheet, View as BView, ViewProps, ViewStyle } from 'react-native';
 
 import { theme } from './Theme';
 
-interface IViewProps {
+interface IViewProps extends ViewProps {
   style?: ViewStyle;
   primary?: boolean;
   secondary?: boolean;

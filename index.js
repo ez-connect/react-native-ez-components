@@ -1,5 +1,6 @@
 import { Badge } from './dist/Badge';
 import { Button } from './dist/Button';
+import { DaylightView } from './dist/DaylightView';
 import { Divider } from './dist/Divider';
 import { Header } from './dist/Header';
 import { Icon } from './dist/Icon';
@@ -15,13 +16,15 @@ import { TouchableIcon } from './dist/TouchableIcon';
 import { TouchableText } from './dist/TouchableText';
 import { View } from './dist/View';
 
-import EventListener from './dist/EventListener';
+import { daylight, DaylightEvent } from './dist/Daylight';
 import { NavigationService } from './dist/NavigationService';
 import { theme, ThemeEvent } from './dist/Theme';
+import EventListener from './dist/EventListener';
 
 export {
   Badge,
   Button,
+  DaylightView,
   Divider,
   Header,
   Icon,
@@ -37,6 +40,8 @@ export {
   TouchableText,
   View,
 
+  daylight,
+  DaylightEvent,
   EventListener,
   NavigationService,
   theme,

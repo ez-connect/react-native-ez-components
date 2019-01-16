@@ -1,6 +1,6 @@
 /// <reference types="react" />
-import { ViewStyle } from 'react-native';
-interface IViewProps {
+import { ViewProps, ViewStyle } from 'react-native';
+interface IViewProps extends ViewProps {
     style?: ViewStyle;
     primary?: boolean;
     secondary?: boolean;
