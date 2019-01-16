@@ -72,18 +72,21 @@ export enum DaylightEvent {
   OnChange = 2,
 }
 
-const kDaylightUpdateInterval = 0.1 * 60 * 1000;
-const kOpacityMin = 0.05;
-const kOpacityMax = 0.3;
-const kOpacityDefault = 0.1;
+const kDaylightUpdateInterval = 1 * 60 * 1000;
+const kOpacityMin = 0.2;
+const kOpacityMax = 0.6;
+const kOpacityDefault = 0.5;
 
 class Daylight extends EventListener {
   private _enable: boolean;
 
-  private _sunriseAt?: number;
-  private _sunsetAt?: number;
-  private _wakeTimeAt?: number;
-  private _bedTimeAt?: number;
+  private _dawn: number;
+  private _sunrise: number;
+  private _sunset: number;
+  private _dusk: number;
+
+  private _wakeTime: number;
+  private _bedTime: number;
 
   private _preset: IDaylightPreset;
   private _rgb: IRGB;
@@ -93,10 +96,14 @@ class Daylight extends EventListener {
 
   constructor(preset?: IDaylightPreset) {
     super();
-    this._sunriseAt = new Date().setHours(6, 0, 0);
-    this._sunriseAt = new Date().setHours(18, 0, 0);
-    this._wakeTimeAt = new Date().setHours(6, 0, 0);
-    this._bedTimeAt = new Date().setHours(22, 0, 0);
+
+    this._dawn = new Date().setHours(5, 0, 0);
+    this._sunrise = new Date().setHours(6, 0, 0);
+    this._sunset = new Date().setHours(17, 0, 0);
+    this._dusk = new Date().setHours(18, 0, 0);
+
+    this._wakeTime = new Date().setHours(6, 0, 0);
+    this._bedTime = new Date().setHours(22, 0, 0);
 
     this._preset = preset || kDaylighPresets[0];
 
@@ -119,6 +126,18 @@ class Daylight extends EventListener {
     super.emmit(DaylightEvent.OnEnableChange, value);
   }
 
+  public setSunTime(dawn: number, sunrise: number, sunset: number, dusk: number) {
+    this._dawn = dawn;
+    this._sunrise = sunrise;
+    this._sunset = sunset;
+    this._dusk = dusk;
+  }
+
+  public setUserTime(wakeupTime: number, bedTime: number) {
+    this._wakeTime = wakeupTime;
+    this._bedTime = bedTime;
+  }
+
   public getAllPresets() {
     return kDaylighPresets;
   }
@@ -133,11 +152,6 @@ class Daylight extends EventListener {
   public setOverrideValue(day, night, late) {
     Object.assign(this._preset, { day, night, late });
     this._update();
-  }
-
-  public setSun(sunrise: number, sunset: number) {
-    this._sunriseAt = sunrise;
-    this._sunsetAt = sunset;
   }
 
   public setOpacity(value: number) {
@@ -157,19 +171,32 @@ class Daylight extends EventListener {
     let kelvin: number;
     const { day, night, late } = this._preset;
     const now = new Date().getTime();
-    if (now > this._sunriseAt) {
-      if (now < this._sunsetAt) {
-        mode = 'day';
-        kelvin = day;
-      } else if (now < this._bedTimeAt) {
+
+    if (now > this._bedTime) {
+      mode = 'late';
+      kelvin = late;
+    } else if (now > this._dusk) {
+      mode = 'night';
+      kelvin = night;
+    } else if (now > this._sunset) {
+      const diff = (now - this._sunset) * (night - day) / (this._dusk - this._sunset);
+      mode = 'dusk';
+      kelvin = day + diff;
+    } else if (now > this._sunrise) {
+      mode = 'day';
+      kelvin = day;
+    } else if (now > this._dawn) {
+      const diff = (now - this._dawn) * (day - night) / (this._sunrise - this._dawn);
+      mode = 'dawn';
+      kelvin = night + diff;
+    } else {
+      if (now > this._wakeTime) {
         mode = 'night';
         kelvin = night;
       } else {
         mode = 'late';
         kelvin = late;
       }
-    } else {
-      kelvin = late;
     }
 
     return {  mode, kelvin };

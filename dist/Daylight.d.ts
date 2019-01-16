@@ -24,16 +24,20 @@ export declare enum DaylightEvent {
 }
 declare class Daylight extends EventListener {
     private _enable;
-    private _sunriseAt?;
-    private _sunsetAt?;
-    private _wakeTimeAt?;
-    private _bedTimeAt?;
+    private _dawn;
+    private _sunrise;
+    private _sunset;
+    private _dusk;
+    private _wakeTime;
+    private _bedTime;
     private _preset;
     private _rgb;
     private _opacity;
     private _handleInterval;
     constructor(preset?: IDaylightPreset);
     setEnable(value: boolean): void;
+    setSunTime(dawn: number, sunrise: number, sunset: number, dusk: number): void;
+    setUserTime(wakeupTime: number, bedTime: number): void;
     getAllPresets(): {
         name: string;
         desc: string;
@@ -43,7 +47,6 @@ declare class Daylight extends EventListener {
     }[];
     setPreset(name: string): void;
     setOverrideValue(day: any, night: any, late: any): void;
-    setSun(sunrise: number, sunset: number): void;
     setOpacity(value: number): void;
     getRGB(): IRGB;
     private _getTemperature;
