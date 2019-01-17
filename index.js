@@ -1,5 +1,6 @@
 import { Badge } from './dist/Badge';
 import { Button } from './dist/Button';
+import { CheckBox } from './dist/CheckBox';
 import { DaylightView } from './dist/DaylightView';
 import { Divider } from './dist/Divider';
 import { Header } from './dist/Header';
@@ -24,6 +25,7 @@ import EventListener from './dist/EventListener';
 export {
   Badge,
   Button,
+  CheckBox,
   DaylightView,
   Divider,
   Header,
