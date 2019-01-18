@@ -15,11 +15,18 @@ export class Storage {
     }
   }
 
-  public static async load(key) {
+  // Add `excludes` for safe in update, if before version was saved them
+  public static async load(key, excludes: string[] = []) {
     try {
       const data = await AsyncStorage.getItem(key);
       if (data) {
         const item = JSON.parse(data);
+        for (const key of excludes) {
+          if (item.hasOwnProperty(key)) {
+            delete item[key];
+          }
+        }
+
         return item;
       }
     } catch (err) {
