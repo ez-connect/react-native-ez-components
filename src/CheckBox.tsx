@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { StyleSheet } from 'react-native';
 import { CheckBox as BCheckBox } from 'react-native-elements';
 import { CheckBoxProps } from '../node_modules/react-native-elements/src/index';
 
 import { theme } from './Theme';
-import { StyleSheet } from 'react-native';
 
 export const CheckBox = (props: CheckBoxProps) => {
   const { containerStyle, textStyle, checkedColor, uncheckedColor, ...rest } = props;

@@ -1,6 +1,6 @@
 
 import EventListener from './EventListener';
-import Helper, { IRGB } from './Helper';
+import Helper, { IRGBA } from './Helper';
 
 export const kDaylighPresets = [
   {
@@ -73,9 +73,9 @@ export enum DaylightEvent {
 }
 
 const kDaylightUpdateInterval = 1 * 60 * 1000;
-const kOpacityMin = 0.2;
-const kOpacityMax = 0.6;
-const kOpacityDefault = 0.5;
+const kAlphaMin = 0.05;
+const kAlphaMax = 0.3;
+const kAlphaDefault = 0.5;
 
 class Daylight extends EventListener {
   private _enable: boolean;
@@ -89,8 +89,7 @@ class Daylight extends EventListener {
   private _bedTime: number;
 
   private _preset: IDaylightPreset;
-  private _rgb: IRGB;
-  private _opacity: number;
+  private _rgba: IRGBA;
 
   private _handleInterval: any;
 
@@ -107,8 +106,7 @@ class Daylight extends EventListener {
 
     this._preset = preset || kDaylighPresets[0];
 
-    this._opacity = kOpacityDefault;
-    this._rgb = { red: 0, green: 0, blue: 0 };
+    this._rgba = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
     this._handleInterval = null;
   }
 
@@ -154,25 +152,31 @@ class Daylight extends EventListener {
     this._update();
   }
 
-  public setOpacity(value: number) {
-    this._opacity = kOpacityMin + (value * (kOpacityMax - kOpacityMin));
+  public setSensitive(value: number) {
+    this._rgba.alpha = kAlphaMin + (value * (kAlphaMax - kAlphaMin));
     this._update(true);
   }
 
-  public getRGB() {
-    return this._rgb;
+  public setPreview(time?: number, wakeTime?: number, bedTime?: number, alpha?: number) {
+    this._update(true, time, wakeTime, bedTime, alpha);
+  }
+
+  public getColor() {
+    return this._rgba;
   }
 
   ///////////////////////////////////////////////////////////////////
 
-  private _getTemperature(): ITemperature {
+  private _getTemperature(time?: number, wakeTime?: number, bedTime?: number): ITemperature {
     // TODO: Smooth change in 1 hours
     let mode: string;
     let kelvin: number;
     const { day, night, late } = this._preset;
-    const now = new Date().getTime();
+    const now = time || new Date().getTime();
+    wakeTime = wakeTime || this._wakeTime;
+    bedTime = bedTime || this._bedTime;
 
-    if (now > this._bedTime) {
+    if (now > bedTime) {
       mode = 'late';
       kelvin = late;
     } else if (now > this._dusk) {
@@ -190,7 +194,7 @@ class Daylight extends EventListener {
       mode = 'dawn';
       kelvin = night + diff;
     } else {
-      if (now > this._wakeTime) {
+      if (now > wakeTime) {
         mode = 'night';
         kelvin = night;
       } else {
@@ -202,13 +206,13 @@ class Daylight extends EventListener {
     return {  mode, kelvin };
   }
 
-  private _update(shouldForceUpdate = false) {
-    const { mode, kelvin } = this._getTemperature();
-    const rgb = Helper.kelvinToRGB(kelvin);
-    const { red, green, blue } = rgb;
-    if (shouldForceUpdate || this._rgb.red !== red || this._rgb.green !== green || this._rgb.blue !== blue ) {
-      this._rgb = rgb;
-      super.emmit(DaylightEvent.OnChange, { mode, opacity: this._opacity, red, green, blue });
+  private _update(shouldForceUpdate = false, time?: number, wakeTime?: number, bedTime?: number, alpha?: number) {
+    const { mode, kelvin } = this._getTemperature(time, wakeTime, bedTime);
+    const { red, green, blue } = Helper.kelvinToRGB(kelvin);
+    if (shouldForceUpdate || this._rgba.red !== red || this._rgba.green !== green || this._rgba.blue !== blue ) {
+      Object.assign(this._rgba, { red, green, blue });
+      alpha = alpha || this._rgba.alpha;
+      super.emmit(DaylightEvent.OnChange, { mode, color: this._rgba });
     }
   }
 

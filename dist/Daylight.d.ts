@@ -1,5 +1,5 @@
 import EventListener from './EventListener';
-import { IRGB } from './Helper';
+import { IRGBA } from './Helper';
 export declare const kDaylighPresets: {
     name: string;
     desc: string;
@@ -31,8 +31,7 @@ declare class Daylight extends EventListener {
     private _wakeTime;
     private _bedTime;
     private _preset;
-    private _rgb;
-    private _opacity;
+    private _rgba;
     private _handleInterval;
     constructor(preset?: IDaylightPreset);
     setEnable(value: boolean): void;
@@ -47,8 +46,9 @@ declare class Daylight extends EventListener {
     }[];
     setPreset(name: string): void;
     setOverrideValue(day: any, night: any, late: any): void;
-    setOpacity(value: number): void;
-    getRGB(): IRGB;
+    setSensitive(value: number): void;
+    setPreview(time?: number, wakeTime?: number, bedTime?: number, alpha?: number): void;
+    getColor(): IRGBA;
     private _getTemperature;
     private _update;
     private _handleOnInterval;

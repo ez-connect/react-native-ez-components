@@ -3,7 +3,6 @@ import { ViewProps } from 'react-native';
 export interface IDaylightState extends ViewProps {
     enable: boolean;
     backgroundColor?: string;
-    opacity?: number;
 }
 export declare class DaylightView extends React.PureComponent<ViewProps, IDaylightState> {
     constructor(props: any);

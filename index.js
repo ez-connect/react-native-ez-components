@@ -19,6 +19,7 @@ import { View } from './dist/View';
 
 import { daylight, DaylightEvent } from './dist/Daylight';
 import { NavigationService } from './dist/NavigationService';
+import { Storage } from './dist/Storage';
 import { theme, ThemeEvent } from './dist/Theme';
 import EventListener from './dist/EventListener';
 
@@ -46,6 +47,7 @@ export {
   DaylightEvent,
   EventListener,
   NavigationService,
+  Storage,
   theme,
   ThemeEvent,
 };

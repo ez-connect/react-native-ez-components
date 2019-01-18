@@ -7,9 +7,10 @@ export class DaylightView extends React.PureComponent {
         this._handleOnDaylightEnableChange = (enable) => {
             this.setState({ enable });
         };
-        this._handleOnDaylightChange = ({ opacity, red, green, blue }) => {
-            const backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-            this.setState({ opacity, backgroundColor });
+        this._handleOnDaylightChange = ({ color }) => {
+            const { red, green, blue, alpha } = color;
+            const backgroundColor = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+            this.setState({ backgroundColor });
         };
         this.state = { enable: false };
     }
@@ -22,8 +23,8 @@ export class DaylightView extends React.PureComponent {
     }
     render() {
         if (this.state.enable) {
-            const { backgroundColor, opacity } = this.state;
-            const style = StyleSheet.flatten([styles.mainContainer, { backgroundColor, opacity }]);
+            const { backgroundColor } = this.state;
+            const style = StyleSheet.flatten([styles.mainContainer, { backgroundColor }]);
             return <View style={style} pointerEvents='none' {...this.props}/>;
         }
         return null;

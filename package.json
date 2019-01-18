@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "yarn tslint ./src/**/*",
     "build": "yarn tsc",
-    "copy": "copy index.js example\\node_modules\\react-native-ez-components\\ /y & copy dist\\*.* ..\\ereader\\node_modules\\react-native-ez-components\\dist\\ /y"
+    "copy": "cp -r index.js example/node_modules/react-native-ez-components/ & cp -r dist/*.* ./example/node_modules/react-native-ez-components/dist/"
   },
   "dependencies": {
     "react-native-elements": "^1.0.0-beta7",

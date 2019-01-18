@@ -1,8 +1,9 @@
 
-export interface IRGB {
+export interface IRGBA {
   red: number;
   green: number;
   blue: number;
+  alpha?: number;
 }
 
 export default class Helper {
@@ -10,7 +11,7 @@ export default class Helper {
    * http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
    * Reference: https://github.com/mattdesl/kelvin-to-rgb
    */
-  public static kelvinToRGB(temperature: number): IRGB {
+  public static kelvinToRGB(temperature: number): IRGBA {
     temperature = temperature / 100;
     let red = 0;
     let blue = 0;

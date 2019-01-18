@@ -6,7 +6,6 @@ import { daylight, DaylightEvent } from './Daylight';
 export interface IDaylightState extends ViewProps {
   enable: boolean;
   backgroundColor?: string;
-  opacity?: number;
 }
 
 export class DaylightView extends React.PureComponent<ViewProps, IDaylightState> {
@@ -26,8 +25,8 @@ export class DaylightView extends React.PureComponent<ViewProps, IDaylightState>
 
   public render() {
     if (this.state.enable) {
-      const { backgroundColor, opacity } = this.state;
-      const style = StyleSheet.flatten([styles.mainContainer, { backgroundColor, opacity }]);
+      const { backgroundColor } = this.state;
+      const style = StyleSheet.flatten([styles.mainContainer, { backgroundColor }]);
       return <View style={style} pointerEvents='none' {...this.props} />;
     }
 
@@ -38,9 +37,10 @@ export class DaylightView extends React.PureComponent<ViewProps, IDaylightState>
     this.setState({ enable });
   }
 
-  private _handleOnDaylightChange = ({ opacity, red, green, blue }) => {
-    const backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-    this.setState({ opacity, backgroundColor });
+  private _handleOnDaylightChange = ({ color }) => {
+    const { red, green, blue, alpha } = color;
+    const backgroundColor = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    this.setState({ backgroundColor });
   }
 }
 
