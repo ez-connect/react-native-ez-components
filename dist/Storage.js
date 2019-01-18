@@ -14,11 +14,16 @@ export class Storage {
             console.warn(err);
         }
     }
-    static async load(key) {
+    static async load(key, excludes = []) {
         try {
             const data = await AsyncStorage.getItem(key);
             if (data) {
                 const item = JSON.parse(data);
+                for (const key of excludes) {
+                    if (item.hasOwnProperty(key)) {
+                        delete item[key];
+                    }
+                }
                 return item;
             }
         }
