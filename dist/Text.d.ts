@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import { TextProps, TextStyle } from 'react-native';
 export interface ITextProps extends TextProps {
-    style: TextStyle;
+    style?: TextStyle;
     color?: string;
     primary?: boolean;
     secondary?: boolean;

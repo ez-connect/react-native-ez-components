@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Dimensions, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewProps, ViewStyle } from 'react-native';
 
 import { theme } from './Theme';
+import { TouchableText } from './TouchableText';
 
 const kInterval = 500; // check all items every 0.5s
 const kDefaultTimeOut = 3000; // 3 sec
@@ -16,7 +17,9 @@ export interface IToastItem {
   title?: string;
   message: string;
   type?: ToastType;
+  delay?: number;
   timeout?: number;
+  dismiss?: string;
   onDismiss?(): void;
 }
 
@@ -67,13 +70,20 @@ export class Toast extends React.Component<IToastProps, IToastState> {
   ///////////////////////////////////////////////////////////////////
 
   public show(item: IToastItem) {
-    const { items } = this.state;
-    item.timeout = new Date().getTime() + (item.timeout || kDefaultTimeOut);
-    items.unshift(item);
-    this.setState({ items });
+    if (item.delay && item.delay > 0) {
+      setTimeout(() => {
+        item.delay = 0;
+        this.show(item);
+      }, item.delay);
+    } else {
+      const { items } = this.state;
+      item.timeout = new Date().getTime() + (item.timeout || kDefaultTimeOut);
+      items.unshift(item);
+      this.setState({ items });
 
-    this._intervalHandler && clearInterval(this._intervalHandler);
-    this._intervalHandler = setInterval(this._handleCheckTimeout, kInterval);
+      this._intervalHandler && clearInterval(this._intervalHandler);
+      this._intervalHandler = setInterval(this._handleCheckTimeout, kInterval);
+    }
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -92,8 +102,9 @@ export class Toast extends React.Component<IToastProps, IToastState> {
     itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
     titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
     messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
+    const dismissStyle = StyleSheet.flatten([styles.dismiss, { color }]);
 
-    const { title, message, timeout } = item;
+    const { title, message, dismiss } = item;
 
     return (
       <TouchableOpacity
@@ -103,10 +114,13 @@ export class Toast extends React.Component<IToastProps, IToastState> {
         <View style={itemStyle}>
           {title && <Text style={titleStyle}>{title}</Text>}
           <Text style={messageStyle}>{message}</Text>
+          {dismiss && <TouchableText style={dismissStyle} onPress={this._handleOnDismiss(item)}>{dismiss}</TouchableText>}
         </View>
       </TouchableOpacity>
     );
   }
+
+  ///////////////////////////////////////////////////////////////////
 
   private _removeItem(item: IToastItem) {
     const { items } = this.state;
@@ -162,5 +176,9 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     paddingBottom: 6,
     fontSize: 14,
+  },
+  dismiss: {
+    fontWeight: 'bold',
+    textAlign: 'right',
   },
 });

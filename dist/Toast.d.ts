@@ -9,7 +9,9 @@ export interface IToastItem {
     title?: string;
     message: string;
     type?: ToastType;
+    delay?: number;
     timeout?: number;
+    dismiss?: string;
     onDismiss?(): void;
 }
 export interface IToastProps {

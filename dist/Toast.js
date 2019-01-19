@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { theme } from './Theme';
+import { TouchableText } from './TouchableText';
 const kInterval = 500;
 const kDefaultTimeOut = 3000;
 export var ToastType;
@@ -47,12 +48,20 @@ export class Toast extends React.Component {
         return null;
     }
     show(item) {
-        const { items } = this.state;
-        item.timeout = new Date().getTime() + (item.timeout || kDefaultTimeOut);
-        items.unshift(item);
-        this.setState({ items });
-        this._intervalHandler && clearInterval(this._intervalHandler);
-        this._intervalHandler = setInterval(this._handleCheckTimeout, kInterval);
+        if (item.delay && item.delay > 0) {
+            setTimeout(() => {
+                item.delay = 0;
+                this.show(item);
+            }, item.delay);
+        }
+        else {
+            const { items } = this.state;
+            item.timeout = new Date().getTime() + (item.timeout || kDefaultTimeOut);
+            items.unshift(item);
+            this.setState({ items });
+            this._intervalHandler && clearInterval(this._intervalHandler);
+            this._intervalHandler = setInterval(this._handleCheckTimeout, kInterval);
+        }
     }
     _renderItems() {
         return this.state.items.map((item, index) => {
@@ -66,11 +75,13 @@ export class Toast extends React.Component {
         itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
         titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
         messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
-        const { title, message, timeout } = item;
+        const dismissStyle = StyleSheet.flatten([styles.dismiss, { color }]);
+        const { title, message, dismiss } = item;
         return (<TouchableOpacity key={index} onPress={this._handleOnDismiss(item)}>
         <View style={itemStyle}>
           {title && <Text style={titleStyle}>{title}</Text>}
           <Text style={messageStyle}>{message}</Text>
+          {dismiss && <TouchableText style={dismissStyle} onPress={this._handleOnDismiss(item)}>{dismiss}</TouchableText>}
         </View>
       </TouchableOpacity>);
     }
@@ -106,5 +117,9 @@ const styles = StyleSheet.create({
         paddingTop: 6,
         paddingBottom: 6,
         fontSize: 14,
+    },
+    dismiss: {
+        fontWeight: 'bold',
+        textAlign: 'right',
     },
 });

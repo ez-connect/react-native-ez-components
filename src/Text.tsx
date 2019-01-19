@@ -4,7 +4,7 @@ import { StyleSheet, Text as BText, TextProps, TextStyle } from 'react-native';
 import { theme } from './Theme';
 
 export interface ITextProps extends TextProps {
-  style: TextStyle;
+  style?: TextStyle;
   color?: string;
   primary?: boolean;
   secondary?: boolean;
