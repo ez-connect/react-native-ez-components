@@ -152,7 +152,7 @@ class Daylight extends EventListener {
     this._update();
   }
 
-  public setSensitive(value: number) {
+  public setIntensity(value: number) {
     this._rgba.alpha = kAlphaMin + (value * (kAlphaMax - kAlphaMin));
     this._update(true);
   }
@@ -161,8 +161,17 @@ class Daylight extends EventListener {
     this._update(true, time, wakeTime, bedTime, alpha);
   }
 
-  public getColor() {
-    return this._rgba;
+  public getPreview() {
+    return {
+      dawn: this._dawn,
+      sunrise: this._sunrise,
+      sunset: this._sunset,
+      dusk: this._dusk,
+      wakeTime: this._wakeTime,
+      bedTime: this._bedTime,
+      preset: this._preset,
+      rgba: this._rgba,
+    };
   }
 
   ///////////////////////////////////////////////////////////////////

@@ -111,15 +111,24 @@ class Daylight extends EventListener {
         Object.assign(this._preset, { day, night, late });
         this._update();
     }
-    setSensitive(value) {
+    setIntensity(value) {
         this._rgba.alpha = kAlphaMin + (value * (kAlphaMax - kAlphaMin));
         this._update(true);
     }
     setPreview(time, wakeTime, bedTime, alpha) {
         this._update(true, time, wakeTime, bedTime, alpha);
     }
-    getColor() {
-        return this._rgba;
+    getPreview() {
+        return {
+            dawn: this._dawn,
+            sunrise: this._sunrise,
+            sunset: this._sunset,
+            dusk: this._dusk,
+            wakeTime: this._wakeTime,
+            bedTime: this._bedTime,
+            preset: this._preset,
+            rgba: this._rgba,
+        };
     }
     _getTemperature(time, wakeTime, bedTime) {
         let mode;

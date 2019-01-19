@@ -46,9 +46,18 @@ declare class Daylight extends EventListener {
     }[];
     setPreset(name: string): void;
     setOverrideValue(day: any, night: any, late: any): void;
-    setSensitive(value: number): void;
+    setIntensity(value: number): void;
     setPreview(time?: number, wakeTime?: number, bedTime?: number, alpha?: number): void;
-    getColor(): IRGBA;
+    getPreview(): {
+        dawn: number;
+        sunrise: number;
+        sunset: number;
+        dusk: number;
+        wakeTime: number;
+        bedTime: number;
+        preset: IDaylightPreset;
+        rgba: IRGBA;
+    };
     private _getTemperature;
     private _update;
     private _handleOnInterval;
