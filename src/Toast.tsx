@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, ViewProps } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View, ViewProps, ViewStyle, TextStyle } from 'react-native';
 
 import { theme } from './Theme';
 
@@ -19,11 +19,19 @@ export interface IToastItem {
   timeout?: number;
 }
 
+export interface IToastProps {
+  containerStyle?: ViewStyle;
+  itemStyle?: ViewStyle;
+  titleStyle?: TextStyle;
+  messageStyle?: TextStyle;
+  onDismiss?(): void;
+}
+
 export interface IToastState {
   items: IToastItem[];
 }
 
-export class Toast extends React.Component<ViewProps, IToastState> {
+export class Toast extends React.Component<IToastProps, IToastState> {
   public static setInstance(ref: Toast) {
     Toast.s_instance = ref;
   }
@@ -46,8 +54,9 @@ export class Toast extends React.Component<ViewProps, IToastState> {
 
   public render() {
     if (this.state.items.length > 0) {
+      const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
       return (
-        <View style={styles.mainContainer}>
+        <View style={style}>
           {this._renderItems()}
         </View>
       );
@@ -76,17 +85,24 @@ export class Toast extends React.Component<ViewProps, IToastState> {
   }
 
   private _renderItem(item: IToastItem, index: number) {
-    const { title, message, timeout } = item;
+    let { itemStyle, titleStyle, messageStyle } = this.props;
     const backgroundColor = theme.secondaryLight;
     const color = theme.secondaryText;
+
+    itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
+    titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
+    messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
+
+    const { title, message, timeout } = item;
+
     return (
       <TouchableOpacity
         key={index}
         onPress={this._handleOnDismiss(item)}
       >
-        <View style={[styles.item, { backgroundColor }]}>
-          {title && <Text style={[styles.title, { color }]}>{title}</Text>}
-          <Text style={[styles.message, { color }]}>{message}</Text>
+        <View style={itemStyle}>
+          {title && <Text style={titleStyle}>{title}</Text>}
+          <Text style={messageStyle}>{message}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -116,6 +132,7 @@ export class Toast extends React.Component<ViewProps, IToastState> {
 
   private _handleOnDismiss = (item: IToastItem) => () => {
     this._removeItem(item);
+    this.props.onDismiss && this.props.onDismiss();
   }
 }
 

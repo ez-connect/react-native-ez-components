@@ -26,6 +26,7 @@ export class Toast extends React.Component {
         };
         this._handleOnDismiss = (item) => () => {
             this._removeItem(item);
+            this.props.onDismiss && this.props.onDismiss();
         };
         this.state = { items: [] };
     }
@@ -37,7 +38,8 @@ export class Toast extends React.Component {
     }
     render() {
         if (this.state.items.length > 0) {
-            return (<View style={styles.mainContainer}>
+            const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
+            return (<View style={style}>
           {this._renderItems()}
         </View>);
         }
@@ -57,13 +59,17 @@ export class Toast extends React.Component {
         });
     }
     _renderItem(item, index) {
-        const { title, message, timeout } = item;
+        let { itemStyle, titleStyle, messageStyle } = this.props;
         const backgroundColor = theme.secondaryLight;
         const color = theme.secondaryText;
+        itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
+        titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
+        messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
+        const { title, message, timeout } = item;
         return (<TouchableOpacity key={index} onPress={this._handleOnDismiss(item)}>
-        <View style={[styles.item, { backgroundColor }]}>
-          {title && <Text style={[styles.title, { color }]}>{title}</Text>}
-          <Text style={[styles.message, { color }]}>{message}</Text>
+        <View style={itemStyle}>
+          {title && <Text style={titleStyle}>{title}</Text>}
+          <Text style={messageStyle}>{message}</Text>
         </View>
       </TouchableOpacity>);
     }

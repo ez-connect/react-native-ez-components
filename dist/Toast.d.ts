@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ViewProps } from 'react-native';
+import { ViewStyle, TextStyle } from 'react-native';
 export declare enum ToastType {
     Info = 1,
     Warning = 2,
@@ -11,10 +11,17 @@ export interface IToastItem {
     type?: ToastType;
     timeout?: number;
 }
+export interface IToastProps {
+    containerStyle?: ViewStyle;
+    itemStyle?: ViewStyle;
+    titleStyle?: TextStyle;
+    messageStyle?: TextStyle;
+    onDismiss?(): void;
+}
 export interface IToastState {
     items: IToastItem[];
 }
-export declare class Toast extends React.Component<ViewProps, IToastState> {
+export declare class Toast extends React.Component<IToastProps, IToastState> {
     static setInstance(ref: Toast): void;
     static show(item: IToastItem): void;
     private static s_instance;
