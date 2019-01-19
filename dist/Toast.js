@@ -18,6 +18,7 @@ export class Toast extends React.Component {
             for (const item of this.state.items) {
                 if (now > item.timeout) {
                     this._removeItem(item);
+                    item.onDismiss && item.onDismiss();
                 }
             }
             if (this.state.items.length === 0) {
