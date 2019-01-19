@@ -26,7 +26,7 @@ export class Toast extends React.Component {
         };
         this._handleOnDismiss = (item) => () => {
             this._removeItem(item);
-            this.props.onDismiss && this.props.onDismiss();
+            item.onDismiss && item.onDismiss();
         };
         this.state = { items: [] };
     }

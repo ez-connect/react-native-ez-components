@@ -17,6 +17,7 @@ export interface IToastItem {
   message: string;
   type?: ToastType;
   timeout?: number;
+  onDismiss?(): void;
 }
 
 export interface IToastProps {
@@ -24,7 +25,6 @@ export interface IToastProps {
   itemStyle?: ViewStyle;
   titleStyle?: TextStyle;
   messageStyle?: TextStyle;
-  onDismiss?(): void;
 }
 
 export interface IToastState {
@@ -132,7 +132,7 @@ export class Toast extends React.Component<IToastProps, IToastState> {
 
   private _handleOnDismiss = (item: IToastItem) => () => {
     this._removeItem(item);
-    this.props.onDismiss && this.props.onDismiss();
+    item.onDismiss && item.onDismiss();
   }
 }
 
