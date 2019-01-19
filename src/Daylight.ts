@@ -75,7 +75,7 @@ export enum DaylightEvent {
 const kDaylightUpdateInterval = 1 * 60 * 1000;
 const kAlphaMin = 0.05;
 const kAlphaMax = 0.3;
-const kAlphaDefault = 0.5;
+const kAlphaDefault = 0.2;
 
 class Daylight extends EventListener {
   private _enable: boolean;
@@ -157,8 +157,9 @@ class Daylight extends EventListener {
     this._update(true);
   }
 
-  public setPreview(time?: number, wakeTime?: number, bedTime?: number, alpha?: number) {
-    this._update(true, time, wakeTime, bedTime, alpha);
+  public setPreview(time?: number, intensity?: number, wakeTime?: number, bedTime?: number) {
+    intensity && this.setIntensity(intensity);
+    this._update(true, time, wakeTime, bedTime);
   }
 
   public getPreview() {
@@ -215,12 +216,11 @@ class Daylight extends EventListener {
     return {  mode, kelvin };
   }
 
-  private _update(shouldForceUpdate = false, time?: number, wakeTime?: number, bedTime?: number, alpha?: number) {
+  private _update(shouldForceUpdate = false, time?: number, wakeTime?: number, bedTime?: number) {
     const { mode, kelvin } = this._getTemperature(time, wakeTime, bedTime);
     const { red, green, blue } = Helper.kelvinToRGB(kelvin);
     if (shouldForceUpdate || this._rgba.red !== red || this._rgba.green !== green || this._rgba.blue !== blue ) {
       Object.assign(this._rgba, { red, green, blue });
-      alpha = alpha || this._rgba.alpha;
       super.emmit(DaylightEvent.OnChange, { mode, color: this._rgba });
     }
   }

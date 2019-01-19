@@ -47,7 +47,7 @@ declare class Daylight extends EventListener {
     setPreset(name: string): void;
     setOverrideValue(day: any, night: any, late: any): void;
     setIntensity(value: number): void;
-    setPreview(time?: number, wakeTime?: number, bedTime?: number, alpha?: number): void;
+    setPreview(time?: number, intensity?: number, wakeTime?: number, bedTime?: number): void;
     getPreview(): {
         dawn: number;
         sunrise: number;
