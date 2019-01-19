@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View, ViewProps, ViewStyle, TextStyle } from 'react-native';
+import { Dimensions, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewProps, ViewStyle } from 'react-native';
 
 import { theme } from './Theme';
 
