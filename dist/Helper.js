@@ -57,4 +57,41 @@ export default class Helper {
         }
         return { red, green, blue };
     }
+    static async getSunTime() {
+        try {
+            const res = await fetch('https://sun.p.rapidapi.com/api/sun/?ip_address=174.20.20.55&date=2016-07-18', {
+                headers: { 'X-RapidAPI-Key': 'WCJzCLMx65mshtSVxIToCLKUgNUpp1jLyIljsntAp3bd7WhRJE' },
+            });
+            if (res) {
+                const items = await res.json();
+                let dawn = null;
+                let sunset = null;
+                let sunrise = null;
+                let dusk = null;
+                for (const item of items) {
+                    if (item.hasOwnProperty('dawn')) {
+                        dawn = new Date(item.dawn).getTime();
+                    }
+                    else if (item.hasOwnProperty('sunset')) {
+                        sunset = new Date(item.sunset).getTime();
+                    }
+                    else if (item.hasOwnProperty('sunrise')) {
+                        sunrise = new Date(item.sunrise).getTime();
+                    }
+                    else if (item.hasOwnProperty('dusk')) {
+                        dusk = new Date(item.dusk).getTime();
+                    }
+                }
+                if (dawn && sunset && sunrise && dusk) {
+                    if (dawn.getDate() && sunset.getDate() && sunrise.getDate() && dusk.getDate()) {
+                        return { dawn, sunset, sunrise, dusk };
+                    }
+                }
+            }
+            return null;
+        }
+        catch (err) {
+            return null;
+        }
+    }
 }

@@ -20,7 +20,8 @@ export interface ITemperature {
 }
 export declare enum DaylightEvent {
     OnEnableChange = 1,
-    OnChange = 2
+    OnSunChange = 2,
+    OnChange = 3
 }
 declare class Daylight extends EventListener {
     private _enable;
@@ -34,9 +35,19 @@ declare class Daylight extends EventListener {
     private _rgba;
     private _handleInterval;
     constructor(preset?: IDaylightPreset);
-    setEnable(value: boolean): void;
+    setEnable(value: boolean): Promise<void>;
     setSunTime(dawn: number, sunrise: number, sunset: number, dusk: number): void;
+    getSunTime(): {
+        dawn: number;
+        sunrise: number;
+        sunset: number;
+        dusk: number;
+    };
     setUserTime(wakeupTime: number, bedTime: number): void;
+    getUserTime(): {
+        wakeTime: number;
+        bedTime: number;
+    };
     getAllPresets(): {
         name: string;
         desc: string;
@@ -45,6 +56,7 @@ declare class Daylight extends EventListener {
         late: number;
     }[];
     setPreset(name: string): void;
+    getPreset(): IDaylightPreset;
     setOverrideValue(day: any, night: any, late: any): void;
     setIntensity(value: number): void;
     setPreview(time?: number, intensity?: number, wakeTime?: number, bedTime?: number): void;
@@ -57,6 +69,12 @@ declare class Daylight extends EventListener {
         bedTime: number;
         preset: IDaylightPreset;
         rgba: IRGBA;
+    };
+    getTableData(): {
+        labels: any[];
+        values: any[];
+        min: IRGBA;
+        max: ITemperature;
     };
     private _getTemperature;
     private _update;

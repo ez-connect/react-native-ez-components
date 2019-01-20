@@ -69,7 +69,8 @@ export interface ITemperature {
 
 export enum DaylightEvent {
   OnEnableChange = 1,
-  OnChange = 2,
+  OnSunChange = 2,
+  OnChange = 3,
 }
 
 const kDaylightUpdateInterval = 1 * 60 * 1000;
@@ -110,12 +111,17 @@ class Daylight extends EventListener {
     this._handleInterval = null;
   }
 
-  public setEnable(value: boolean) {
+  public async setEnable(value: boolean) {
     this._enable = value;
     if (value) {
       this._handleInterval && clearInterval(this._handleInterval);
       this._handleInterval = setInterval(this._handleOnInterval, kDaylightUpdateInterval);
       this._update(); // force update
+      const sun = await Helper.getSunTime();
+      if (sun) {
+        const { dawn, sunrise, sunset, dusk } = sun;
+        this.setSunTime(dawn, sunrise, sunset, dusk);
+      }
     } else {
       clearInterval(this._handleInterval);
       this._handleInterval = null;
@@ -129,11 +135,20 @@ class Daylight extends EventListener {
     this._sunrise = sunrise;
     this._sunset = sunset;
     this._dusk = dusk;
+    super.emmit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
+  }
+
+  public getSunTime() {
+    return { dawn: this._dawn, sunrise: this._sunrise, sunset: this._sunset, dusk: this._dusk };
   }
 
   public setUserTime(wakeupTime: number, bedTime: number) {
     this._wakeTime = wakeupTime;
     this._bedTime = bedTime;
+  }
+
+  public getUserTime() {
+    return { wakeTime: this._wakeTime, bedTime: this._bedTime };
   }
 
   public getAllPresets() {
@@ -145,6 +160,10 @@ class Daylight extends EventListener {
     this._preset = preset;
 
     this._update();
+  }
+
+  public getPreset() {
+    return this._preset;
   }
 
   public setOverrideValue(day, night, late) {
@@ -173,6 +192,41 @@ class Daylight extends EventListener {
       preset: this._preset,
       rgba: this._rgba,
     };
+  }
+
+  public getTableData() {
+    const now = new Date().getTime();
+    const times = [
+      this._wakeTime - 3 * 60 * 60 * 1000, // 3 hr
+      this._dawn,
+      this._sunrise - 30 * 60 * 1000,
+      this._sunrise,
+      this._sunset,
+      this._dusk,
+      this._bedTime,
+      this._bedTime + 30 * 60 * 1000, // 3 hr
+      this._bedTime + 3 * 60 * 60 * 1000, // 3 hr
+      now,
+    ].sort((a, b) => a - b);
+
+    const labels = [];
+    const values = [];
+
+    for (const time of times) {
+      if (time === now) {
+        labels.push('Now');
+      } else {
+        const date = new Date(time);
+        labels.push(`${date.getHours()}:${date.getMinutes()}`);
+      }
+
+      const temperature = this._getTemperature(time);
+      values.push(temperature.kelvin);
+    }
+
+    const min = Helper.kelvinToRGB(this._preset.late);
+    const max = this._getTemperature(this._preset.day);
+    return { labels, values, min, max };
   }
 
   ///////////////////////////////////////////////////////////////////

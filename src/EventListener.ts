@@ -35,9 +35,15 @@ export default class EventListener {
 
   public emmit(event, res?: any) {
     // FIXME: some listener without `handler`, don't know why?
-    const listeners = this._listeners.filter((x) => x.event === event && x.handler);
+    const listeners = this._listeners.filter((x) => x.event === event);
     for (const listener of listeners) {
-      listener.handler(res);
+      if (listener.handler) {
+        listener.handler(res);
+      } else {
+        const index = this._listeners.indexOf(listener);
+        this._listeners.splice(index, 1);
+        console.warn(`Invalid hander of event ${event}`);
+      }
     }
   }
 }

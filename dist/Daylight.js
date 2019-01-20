@@ -54,7 +54,8 @@ export const kDaylighPresets = [
 export var DaylightEvent;
 (function (DaylightEvent) {
     DaylightEvent[DaylightEvent["OnEnableChange"] = 1] = "OnEnableChange";
-    DaylightEvent[DaylightEvent["OnChange"] = 2] = "OnChange";
+    DaylightEvent[DaylightEvent["OnSunChange"] = 2] = "OnSunChange";
+    DaylightEvent[DaylightEvent["OnChange"] = 3] = "OnChange";
 })(DaylightEvent || (DaylightEvent = {}));
 const kDaylightUpdateInterval = 1 * 60 * 1000;
 const kAlphaMin = 0.05;
@@ -76,12 +77,17 @@ class Daylight extends EventListener {
         this._rgba = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
         this._handleInterval = null;
     }
-    setEnable(value) {
+    async setEnable(value) {
         this._enable = value;
         if (value) {
             this._handleInterval && clearInterval(this._handleInterval);
             this._handleInterval = setInterval(this._handleOnInterval, kDaylightUpdateInterval);
             this._update();
+            const sun = await Helper.getSunTime();
+            if (sun) {
+                const { dawn, sunrise, sunset, dusk } = sun;
+                this.setSunTime(dawn, sunrise, sunset, dusk);
+            }
         }
         else {
             clearInterval(this._handleInterval);
@@ -94,10 +100,17 @@ class Daylight extends EventListener {
         this._sunrise = sunrise;
         this._sunset = sunset;
         this._dusk = dusk;
+        super.emmit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
+    }
+    getSunTime() {
+        return { dawn: this._dawn, sunrise: this._sunrise, sunset: this._sunset, dusk: this._dusk };
     }
     setUserTime(wakeupTime, bedTime) {
         this._wakeTime = wakeupTime;
         this._bedTime = bedTime;
+    }
+    getUserTime() {
+        return { wakeTime: this._wakeTime, bedTime: this._bedTime };
     }
     getAllPresets() {
         return kDaylighPresets;
@@ -106,6 +119,9 @@ class Daylight extends EventListener {
         const preset = kDaylighPresets.find((x) => x.name === name) || kDaylighPresets[0];
         this._preset = preset;
         this._update();
+    }
+    getPreset() {
+        return this._preset;
     }
     setOverrideValue(day, night, late) {
         Object.assign(this._preset, { day, night, late });
@@ -130,6 +146,37 @@ class Daylight extends EventListener {
             preset: this._preset,
             rgba: this._rgba,
         };
+    }
+    getTableData() {
+        const now = new Date().getTime();
+        const times = [
+            this._wakeTime - 3 * 60 * 60 * 1000,
+            this._dawn,
+            this._sunrise - 30 * 60 * 1000,
+            this._sunrise,
+            this._sunset,
+            this._dusk,
+            this._bedTime,
+            this._bedTime + 30 * 60 * 1000,
+            this._bedTime + 3 * 60 * 60 * 1000,
+            now,
+        ].sort((a, b) => a - b);
+        const labels = [];
+        const values = [];
+        for (const time of times) {
+            if (time === now) {
+                labels.push('Now');
+            }
+            else {
+                const date = new Date(time);
+                labels.push(`${date.getHours()}:${date.getMinutes()}`);
+            }
+            const temperature = this._getTemperature(time);
+            values.push(temperature.kelvin);
+        }
+        const min = Helper.kelvinToRGB(this._preset.late);
+        const max = this._getTemperature(this._preset.day);
+        return { labels, values, min, max };
     }
     _getTemperature(time, wakeTime, bedTime) {
         let mode;

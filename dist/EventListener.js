@@ -19,9 +19,16 @@ export default class EventListener {
         this._listeners = [];
     }
     emmit(event, res) {
-        const listeners = this._listeners.filter((x) => x.event === event && x.handler);
+        const listeners = this._listeners.filter((x) => x.event === event);
         for (const listener of listeners) {
-            listener.handler(res);
+            if (listener.handler) {
+                listener.handler(res);
+            }
+            else {
+                const index = this._listeners.indexOf(listener);
+                this._listeners.splice(index, 1);
+                console.warn(`Invalid hander of event ${event}`);
+            }
         }
     }
 }
