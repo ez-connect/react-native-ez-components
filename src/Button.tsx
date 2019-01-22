@@ -19,8 +19,8 @@ export const Button = (props: IButtonProps) => {
   const themeContainerStyle = StyleSheet.flatten([styles.container, containerStyle ]);
   const themeButtonStyle = StyleSheet.flatten([
     styles.button,
-    { backgroundColor, borderWidth, borderColor },
     buttonStyle,
+    { backgroundColor, borderWidth, borderColor },
   ]);
   const themeTitleStyle = StyleSheet.flatten([styles.title, { color }, titleStyle]);
 
