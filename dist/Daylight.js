@@ -105,15 +105,13 @@ class Daylight extends EventListener {
     getSunTime() {
         return { dawn: this._dawn, sunrise: this._sunrise, sunset: this._sunset, dusk: this._dusk };
     }
-    setUserTime(wakeupTime, bedTime) {
-        this._wakeTime = wakeupTime;
+    setUserTime(wakeTime, bedTime) {
+        this._wakeTime = wakeTime;
         this._bedTime = bedTime;
-    }
-    getUserTime() {
-        return { wakeTime: this._wakeTime, bedTime: this._bedTime };
+        this._update(true);
     }
     getAllPresets() {
-        return kDaylighPresets;
+        return kDaylighPresets.map((x) => x.name);
     }
     setPreset(name) {
         const preset = kDaylighPresets.find((x) => x.name === name) || kDaylighPresets[0];
@@ -121,62 +119,31 @@ class Daylight extends EventListener {
         this._update();
     }
     getPreset() {
-        return this._preset;
+        return this._preset.name;
     }
-    setOverrideValue(day, night, late) {
-        Object.assign(this._preset, { day, night, late });
-        this._update();
-    }
-    setIntensity(value) {
-        this._rgba.alpha = kAlphaMin + (value * (kAlphaMax - kAlphaMin));
-        this._update(true);
-    }
-    setPreview(time, intensity, wakeTime, bedTime) {
-        intensity && this.setIntensity(intensity);
-        this._update(true, time, wakeTime, bedTime);
-    }
-    getPreview() {
-        return {
-            dawn: this._dawn,
-            sunrise: this._sunrise,
-            sunset: this._sunset,
-            dusk: this._dusk,
-            wakeTime: this._wakeTime,
-            bedTime: this._bedTime,
-            preset: this._preset,
-            rgba: this._rgba,
-        };
-    }
-    getTableData() {
-        const now = new Date().getTime();
-        const times = [
-            this._wakeTime - 3 * 60 * 60 * 1000,
-            this._dawn,
-            this._sunrise - 30 * 60 * 1000,
-            this._sunrise,
-            this._sunset,
-            this._dusk,
-            this._bedTime,
-            this._bedTime + 30 * 60 * 1000,
-            this._bedTime + 3 * 60 * 60 * 1000,
-            now,
-        ].sort((a, b) => a - b);
-        const labels = [];
-        const values = [];
-        for (const time of times) {
-            if (time === now) {
-                labels.push('Now');
+    getData(step = 15) {
+        const items = [];
+        for (let hour = 0; hour < 24; hour++) {
+            for (let minute = 0; minute < 60; minute += step) {
+                const time = new Date().setHours(hour, minute, 0);
+                const kelvin = this._getTemperature(time).kelvin;
+                const rgba = Helper.kelvinToRGB(kelvin);
+                items.push({ time, kelvin, rgba });
             }
-            else {
-                const date = new Date(time);
-                labels.push(`${date.getHours()}:${date.getMinutes()}`);
-            }
-            const temperature = this._getTemperature(time);
-            values.push(temperature.kelvin);
         }
-        const min = Helper.kelvinToRGB(this._preset.late);
-        const max = this._getTemperature(this._preset.day);
-        return { labels, values, min, max };
+        const day = {
+            argb: Helper.kelvinToRGB(this._preset.day),
+            height: 1,
+        };
+        const night = {
+            argb: Helper.kelvinToRGB(this._preset.night),
+            height: this._preset.night / this._preset.day,
+        };
+        const late = {
+            argb: Helper.kelvinToRGB(this._preset.late),
+            height: this._preset.late / this._preset.day,
+        };
+        return { day, night, late, items };
     }
     _getTemperature(time, wakeTime, bedTime) {
         let mode;

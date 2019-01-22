@@ -106,14 +106,15 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
   private _renderTitle() {
     const { title, placeholder } = this.props;
     const { isSearching } = this.state;
+    const color = theme.primaryText;
     if (title && !isSearching) {
       // eslint-disable-next-line prettier/prettier
-      return <Text style={[styles.title, { color: theme.primaryText }]} numberOfLines={1}>{title}</Text>;
+      return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
     }
 
     return (
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color }]}
         placeholder={placeholder}
         autoFocus={true}
         underlineColorAndroid='transparent'

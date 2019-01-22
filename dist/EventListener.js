@@ -12,6 +12,16 @@ export default class EventListener {
             this._listeners.splice(index, 1);
         }
     }
+    addListeners(listeners) {
+        for (const listener of listeners) {
+            this._listeners.push(listener);
+        }
+    }
+    removeListeners(listeners) {
+        for (const listener of listeners) {
+            this.removeListener(listener.event, listener.handler);
+        }
+    }
     removeAllListeners() {
         for (let i = 0; i < this._listeners.length; i++) {
             delete this._listeners[i];

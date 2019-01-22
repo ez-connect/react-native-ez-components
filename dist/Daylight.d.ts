@@ -8,11 +8,11 @@ export declare const kDaylighPresets: {
     late: number;
 }[];
 export interface IDaylightPreset {
-    name?: string;
+    name: string;
     description?: string;
-    day?: number;
-    night?: number;
-    late?: number;
+    day: number;
+    night: number;
+    late: number;
 }
 export interface ITemperature {
     mode: string;
@@ -43,38 +43,24 @@ declare class Daylight extends EventListener {
         sunset: number;
         dusk: number;
     };
-    setUserTime(wakeupTime: number, bedTime: number): void;
-    getUserTime(): {
-        wakeTime: number;
-        bedTime: number;
-    };
-    getAllPresets(): {
-        name: string;
-        desc: string;
-        day: number;
-        night: number;
-        late: number;
-    }[];
+    setUserTime(wakeTime: number, bedTime: number): void;
+    getAllPresets(): string[];
     setPreset(name: string): void;
-    getPreset(): IDaylightPreset;
-    setOverrideValue(day: any, night: any, late: any): void;
-    setIntensity(value: number): void;
-    setPreview(time?: number, intensity?: number, wakeTime?: number, bedTime?: number): void;
-    getPreview(): {
-        dawn: number;
-        sunrise: number;
-        sunset: number;
-        dusk: number;
-        wakeTime: number;
-        bedTime: number;
-        preset: IDaylightPreset;
-        rgba: IRGBA;
-    };
-    getTableData(): {
-        labels: any[];
-        values: any[];
-        min: IRGBA;
-        max: ITemperature;
+    getPreset(): string;
+    getData(step?: number): {
+        day: {
+            argb: IRGBA;
+            height: number;
+        };
+        night: {
+            argb: IRGBA;
+            height: number;
+        };
+        late: {
+            argb: IRGBA;
+            height: number;
+        };
+        items: any[];
     };
     private _getTemperature;
     private _update;
