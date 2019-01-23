@@ -60,6 +60,10 @@ declare class Daylight extends EventListener {
             argb: IRGBA;
             height: number;
         };
+        now: {
+            argb: IRGBA;
+            height: number;
+        };
         items: any[];
     };
     private _getTemperature;

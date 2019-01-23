@@ -143,7 +143,12 @@ class Daylight extends EventListener {
             argb: Helper.kelvinToRGB(this._preset.late),
             height: this._preset.late / this._preset.day,
         };
-        return { day, night, late, items };
+        const { kelvin } = this._getTemperature(new Date().getTime());
+        const now = {
+            argb: Helper.kelvinToRGB(kelvin),
+            height: kelvin / this._preset.day,
+        };
+        return { day, night, late, now, items };
     }
     _getTemperature(time, wakeTime, bedTime) {
         let mode;
