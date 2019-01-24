@@ -1,3 +1,3 @@
 /// <reference types="react" />
-import { CheckBoxProps } from '../node_modules/react-native-elements/src/index';
+import { CheckBoxProps } from 'react-native-elements';
 export declare const CheckBox: (props: CheckBoxProps) => JSX.Element;

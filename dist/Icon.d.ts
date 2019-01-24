@@ -1,3 +1,3 @@
 /// <reference types="react" />
-import { IconProps } from '../node_modules/react-native-elements/src/index';
+import { IconProps } from 'react-native-elements';
 export declare const Icon: (props: IconProps) => JSX.Element;

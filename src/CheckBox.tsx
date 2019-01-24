@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { CheckBox as BCheckBox } from 'react-native-elements';
-import { CheckBoxProps } from '../node_modules/react-native-elements/src/index';
+import { CheckBox as BCheckBox, CheckBoxProps } from 'react-native-elements';
 
 import { theme } from './Theme';
 

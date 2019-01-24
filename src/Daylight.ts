@@ -1,4 +1,4 @@
-
+import { addMinutes, subMinutes } from 'date-fns';
 import EventListener from './EventListener';
 import Helper, { IRGBA } from './Helper';
 
@@ -184,13 +184,18 @@ class Daylight extends EventListener {
 
   public getData(step = 15) {
     const items = [];
-    for (let hour = 0; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += step) {
-        const time = new Date().setHours(hour, minute, 0);
-        const kelvin = this._getTemperature(time).kelvin;
-        const rgba = Helper.kelvinToRGB(kelvin);
-        items.push({ time, kelvin, rgba });
-      }
+    const from = subMinutes(new Date(), 3 * 60);
+    const to = addMinutes(new Date(), 21 * 60);
+
+    let time = subMinutes(new Date(), 3 * 60);
+    let counter = 0;
+    while (counter < 24 * step) {
+      const kelvin = this._getTemperature(time.getTime()).kelvin;
+      const rgba = Helper.kelvinToRGB(kelvin);
+      items.push({ time, kelvin, rgba });
+
+      time = addMinutes(time, step);
+      counter++;
     }
 
     const day = {

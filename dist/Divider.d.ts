@@ -1,3 +1,3 @@
 /// <reference types="react" />
-import { DividerProps } from '../node_modules/react-native-elements/src/index';
+import { DividerProps } from 'react-native-elements';
 export declare const Divider: (props: DividerProps) => JSX.Element;

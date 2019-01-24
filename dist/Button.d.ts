@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { ButtonProps } from '../node_modules/react-native-elements/src/index';
+import { ButtonProps } from 'react-native-elements';
 export interface IButtonProps extends ButtonProps {
     clear?: boolean;
 }

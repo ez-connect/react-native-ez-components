@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Icon as BIcon } from 'react-native-elements';
-import { IconProps } from '../node_modules/react-native-elements/src/index';
+import { Icon as BIcon, IconProps } from 'react-native-elements';
 
 import { theme } from './Theme';
 

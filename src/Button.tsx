@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {  StyleSheet, TextStyle, ViewStyle } from 'react-native';
-import { Button as BButton } from 'react-native-elements';
-import { ButtonProps } from '../node_modules/react-native-elements/src/index';
+import {  StyleSheet } from 'react-native';
+import { Button as BButton, ButtonProps } from 'react-native-elements';
 
 import { theme } from './Theme';
 

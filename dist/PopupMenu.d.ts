@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IconProps } from '../node_modules/react-native-elements/src/index';
+import { IconProps } from 'react-native-elements';
 export interface IPopupMenuItem {
     icon?: string;
     title?: string;

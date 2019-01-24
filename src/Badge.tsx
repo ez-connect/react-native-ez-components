@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {  StyleSheet } from 'react-native';
-import { Badge as BBadge } from 'react-native-elements';
-import { BadgeProps } from '../node_modules/react-native-elements/src/index';
+import { Badge as BBadge, BadgeProps } from 'react-native-elements';
 
 import { theme } from './Theme';
 

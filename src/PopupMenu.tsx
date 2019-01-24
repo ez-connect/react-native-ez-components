@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
+import { IconProps } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import { IconProps } from '../node_modules/react-native-elements/src/index';
 
 import { ListItem } from './ListItem';
 import { Text } from './Text';

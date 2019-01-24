@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { ListItem as BListItem } from 'react-native-elements';
-import { ListItemProps } from '../node_modules/react-native-elements/src/index';
+import { ListItem as BListItem, ListItemProps } from 'react-native-elements';
 
 import { theme } from './Theme';
 

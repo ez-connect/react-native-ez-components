@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {  StyleSheet } from 'react-native';
-import { Divider as BDivider } from 'react-native-elements';
-import { DividerProps } from '../node_modules/react-native-elements/src/index';
+import { Divider as BDivider, DividerProps } from 'react-native-elements';
 
 import { theme } from './Theme';
 

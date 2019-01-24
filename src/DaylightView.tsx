@@ -1,6 +1,6 @@
 import * as React from 'react';
-
 import { Dimensions, StyleSheet, View, ViewProps } from 'react-native';
+
 import { daylight, DaylightEvent } from './Daylight';
 
 export interface IDaylightState extends ViewProps {

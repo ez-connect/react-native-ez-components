@@ -1,3 +1,3 @@
 /// <reference types="react" />
-import { ListItemProps } from '../node_modules/react-native-elements/src/index';
+import { ListItemProps } from 'react-native-elements';
 export declare const ListItem: (props: ListItemProps) => JSX.Element;
