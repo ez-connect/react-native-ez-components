@@ -1,4 +1,3 @@
-import { addMinutes, subMinutes } from 'date-fns';
 import EventListener from './EventListener';
 import Helper, { IRGBA } from './Helper';
 
@@ -143,8 +142,11 @@ class Daylight extends EventListener {
   }
 
   public setUserTime(wakeTime: number, bedTime: number) {
-    this._wakeTime = wakeTime;
-    this._bedTime = bedTime;
+    let time = new Date(wakeTime);
+    this._wakeTime = new Date().setHours(time.getHours(), time.getMinutes(), 0);
+
+    time = new Date(bedTime);
+    this._bedTime = new Date().setHours(time.getHours(), time.getMinutes(), 0);
     this._update(true);
   }
 
@@ -184,18 +186,13 @@ class Daylight extends EventListener {
 
   public getData(step = 15) {
     const items = [];
-    const from = subMinutes(new Date(), 3 * 60);
-    const to = addMinutes(new Date(), 21 * 60);
-
-    let time = subMinutes(new Date(), 3 * 60);
-    let counter = 0;
-    while (counter < 24 * step) {
-      const kelvin = this._getTemperature(time.getTime()).kelvin;
-      const rgba = Helper.kelvinToRGB(kelvin);
-      items.push({ time, kelvin, rgba });
-
-      time = addMinutes(time, step);
-      counter++;
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += step) {
+        const time = new Date().setHours(hour, minute, 0);
+        const kelvin = this._getTemperature(time).kelvin;
+        const rgba = Helper.kelvinToRGB(kelvin);
+        items.push({ time, kelvin, rgba });
+      }
     }
 
     const day = {

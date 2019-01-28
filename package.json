@@ -12,7 +12,6 @@
     "copy": "cp -r index.js ../ereader/node_modules/react-native-ez-components/ & cp -r dist/*.* ../ereader/node_modules/react-native-ez-components/dist/"
   },
   "dependencies": {
-    "date-fns": "^2.0.0-alpha.27",
     "react-native-elements": "^1.0.0-beta7",
     "react-native-modal": "^7.0.2",
     "react-navigation": "^3.0.6"
