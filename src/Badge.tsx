@@ -9,21 +9,21 @@ export interface IBadgeProps extends BadgeProps {
 }
 
 export const Badge = (props: IBadgeProps) => {
-  const { containerStyle, textStyle, clear, ...rest } = props;
+  const { badgeStyle, textStyle, clear, ...rest } = props;
   const backgroundColor = clear ? theme.background : theme.secondaryLight;
   const borderColor = theme.secondaryLight;
   const color = clear ? theme.backgroundText : theme.secondaryText;
 
-  const themeContainerStyle = StyleSheet.flatten([
-    styles.container,
+  const themeBadgeStyle = StyleSheet.flatten([
+    styles.badge,
     { backgroundColor, borderColor },
-    containerStyle,
+    badgeStyle,
   ]);
   const themeTextStyle = StyleSheet.flatten([styles.text, { color }, textStyle]);
 
   return (
     <BBadge
-      containerStyle={themeContainerStyle}
+      badgeStyle={themeBadgeStyle}
       textStyle={themeTextStyle}
       {...rest}
     />
@@ -31,7 +31,7 @@ export const Badge = (props: IBadgeProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  badge: {
     borderWidth: 0.5,
   },
   text: {
