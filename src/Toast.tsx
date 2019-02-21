@@ -35,16 +35,15 @@ export interface IToastState {
 }
 
 export class Toast extends React.Component<IToastProps, IToastState> {
-  public static setInstance(ref: Toast) {
-    Toast.s_instance = ref;
+  public static setInstance(ref: Toast|null) {
+    Toast._instance = ref;
   }
 
   public static show(item: IToastItem) {
-    Toast.s_instance.show(item);
+    Toast._instance.show(item);
   }
 
-  // tslint:disable-next-line:variable-name
-  private static s_instance: Toast;
+  private static _instance: Toast|null;
 
   ///////////////////////////////////////////////////////////////////
 

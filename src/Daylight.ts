@@ -91,7 +91,7 @@ class Daylight extends EventListener {
   private _preset: IDaylightPreset;
   private _rgba: IRGBA;
 
-  private _handleInterval: any;
+  private _handleInterval: number;
 
   constructor(preset?: IDaylightPreset) {
     super();
@@ -107,7 +107,7 @@ class Daylight extends EventListener {
     this._preset = preset || kDaylighPresets[0];
 
     this._rgba = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
-    this._handleInterval = null;
+    this._handleInterval = 0;
   }
 
   public async setEnable(value: boolean) {
@@ -123,7 +123,6 @@ class Daylight extends EventListener {
       }
     } else {
       clearInterval(this._handleInterval);
-      this._handleInterval = null;
     }
 
     super.emmit(DaylightEvent.OnEnableChange, value);

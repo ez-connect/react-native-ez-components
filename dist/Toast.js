@@ -33,10 +33,10 @@ export class Toast extends React.Component {
         this.state = { items: [] };
     }
     static setInstance(ref) {
-        Toast.s_instance = ref;
+        Toast._instance = ref;
     }
     static show(item) {
-        Toast.s_instance.show(item);
+        Toast._instance.show(item);
     }
     render() {
         if (this.state.items.length > 0) {

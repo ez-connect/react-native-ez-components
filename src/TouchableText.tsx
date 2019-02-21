@@ -6,7 +6,7 @@ import { theme } from './Theme';
 import { TouchableFeedback} from './TouchableFeedback';
 
 export interface ITouchableTextProps extends ITextProps {
-  onPress(): void;
+  onPress: () => void;
 }
 
 // TODO: Use View instead of SafeAreaView because it has a placeholder for statusbar although it's hidden

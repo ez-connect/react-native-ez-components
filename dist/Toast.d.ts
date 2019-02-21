@@ -24,9 +24,9 @@ export interface IToastState {
     items: IToastItem[];
 }
 export declare class Toast extends React.Component<IToastProps, IToastState> {
-    static setInstance(ref: Toast): void;
+    static setInstance(ref: Toast | null): void;
     static show(item: IToastItem): void;
-    private static s_instance;
+    private static _instance;
     private _intervalHandler;
     constructor(props: any);
     render(): JSX.Element;

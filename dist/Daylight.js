@@ -75,7 +75,7 @@ class Daylight extends EventListener {
         this._bedTime = new Date().setHours(22, 0, 0);
         this._preset = preset || kDaylighPresets[0];
         this._rgba = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
-        this._handleInterval = null;
+        this._handleInterval = 0;
     }
     async setEnable(value) {
         this._enable = value;
@@ -91,7 +91,6 @@ class Daylight extends EventListener {
         }
         else {
             clearInterval(this._handleInterval);
-            this._handleInterval = null;
         }
         super.emmit(DaylightEvent.OnEnableChange, value);
     }

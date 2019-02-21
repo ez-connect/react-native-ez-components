@@ -1,15 +1,15 @@
 {
   "name": "react-native-ez-components",
-  "version": "0.0.9",
+  "version": "0.1.2",
   "description": "Component collections",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/ez-connect/react-native-ez-components.git",
   "author": "Ez-Connect",
   "license": "MIT",
   "scripts": {
     "lint": "yarn tslint ./src/**/*",
     "build": "yarn tsc",
-    "copy": "cp -r index.js ../ereader/node_modules/react-native-ez-components/ & cp -r dist/*.* ../ereader/node_modules/react-native-ez-components/dist/"
+    "copy": "cp -r dist/*.* ../ereader/node_modules/react-native-ez-components/dist/"
   },
   "dependencies": {
     "react-native-elements": "^1.0.0",

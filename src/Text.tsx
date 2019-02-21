@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, Text as BText, TextProps, TextStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text as BText, TextProps, TextStyle } from 'react-native';
 
 import { theme } from './Theme';
 
 export interface ITextProps extends TextProps {
   style?: TextStyle;
-  color?: string;
   primary?: boolean;
   secondary?: boolean;
   surface?: boolean;
@@ -13,6 +12,7 @@ export interface ITextProps extends TextProps {
   fontStyle?: 'normal' | 'italic';
   fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900';
   textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
+  children?: React.ReactNode;
 }
 
 export const Text = (props: ITextProps) => {
