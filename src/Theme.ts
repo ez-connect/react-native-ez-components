@@ -1,6 +1,6 @@
 import EventListener from './EventListener';
 
-interface ITheme {
+export interface ThemeItem {
   name: string;
 
   primary: string;
@@ -22,12 +22,12 @@ interface ITheme {
   transparent?: string;
 }
 
-enum ThemeEvent {
+export enum ThemeEvent {
   OnInit = 1,
   OnChange = 2,
 }
 
-class Theme extends EventListener implements ITheme {
+class Theme extends EventListener implements ThemeItem {
   public name: string;
 
   public primary: string;
@@ -48,9 +48,9 @@ class Theme extends EventListener implements ITheme {
 
   public transparent?: string;
 
-  protected themes: ITheme[];
+  protected themes: ThemeItem[];
 
-  public init(themes: ITheme[]) {
+  public init(themes: ThemeItem[]) {
     this.transparent = 'transparent';
     this.themes = themes;
     super.emmit(ThemeEvent.OnInit);
@@ -70,6 +70,4 @@ class Theme extends EventListener implements ITheme {
 const theme = new Theme();
 export {
   theme,
-  ITheme,
-  ThemeEvent,
 };

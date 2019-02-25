@@ -5,7 +5,7 @@ export class NavigationService {
     NavigationService.s_navigator = navigatorRef;
   }
 
-  public static navigate(routeName, params) {
+  public static navigate(routeName: string, params?: any) {
     NavigationService.s_navigator.dispatch(
       NavigationActions.navigate({
         routeName,
@@ -14,7 +14,7 @@ export class NavigationService {
     );
   }
 
-  public static push(routeName, params) {
+  public static push(routeName: string, params?: any) {
     NavigationService.s_navigator.dispatch(
       StackActions.push({
         routeName,
@@ -23,7 +23,7 @@ export class NavigationService {
     );
   }
 
-  public static resetAndPushToTop(routeName, params) {
+  public static resetAndPushToTop(routeName: string, params?: any) {
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName, params })],

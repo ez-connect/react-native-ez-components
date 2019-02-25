@@ -1,5 +1,5 @@
 import EventListener from './EventListener';
-import Helper, { IRGBA } from './Helper';
+import Helper, { RGBA } from './Helper';
 
 export const kDaylighPresets = [
   {
@@ -53,7 +53,7 @@ export const kDaylighPresets = [
   },
 ];
 
-export interface IDaylightPreset {
+export interface DaylightPreset {
   name: string;
   description?: string;
   day: number;
@@ -61,7 +61,7 @@ export interface IDaylightPreset {
   late: number;
 }
 
-export interface ITemperature {
+export interface Temperature {
   mode: string;
   kelvin: number;
 }
@@ -88,12 +88,12 @@ class Daylight extends EventListener {
   private _wakeTime: number;
   private _bedTime: number;
 
-  private _preset: IDaylightPreset;
-  private _rgba: IRGBA;
+  private _preset: DaylightPreset;
+  private _rgba: RGBA;
 
   private _handleInterval: number;
 
-  constructor(preset?: IDaylightPreset) {
+  constructor(preset?: DaylightPreset) {
     super();
 
     this._dawn = new Date().setHours(5, 0, 0);
@@ -219,7 +219,7 @@ class Daylight extends EventListener {
 
   ///////////////////////////////////////////////////////////////////
 
-  private _getTemperature(time?: number, wakeTime?: number, bedTime?: number): ITemperature {
+  private _getTemperature(time?: number, wakeTime?: number, bedTime?: number): Temperature {
     // TODO: Smooth change in 1 hours
     let mode: string;
     let kelvin: number;

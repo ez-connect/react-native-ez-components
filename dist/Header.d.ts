@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IconProps } from 'react-native-elements';
-export interface IHeaderProps {
+export interface HeaderProps {
     icon?: IconProps;
     height?: number;
     title?: string;
@@ -11,16 +11,16 @@ export interface IHeaderProps {
     onSearch?(): void;
     onBack?(): void;
 }
-export interface IHeaderState {
+export interface HeaderState {
     loading?: number;
     isSearching?: boolean;
 }
-export declare class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
+export declare class Header extends React.PureComponent<HeaderProps, HeaderState> {
     static debounce(fn: any, wait?: number, immediate?: boolean): () => void;
     private static s_debounceTimeout;
     private _debounceOnSearch;
     private _animated;
-    constructor(props: IHeaderProps);
+    constructor(props: HeaderProps);
     componentWillUnmount(): void;
     render(): JSX.Element;
     private _renderTitle;

@@ -10,6 +10,7 @@ import { Icon } from './Icon';
 import { ListItem } from './ListItem';
 import { NavigationService } from './NavigationService';
 import { PopupMenu } from './PopupMenu';
+import { PureComponent } from './PureComponent';
 import { SafeAreaView } from './SafeAreaView';
 import { ScrollView } from './ScrollView';
 import { StatusBar } from './StatusBar';
@@ -26,26 +27,27 @@ export {
   Badge,
   Button,
   CheckBox,
+  daylight,
+  DaylightEvent,
   DaylightView,
   Divider,
+  EventListener,
   Header,
   Icon,
   ListItem,
+  NavigationService,
   PopupMenu,
+  PureComponent,
   SafeAreaView,
   ScrollView,
   StatusBar,
+  Storage,
   Text,
+  theme,
+  ThemeEvent,
   Toast,
   TouchableFeedback,
   TouchableIcon,
   TouchableText,
   View,
-  daylight,
-  DaylightEvent,
-  EventListener,
-  NavigationService,
-  Storage,
-  theme,
-  ThemeEvent,
 };

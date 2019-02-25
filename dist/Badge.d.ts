@@ -1,6 +1,6 @@
 /// <reference types="react" />
-import { BadgeProps } from 'react-native-elements';
-export interface IBadgeProps extends BadgeProps {
+import { BadgeProps as BProps } from 'react-native-elements';
+export interface BadgeProps extends BProps {
     clear?: boolean;
 }
-export declare const Badge: (props: IBadgeProps) => JSX.Element;
+export declare const Badge: (props: BadgeProps) => JSX.Element;

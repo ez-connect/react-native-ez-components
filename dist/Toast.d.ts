@@ -5,7 +5,7 @@ export declare enum ToastType {
     Warning = 2,
     Error = 3
 }
-export interface IToastItem {
+export interface ToastItem {
     title?: string;
     message: string;
     type?: ToastType;
@@ -14,23 +14,23 @@ export interface IToastItem {
     dismiss?: string;
     onDismiss?(): void;
 }
-export interface IToastProps {
+export interface ToastProps {
     containerStyle?: ViewStyle;
     itemStyle?: ViewStyle;
     titleStyle?: TextStyle;
     messageStyle?: TextStyle;
 }
-export interface IToastState {
-    items: IToastItem[];
+export interface ToastState {
+    items: ToastItem[];
 }
-export declare class Toast extends React.Component<IToastProps, IToastState> {
+export declare class Toast extends React.Component<ToastProps, ToastState> {
     static setInstance(ref: Toast | null): void;
-    static show(item: IToastItem): void;
+    static show(item: ToastItem): void;
     private static _instance;
     private _intervalHandler;
     constructor(props: any);
     render(): JSX.Element;
-    show(item: IToastItem): void;
+    show(item: ToastItem): void;
     private _renderItems;
     private _renderItem;
     private _removeItem;

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {  StyleSheet } from 'react-native';
-import { Button as BButton, ButtonProps } from 'react-native-elements';
+import { Button as BButton, ButtonProps as BProps } from 'react-native-elements';
 
 import { theme } from './Theme';
 
-export interface IButtonProps extends ButtonProps {
+export interface ButtonProps extends BProps {
   clear?: boolean;
 }
 
-export const Button = (props: IButtonProps) => {
+export const Button = (props: ButtonProps) => {
   const { containerStyle, buttonStyle, titleStyle, clear, ...rest } = props;
   const backgroundColor = clear ? theme.background : theme.secondary;
   const color = clear ? theme.backgroundText : theme.secondaryText;

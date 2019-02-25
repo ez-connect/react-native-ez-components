@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {  StyleSheet } from 'react-native';
-import { Badge as BBadge, BadgeProps } from 'react-native-elements';
+import { Badge as BBadge, BadgeProps as BProps } from 'react-native-elements';
 
 import { theme } from './Theme';
 
-export interface IBadgeProps extends BadgeProps {
+export interface BadgeProps extends BProps {
   clear?: boolean;
 }
 
-export const Badge = (props: IBadgeProps) => {
+export const Badge = (props: BadgeProps) => {
   const { badgeStyle, textStyle, clear, ...rest } = props;
   const backgroundColor = clear ? theme.background : theme.secondaryLight;
   const borderColor = theme.secondaryLight;

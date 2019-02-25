@@ -27,13 +27,13 @@ if (Platform.OS === 'android') {
   Component = TouchableOpacity;
 }
 
-interface IProps {
+interface TouchableIconProps {
   style?: StyleProp<TextStyle>;
   icon?: IconProps;
   onPress?(): void;
 }
 
-export class TouchableIcon extends React.PureComponent<IProps, {}> {
+export class TouchableIcon extends React.PureComponent<TouchableIconProps, {}> {
   public render() {
     const { style, icon, onPress } = this.props;
     icon && !icon.color && Object.assign(icon, { color: theme.secondary });

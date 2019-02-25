@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ViewProps } from 'react-native';
-export interface IDaylightState extends ViewProps {
+export interface DaylightState extends ViewProps {
     enable: boolean;
     backgroundColor?: string;
 }
-export declare class DaylightView extends React.PureComponent<ViewProps, IDaylightState> {
+export declare class DaylightView extends React.PureComponent<ViewProps, DaylightState> {
     constructor(props: any);
     componentDidMount(): void;
     componentWillUnmount(): void;

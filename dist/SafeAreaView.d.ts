@@ -1,7 +1,8 @@
 /// <reference types="react" />
-import { ViewStyle } from 'react-native';
-interface IProps {
-    style: ViewStyle;
+import { ViewProps, ViewStyle } from 'react-native';
+interface SafeAreaViewProps extends ViewProps {
+    style?: ViewStyle;
+    children?: any;
 }
-export declare const SafeAreaView: (props: IProps) => JSX.Element;
+export declare const SafeAreaView: (props: SafeAreaViewProps) => JSX.Element;
 export {};

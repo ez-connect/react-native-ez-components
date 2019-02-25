@@ -3,12 +3,12 @@ import { Dimensions, StyleSheet, View, ViewProps } from 'react-native';
 
 import { daylight, DaylightEvent } from './Daylight';
 
-export interface IDaylightState extends ViewProps {
+export interface DaylightState extends ViewProps {
   enable: boolean;
   backgroundColor?: string;
 }
 
-export class DaylightView extends React.PureComponent<ViewProps, IDaylightState> {
+export class DaylightView extends React.PureComponent<ViewProps, DaylightState> {
   constructor(props) {
     super(props);
     this.state = { enable: false };

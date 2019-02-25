@@ -1,12 +1,12 @@
 type IHandler = (res?: any) => void;
 
-interface IListener {
+interface Listener {
   event: string|number;
   handler: IHandler;
 }
 
 export default class EventListener {
-  private _listeners: IListener[];
+  private _listeners: Listener[];
   constructor() {
     this._listeners = [];
   }
@@ -25,13 +25,13 @@ export default class EventListener {
     }
   }
 
-  public addListeners(listeners: IListener[]) {
+  public addListeners(listeners: Listener[]) {
     for (const listener of listeners) {
       this._listeners.push(listener);
     }
   }
 
-  public removeListeners(listeners: IListener[]) {
+  public removeListeners(listeners: Listener[]) {
     for (const listener of listeners) {
       this.removeListener(listener.event, listener.handler);
     }

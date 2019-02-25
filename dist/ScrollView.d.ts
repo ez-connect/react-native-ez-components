@@ -1,6 +1,8 @@
 /// <reference types="react" />
-interface IProps {
-    style: any;
+import { ScrollViewProps, ViewStyle } from 'react-native';
+interface ScrollViewExProps extends ScrollViewProps {
+    style?: ViewStyle;
+    children?: any;
 }
-export declare const ScrollView: (props: IProps) => JSX.Element;
+export declare const ScrollView: (props: ScrollViewExProps) => JSX.Element;
 export {};

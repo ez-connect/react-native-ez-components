@@ -10,7 +10,7 @@ const kAnimatedInterval = 200;
 const kAnimatedStep = 20;
 const kAnimatedFinish = 100;
 
-export interface IHeaderProps {
+export interface HeaderProps {
   icon?: IconProps;
   height?: number;
   title?: string;
@@ -22,12 +22,12 @@ export interface IHeaderProps {
   onBack?(): void;
 }
 
-export interface IHeaderState {
+export interface HeaderState {
   loading?: number;
   isSearching?: boolean;
 }
 
-export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
+export class Header extends React.PureComponent<HeaderProps, HeaderState> {
   // Returns a function, that, as long as it continues to be invoked, will not
   // be triggered. The function will be called after it stops being called for
   // N milliseconds. If `immediate` is passed, trigger the function on the
@@ -61,7 +61,7 @@ export class Header extends React.PureComponent<IHeaderProps, IHeaderState> {
   private _debounceOnSearch: any;
   private _animated: any;
 
-  constructor(props: IHeaderProps) {
+  constructor(props: HeaderProps) {
     super(props);
     this.state = {
       loading: -1,

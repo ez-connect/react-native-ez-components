@@ -9,7 +9,7 @@ import { theme } from './Theme';
 import {TouchableIcon} from './TouchableIcon';
 import { View } from './View';
 
-export interface IPopupMenuItem {
+export interface PopupMenuItem {
   icon?: string;
   title?: string;
   subtitle?: string;
@@ -18,19 +18,19 @@ export interface IPopupMenuItem {
   disabled?: boolean;
 }
 
-export interface IPopupMenuProps {
+export interface PopupMenuProps {
   icon?: IconProps;
   header?: string;
-  items: IPopupMenuItem[];
+  items: PopupMenuItem[];
   onSelect?(value: string|number): void;
 }
 
-export interface IPopupMenuState {
+export interface PopupMenuState {
   visible?: boolean;
 }
 
-export class PopupMenu extends React.PureComponent<IPopupMenuProps, IPopupMenuState> {
-  constructor(props: IPopupMenuProps) {
+export class PopupMenu extends React.PureComponent<PopupMenuProps, PopupMenuState> {
+  constructor(props: PopupMenuProps) {
     super(props);
     this.state = { visible: false };
   }

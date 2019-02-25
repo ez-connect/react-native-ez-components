@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IconProps } from 'react-native-elements';
-export interface IPopupMenuItem {
+export interface PopupMenuItem {
     icon?: string;
     title?: string;
     subtitle?: string;
@@ -8,17 +8,17 @@ export interface IPopupMenuItem {
     component?: Element;
     disabled?: boolean;
 }
-export interface IPopupMenuProps {
+export interface PopupMenuProps {
     icon?: IconProps;
     header?: string;
-    items: IPopupMenuItem[];
+    items: PopupMenuItem[];
     onSelect?(value: string | number): void;
 }
-export interface IPopupMenuState {
+export interface PopupMenuState {
     visible?: boolean;
 }
-export declare class PopupMenu extends React.PureComponent<IPopupMenuProps, IPopupMenuState> {
-    constructor(props: IPopupMenuProps);
+export declare class PopupMenu extends React.PureComponent<PopupMenuProps, PopupMenuState> {
+    constructor(props: PopupMenuProps);
     show(): void;
     hide(): void;
     render(): JSX.Element;

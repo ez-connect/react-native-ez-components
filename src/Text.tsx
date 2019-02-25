@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { StyleProp, StyleSheet, Text as BText, TextProps, TextStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text as BText, TextProps as BProps, TextStyle } from 'react-native';
 
 import { theme } from './Theme';
 
-export interface ITextProps extends TextProps {
+export interface TextProps extends BProps {
   style?: TextStyle;
   primary?: boolean;
   secondary?: boolean;
@@ -15,7 +15,7 @@ export interface ITextProps extends TextProps {
   children?: React.ReactNode;
 }
 
-export const Text = (props: ITextProps) => {
+export const Text = (props: TextProps) => {
   const {
     style,
     primary,

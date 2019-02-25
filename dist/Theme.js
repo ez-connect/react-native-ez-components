@@ -1,5 +1,5 @@
 import EventListener from './EventListener';
-var ThemeEvent;
+export var ThemeEvent;
 (function (ThemeEvent) {
     ThemeEvent[ThemeEvent["OnInit"] = 1] = "OnInit";
     ThemeEvent[ThemeEvent["OnChange"] = 2] = "OnChange";
@@ -20,4 +20,4 @@ class Theme extends EventListener {
     }
 }
 const theme = new Theme();
-export { theme, ThemeEvent, };
+export { theme, };

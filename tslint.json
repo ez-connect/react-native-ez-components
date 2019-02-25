@@ -29,7 +29,8 @@
     "no-shadowed-variable": [false],
     "object-literal-sort-keys": false,
     "no-unused-expression": [true, "allow-fast-null-checks"],
-    "object-literal-shorthand": true
+    "object-literal-shorthand": true,
+    "interface-name": [true, "never-prefix"]
   },
   "rulesDirectory": []
 }

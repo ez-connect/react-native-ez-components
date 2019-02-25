@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { ITextProps, Text } from './Text';
+import { Text, TextProps } from './Text';
 import { theme } from './Theme';
 import { TouchableFeedback} from './TouchableFeedback';
 
-export interface ITouchableTextProps extends ITextProps {
+export interface TouchableTextProps extends TextProps {
   onPress: () => void;
 }
 
 // TODO: Use View instead of SafeAreaView because it has a placeholder for statusbar although it's hidden
-export const TouchableText = (props: ITouchableTextProps) => {
+export const TouchableText = (props: TouchableTextProps) => {
   const {
     style,
     onPress,

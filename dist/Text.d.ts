@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { TextProps, TextStyle } from 'react-native';
-export interface ITextProps extends TextProps {
+import { TextProps as BProps, TextStyle } from 'react-native';
+export interface TextProps extends BProps {
     style?: TextStyle;
     primary?: boolean;
     secondary?: boolean;
@@ -11,4 +11,4 @@ export interface ITextProps extends TextProps {
     textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
     children?: React.ReactNode;
 }
-export declare const Text: (props: ITextProps) => JSX.Element;
+export declare const Text: (props: TextProps) => JSX.Element;

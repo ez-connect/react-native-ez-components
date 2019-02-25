@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { StatusBar as Status, StatusBarProps, View } from 'react-native';
+import { StatusBar as Status, StatusBarProps as BProps, View } from 'react-native';
 import { theme, ThemeEvent } from './Theme';
 
-export interface IStatusBarProps extends StatusBarProps {
+export interface StatusBarProps extends BProps {
   height: number;
   isIphoneX: boolean;
 }
 
-export interface IStatusBarState {
+export interface StatusBarState {
   hidden: boolean;
 }
 
-export class StatusBar extends React.PureComponent<IStatusBarProps, IStatusBarState>  {
+export class StatusBar extends React.PureComponent<StatusBarProps, StatusBarState>  {
   public static setInstance(ref: StatusBar) {
     StatusBar.s_instance = ref;
   }
@@ -25,7 +25,7 @@ export class StatusBar extends React.PureComponent<IStatusBarProps, IStatusBarSt
 
   ///////////////////////////////////////////////////////////////////
 
-  constructor(props: IStatusBarProps) {
+  constructor(props: StatusBarProps) {
     super(props);
     this.state = { hidden: false };
   }

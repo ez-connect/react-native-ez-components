@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewProps, ViewStyle } from 'react-native';
+import { Dimensions, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { theme } from './Theme';
 import { TouchableText } from './TouchableText';
@@ -13,7 +13,7 @@ export enum ToastType {
   Error = 3,
 }
 
-export interface IToastItem {
+export interface ToastItem {
   title?: string;
   message: string;
   type?: ToastType;
@@ -23,23 +23,23 @@ export interface IToastItem {
   onDismiss?(): void;
 }
 
-export interface IToastProps {
+export interface ToastProps {
   containerStyle?: ViewStyle;
   itemStyle?: ViewStyle;
   titleStyle?: TextStyle;
   messageStyle?: TextStyle;
 }
 
-export interface IToastState {
-  items: IToastItem[];
+export interface ToastState {
+  items: ToastItem[];
 }
 
-export class Toast extends React.Component<IToastProps, IToastState> {
+export class Toast extends React.Component<ToastProps, ToastState> {
   public static setInstance(ref: Toast|null) {
     Toast._instance = ref;
   }
 
-  public static show(item: IToastItem) {
+  public static show(item: ToastItem) {
     Toast._instance.show(item);
   }
 
@@ -68,7 +68,7 @@ export class Toast extends React.Component<IToastProps, IToastState> {
 
   ///////////////////////////////////////////////////////////////////
 
-  public show(item: IToastItem) {
+  public show(item: ToastItem) {
     if (item.delay && item.delay > 0) {
       setTimeout(() => {
         item.delay = 0;
@@ -93,7 +93,7 @@ export class Toast extends React.Component<IToastProps, IToastState> {
     });
   }
 
-  private _renderItem(item: IToastItem, index: number) {
+  private _renderItem(item: ToastItem, index: number) {
     let { itemStyle, titleStyle, messageStyle } = this.props;
     const backgroundColor = theme.secondaryLight;
     const color = theme.secondaryText;
@@ -121,7 +121,7 @@ export class Toast extends React.Component<IToastProps, IToastState> {
 
   ///////////////////////////////////////////////////////////////////
 
-  private _removeItem(item: IToastItem) {
+  private _removeItem(item: ToastItem) {
     const { items } = this.state;
     const index = items.indexOf(item);
     items.splice(index, 1);
@@ -144,7 +144,7 @@ export class Toast extends React.Component<IToastProps, IToastState> {
     }
   }
 
-  private _handleOnDismiss = (item: IToastItem) => () => {
+  private _handleOnDismiss = (item: ToastItem) => () => {
     this._removeItem(item);
     item.onDismiss && item.onDismiss();
   }

@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { StyleSheet, View as BView, ViewProps, ViewStyle } from 'react-native';
+import { StyleSheet, View as BView, ViewProps as BProps, ViewStyle } from 'react-native';
 
 import { theme } from './Theme';
 
-interface IViewProps extends ViewProps {
+interface ViewProps extends BProps {
   style?: ViewStyle;
   primary?: boolean;
   secondary?: boolean;
   children?: any;
 }
 
-export const View = (props: IViewProps) => {
+export const View = (props: ViewProps) => {
   const { style, primary, secondary, ...rest } = props;
   let backgroundColor = primary ? theme.primary : secondary ? theme.secondary : theme.background;
   backgroundColor = (style && style.backgroundColor) || backgroundColor;
