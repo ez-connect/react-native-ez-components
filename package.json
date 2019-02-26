@@ -12,7 +12,6 @@
     "copy": "cp -r dist/*.* ../ereader/node_modules/react-native-ez-components/dist/"
   },
   "dependencies": {
-    "react-native-elements": "^1.0.0",
     "react-native-modal": "^7.0.2",
     "react-navigation": "^3.0.6"
   },
@@ -26,5 +25,8 @@
     "tslint": "^5.12.1",
     "tslint-react": "^3.6.0",
     "typescript": "^3.2.2"
+  },
+  "peerDependencies": {
+    "react-native-elements": "^1.1.0"
   }
 }
