@@ -5,7 +5,7 @@ import { theme } from './Theme';
 
 interface ScrollViewExProps  extends ScrollViewProps {
   style?: ViewStyle;
-  children?: any;
+  children?: React.ReactNode;
 }
 
 export const ScrollView = (props: ScrollViewExProps) => {

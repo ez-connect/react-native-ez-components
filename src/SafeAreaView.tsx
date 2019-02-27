@@ -5,7 +5,7 @@ import { theme } from './Theme';
 
 interface SafeAreaViewProps extends ViewProps {
   style?: ViewStyle;
-  children?: any;
+  children?: React.ReactNode;
 }
 
 // TODO: Use View instead of SafeAreaView because it has a placeholder for statusbar although it's hidden

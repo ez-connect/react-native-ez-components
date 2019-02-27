@@ -16,9 +16,9 @@ export interface HeaderProps {
   title?: string;
   searchable?: boolean;
   placeholder?: string;
-  rightComponent?: React.Component;
+  rightComponent?: React.ReactNode;
   loadingEnabled?: boolean;
-  onSearch?(): void;
+  onSearch?(query: string): void;
   onBack?(): void;
 }
 

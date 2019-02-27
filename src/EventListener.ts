@@ -1,8 +1,8 @@
-type IHandler = (res?: any) => void;
+type Handler = (res?: any) => void;
 
 interface Listener {
   event: string|number;
-  handler: IHandler;
+  handler: Handler;
 }
 
 export default class EventListener {
@@ -11,12 +11,12 @@ export default class EventListener {
     this._listeners = [];
   }
 
-  public addListener(event: string|number, handler: IHandler) {
+  public addListener(event: string|number, handler: Handler) {
     // console.debug(`EventListener.addListener: ${event}`);
     this._listeners.push({ event, handler });
   }
 
-  public removeListener(event: string|number, handler: IHandler) {
+  public removeListener(event: string|number, handler: Handler) {
     const listener = this._listeners.find((x) => x.event === event && x.handler === handler);
     const index = this._listeners.indexOf(listener);
     if (index > -1) {
