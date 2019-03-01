@@ -35,7 +35,7 @@ export interface ToastState {
 }
 
 export class Toast extends React.Component<ToastProps, ToastState> {
-  public static setInstance(ref: Toast|null) {
+  public static setInstance(ref: Toast | null) {
     Toast._instance = ref;
   }
 
@@ -43,7 +43,7 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     Toast._instance.show(item);
   }
 
-  private static _instance: Toast|null;
+  private static _instance: Toast | null;
 
   ///////////////////////////////////////////////////////////////////
 

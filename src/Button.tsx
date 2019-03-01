@@ -18,8 +18,8 @@ export const Button = (props: ButtonProps) => {
   const themeContainerStyle = StyleSheet.flatten([styles.container, containerStyle ]);
   const themeButtonStyle = StyleSheet.flatten([
     styles.button,
-    buttonStyle,
     { backgroundColor, borderWidth, borderColor },
+    buttonStyle,
   ]);
   const themeTitleStyle = StyleSheet.flatten([styles.title, { color }, titleStyle]);
 

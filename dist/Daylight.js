@@ -92,14 +92,14 @@ class Daylight extends EventListener {
         else {
             clearInterval(this._handleInterval);
         }
-        super.emmit(DaylightEvent.OnEnableChange, value);
+        super.emit(DaylightEvent.OnEnableChange, value);
     }
     setSunTime(dawn, sunrise, sunset, dusk) {
         this._dawn = dawn;
         this._sunrise = sunrise;
         this._sunset = sunset;
         this._dusk = dusk;
-        super.emmit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
+        super.emit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
     }
     getSunTime() {
         return { dawn: this._dawn, sunrise: this._sunrise, sunset: this._sunset, dusk: this._dusk };
@@ -197,7 +197,7 @@ class Daylight extends EventListener {
         const { red, green, blue } = Helper.kelvinToRGB(kelvin);
         if (shouldForceUpdate || this._rgba.red !== red || this._rgba.green !== green || this._rgba.blue !== blue) {
             Object.assign(this._rgba, { red, green, blue });
-            super.emmit(DaylightEvent.OnChange, { mode, color: this._rgba });
+            super.emit(DaylightEvent.OnChange, { mode, color: this._rgba });
         }
     }
 }

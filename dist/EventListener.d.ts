@@ -11,6 +11,6 @@ export default class EventListener {
     addListeners(listeners: Listener[]): void;
     removeListeners(listeners: Listener[]): void;
     removeAllListeners(): void;
-    emmit(event: any, res?: any): void;
+    emit(event: any, res?: any): void;
 }
 export {};

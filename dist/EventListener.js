@@ -28,7 +28,7 @@ export default class EventListener {
         }
         this._listeners = [];
     }
-    emmit(event, res) {
+    emit(event, res) {
         const listeners = this._listeners.filter((x) => x.event === event);
         for (const listener of listeners) {
             if (listener.handler) {

@@ -8,12 +8,12 @@ class Theme extends EventListener {
     init(themes) {
         this.transparent = 'transparent';
         this.themes = themes;
-        super.emmit(ThemeEvent.OnInit);
+        super.emit(ThemeEvent.OnInit);
     }
     setTheme(name) {
         const item = this.themes.find((x) => x.name === name);
         Object.assign(this, item);
-        super.emmit(ThemeEvent.OnChange, name);
+        super.emit(ThemeEvent.OnChange, name);
     }
     getAllThemes() {
         return this.themes;

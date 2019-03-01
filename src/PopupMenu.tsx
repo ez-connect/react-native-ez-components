@@ -13,7 +13,7 @@ export interface PopupMenuItem {
   icon?: string;
   title?: string;
   subtitle?: string;
-  value?: string|number;
+  value?: string | number;
   component?: Element;
   disabled?: boolean;
 }
@@ -22,7 +22,7 @@ export interface PopupMenuProps {
   icon?: IconProps;
   header?: string;
   items: PopupMenuItem[];
-  onSelect?(value: string|number): void;
+  onSelect?(value: string | number): void;
 }
 
 export interface PopupMenuState {
@@ -125,7 +125,7 @@ export class PopupMenu extends React.PureComponent<PopupMenuProps, PopupMenuStat
     this.show();
   }
 
-  private _handleOnPressItem = (value: string|number) => () => {
+  private _handleOnPressItem = (value: string | number) => () => {
     this.hide();
 
     // iOS will be freezed if call Alert after hide the Modal

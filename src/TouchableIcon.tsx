@@ -1,11 +1,8 @@
 import * as React from 'react';
 import {
-  Platform,
   StyleProp,
   StyleSheet,
   TextStyle,
-  TouchableNativeFeedback,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { Icon, IconProps } from 'react-native-elements';
@@ -13,24 +10,10 @@ import { Icon, IconProps } from 'react-native-elements';
 import { theme } from './Theme';
 import { TouchableFeedback } from './TouchableFeedback';
 
-let Component: any;
-const attributes: any = {};
-
-if (Platform.OS === 'android') {
-  Component = TouchableNativeFeedback;
-  if (Platform.Version >= 21) {
-    attributes.background = TouchableNativeFeedback.Ripple(theme.secondary, true);
-  } else {
-    attributes.background = TouchableNativeFeedback.SelectableBackground();
-  }
-} else {
-  Component = TouchableOpacity;
-}
-
 interface TouchableIconProps {
   style?: StyleProp<TextStyle>;
   icon?: IconProps;
-  onPress?(): void;
+  onPress?: () => any;
 }
 
 export class TouchableIcon extends React.PureComponent<TouchableIconProps, {}> {
