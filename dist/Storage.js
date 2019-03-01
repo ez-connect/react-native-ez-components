@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 export class Storage {
     static async save(key, item, excludes = [], encodeHandler) {
-        console.debug('Save...');
+        Storage._logEnabled && console.info(`Storage.save: ${key}`);
         try {
             const data = {};
             for (const key of Object.keys(item)) {
@@ -9,10 +9,13 @@ export class Storage {
                     data[key] = item[key];
                 }
             }
+            Storage._logEnabled && console.info(` -> ${JSON.stringify(data).length}`);
             let buf;
             if (encodeHandler) {
                 try {
                     buf = encodeHandler(JSON.stringify(data));
+                    Storage._logEnabled && console.info('Encode data');
+                    Storage._logEnabled && console.info(` -> ${buf.length}`);
                 }
                 catch {
                     console.warn('Storage: Unable encode');
@@ -22,7 +25,6 @@ export class Storage {
             else {
                 buf = JSON.stringify(data);
             }
-            console.debug(buf);
             await AsyncStorage.setItem(key, buf);
         }
         catch (err) {
@@ -30,15 +32,17 @@ export class Storage {
         }
     }
     static async load(key, excludes = [], decodeHandler) {
+        Storage._logEnabled && console.info(`Store.load: ${key}`);
         try {
             const buf = await AsyncStorage.getItem(key);
-            console.debug('Load....');
-            console.debug(buf);
             if (buf) {
+                Storage._logEnabled && console.info(buf);
                 let data;
                 if (decodeHandler) {
                     try {
                         data = JSON.parse(decodeHandler(buf));
+                        Storage._logEnabled && console.info(` -> ${buf.length}`);
+                        Storage._logEnabled && console.info('Decode data');
                     }
                     catch {
                         console.warn('Storage: Unable decode');
@@ -60,5 +64,8 @@ export class Storage {
             console.warn(err);
             return null;
         }
+    }
+    static setLogEnabled(value) {
+        Storage._logEnabled = value;
     }
 }

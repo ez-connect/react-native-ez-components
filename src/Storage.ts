@@ -4,6 +4,7 @@ type CryptHandler = (data: string) => string;
 
 export class Storage {
   public static async save(key: string, item: object | string, excludes: string[] = [], encodeHandler?: CryptHandler): Promise<void> {
+    Storage._logEnabled && console.info(`Storage.save: ${key}`);
     try {
       const data = {};
       for (const key of Object.keys(item)) {
@@ -12,10 +13,14 @@ export class Storage {
         }
       }
 
+      Storage._logEnabled && console.info(` -> ${JSON.stringify(data).length}`);
+
       let buf;
       if (encodeHandler) {
         try {
           buf = encodeHandler(JSON.stringify(data));
+          Storage._logEnabled && console.info('Encode data');
+          Storage._logEnabled && console.info(` -> ${buf.length}`);
         } catch {
           console.warn('Storage: Unable encode');
           buf = JSON.stringify(data);
@@ -32,13 +37,18 @@ export class Storage {
 
   // Add `excludes` for safe in update, if before version was saved them
   public static async load(key: string, excludes: string[] = [], decodeHandler?: CryptHandler): Promise<any> {
+    Storage._logEnabled && console.info(`Store.load: ${key}`);
     try {
       const buf = await AsyncStorage.getItem(key);
       if (buf) {
+        Storage._logEnabled && console.info(buf);
+
         let data;
         if (decodeHandler) {
           try {
             data = JSON.parse(decodeHandler(buf));
+            Storage._logEnabled && console.info(` -> ${buf.length}`);
+            Storage._logEnabled && console.info('Decode data');
           } catch {
             console.warn('Storage: Unable decode');
             data = JSON.parse(buf);
@@ -60,4 +70,10 @@ export class Storage {
       return null;
     }
   }
+
+  public static setLogEnabled(value: boolean) {
+    Storage._logEnabled = value;
+  }
+
+  private static _logEnabled?: boolean;
 }
