@@ -12,10 +12,19 @@ export class Storage {
         }
       }
 
-      const s: string = encodeHandler
-        ? encodeHandler(JSON.stringify(data))
-        : JSON.stringify(data);
-      await AsyncStorage.setItem(key, JSON.stringify(data));
+      let buf;
+      if (encodeHandler) {
+        try {
+          buf = encodeHandler(JSON.stringify(data));
+        } catch {
+          console.warn('Storage: Unable encode');
+          buf = JSON.stringify(data);
+        }
+      } else {
+        buf = JSON.stringify(data);
+      }
+
+      await AsyncStorage.setItem(key, buf);
     } catch (err) {
       console.warn(err);
     }
@@ -24,18 +33,27 @@ export class Storage {
   // Add `excludes` for safe in update, if before version was saved them
   public static async load(key: string, excludes: string[] = [], decodeHandler?: CryptHandler): Promise<any> {
     try {
-      const data = await AsyncStorage.getItem(key);
-      if (data) {
-        const item = decodeHandler
-          ? JSON.parse(decodeHandler(data))
-          : JSON.parse(data);
+      const buf = await AsyncStorage.getItem(key);
+      if (buf) {
+        let data;
+        if (decodeHandler) {
+          try {
+            data = JSON.parse(decodeHandler(buf));
+          } catch {
+            console.warn('Storage: Unable decode');
+            data = JSON.parse(buf);
+          }
+        } else {
+          data = JSON.parse(buf);
+        }
+
         for (const key of excludes) {
-          if (item.hasOwnProperty(key)) {
-            delete item[key];
+          if (data.hasOwnProperty(key)) {
+            delete data[key];
           }
         }
 
-        return item;
+        return data;
       }
     } catch (err) {
       console.warn(err);
