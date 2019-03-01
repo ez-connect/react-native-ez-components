@@ -1,7 +1,7 @@
 import { NavigationAction, NavigationActions, NavigationContainerComponent, NavigationState, StackActions } from 'react-navigation';
 
 export class NavigationService {
-  public static setTopLevelNavigator(navigatorRef: NavigationContainerComponent) {
+  public static setTopLevelNavigator(navigatorRef: NavigationContainerComponent | null) {
     NavigationService._navigator = navigatorRef;
   }
 

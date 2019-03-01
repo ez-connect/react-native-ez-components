@@ -23,7 +23,6 @@ export class NavigationService {
         NavigationService._navigator.dispatch(resetAction);
     }
     static goBack() {
-        console.warn(NavigationActions.back());
         NavigationService._navigator.dispatch(NavigationActions.back());
     }
     static getPrevRoute() {
