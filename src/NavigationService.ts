@@ -32,7 +32,6 @@ export class NavigationService {
   }
 
   public static goBack() {
-    console.warn(NavigationActions.back());
     NavigationService._navigator.dispatch(NavigationActions.back());
   }
 
