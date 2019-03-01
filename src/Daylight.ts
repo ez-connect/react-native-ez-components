@@ -77,7 +77,7 @@ const kAlphaMin = 0.05;
 const kAlphaMax = 0.3;
 const kAlphaDefault = 0.2;
 
-class Daylight extends EventListener {
+class Daylight extends EventListener<DaylightEvent> {
   private _enable: boolean;
 
   private _dawn: number;

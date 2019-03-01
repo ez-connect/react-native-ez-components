@@ -1,22 +1,22 @@
 type Handler = (res?: any) => void;
 
-interface Listener {
-  event: string | number;
+interface Listener<T> {
+  event: T;
   handler: Handler;
 }
 
-export default class EventListener {
-  private _listeners: Listener[];
+export default class EventListener<T> {
+  private _listeners: Array<Listener<T>>;
   constructor() {
     this._listeners = [];
   }
 
-  public addListener(event: string | number, handler: Handler) {
+  public addListener(event: T, handler: Handler) {
     // console.debug(`EventListener.addListener: ${event}`);
     this._listeners.push({ event, handler });
   }
 
-  public removeListener(event: string | number, handler: Handler) {
+  public removeListener(event: T, handler: Handler) {
     const listener = this._listeners.find((x) => x.event === event && x.handler === handler);
     const index = this._listeners.indexOf(listener);
     if (index > -1) {
@@ -25,13 +25,13 @@ export default class EventListener {
     }
   }
 
-  public addListeners(listeners: Listener[]) {
+  public addListeners(listeners: Array<Listener<T>>) {
     for (const listener of listeners) {
       this._listeners.push(listener);
     }
   }
 
-  public removeListeners(listeners: Listener[]) {
+  public removeListeners(listeners: Array<Listener<T>>) {
     for (const listener of listeners) {
       this.removeListener(listener.event, listener.handler);
     }
@@ -45,7 +45,7 @@ export default class EventListener {
     this._listeners = [];
   }
 
-  public emit(event, res?: any) {
+  public emit(event: T, res?: any) {
     // FIXME: some listener without `handler`, don't know why?
     const listeners = this._listeners.filter((x) => x.event === event);
     for (const listener of listeners) {

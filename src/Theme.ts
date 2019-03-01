@@ -27,7 +27,7 @@ export enum ThemeEvent {
   OnChange = 2,
 }
 
-class Theme extends EventListener implements ThemeItem {
+class Theme extends EventListener<ThemeEvent> implements ThemeItem {
   public name: string;
 
   public primary: string;

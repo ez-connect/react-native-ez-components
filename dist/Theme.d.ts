@@ -19,7 +19,7 @@ export declare enum ThemeEvent {
     OnInit = 1,
     OnChange = 2
 }
-declare class Theme extends EventListener implements ThemeItem {
+declare class Theme extends EventListener<ThemeEvent> implements ThemeItem {
     name: string;
     primary: string;
     primaryLight: string;

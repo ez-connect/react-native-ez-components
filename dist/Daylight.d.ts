@@ -23,7 +23,7 @@ export declare enum DaylightEvent {
     OnSunChange = 2,
     OnChange = 3
 }
-declare class Daylight extends EventListener {
+declare class Daylight extends EventListener<DaylightEvent> {
     private _enable;
     private _dawn;
     private _sunrise;
