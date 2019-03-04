@@ -37,7 +37,7 @@ export class PopupMenu extends React.PureComponent {
     }
     _renderIcon() {
         if (this.props.icon) {
-            return (<TouchableIcon icon={this.props.icon || { name: 'sort', color: theme.primaryText }} onPress={this._handleOnShow}/>);
+            return (<TouchableIcon {...this.props.icon} onPress={this._handleOnShow}/>);
         }
         return null;
     }

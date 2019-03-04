@@ -68,10 +68,7 @@ export class PopupMenu extends React.PureComponent<PopupMenuProps, PopupMenuStat
   private _renderIcon() {
     if (this.props.icon) {
       return (
-        <TouchableIcon
-          icon={this.props.icon || { name: 'sort', color: theme.primaryText }}
-          onPress={this._handleOnShow}
-        />
+        <TouchableIcon {...this.props.icon} onPress={this._handleOnShow} />
       );
     }
 

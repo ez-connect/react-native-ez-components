@@ -80,15 +80,12 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
     const backgroundColor = theme.primary;
     const borderColor = theme.primaryDark;
     const color = theme.primaryText;
+    const themeIcon = icon || { name: 'arrow-back' };
 
     return (
       <View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
-          <TouchableIcon
-            icon={icon || { name: 'arrow-back', color }}
-            onPress={this._handleOnPressBack}
-            style={styles.closeIcon}
-          />
+          <TouchableIcon {...themeIcon} onPress={this._handleOnPressBack} style={styles.closeIcon} />
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
             {searchable && this._renderSearchComponent()}
@@ -108,7 +105,6 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
     const { isSearching } = this.state;
     const color = theme.primaryText;
     if (title && !isSearching) {
-      // eslint-disable-next-line prettier/prettier
       return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
     }
 
@@ -126,14 +122,11 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
   private _renderSearchComponent() {
     const { searchable } = this.props;
     const { isSearching } = this.state;
+    const icon = { name: isSearching ? 'close' : 'search' };
 
     if (searchable) {
       return (
-        <TouchableIcon
-          icon={{ name: isSearching ? 'close' : 'search', color: theme.primaryText }}
-          onPress={this._handleOnPressSearch}
-          style={styles.icon}
-        />
+        <TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressSearch} />
       );
     }
 
