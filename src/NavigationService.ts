@@ -43,9 +43,9 @@ export class NavigationService {
     return this._currentRoute;
   }
 
-  public static handleOnNavigationStateChange(prevState: NavigationState, currentState: NavigationState, action: NavigationAction) {
+  public static handleOnNavigationStateChange(prevState: NavigationState, nextState: NavigationState) {
     NavigationService._prevRoute = NavigationService._getActiveRouteName(prevState);
-    NavigationService._currentRoute = NavigationService._getActiveRouteName(currentState);
+    NavigationService._currentRoute = NavigationService._getActiveRouteName(nextState);
   }
 
   ///////////////////////////////////////////////////////////////////

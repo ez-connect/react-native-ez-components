@@ -1,4 +1,4 @@
-import { NavigationAction, NavigationContainerComponent, NavigationState } from 'react-navigation';
+import { NavigationContainerComponent, NavigationState } from 'react-navigation';
 export declare class NavigationService {
     static setTopLevelNavigator(navigatorRef: NavigationContainerComponent | null): void;
     static navigate(routeName: string, params?: any): void;
@@ -7,7 +7,7 @@ export declare class NavigationService {
     static goBack(): void;
     static getPrevRoute(): string;
     static getCurrentRoute(): string;
-    static handleOnNavigationStateChange(prevState: NavigationState, currentState: NavigationState, action: NavigationAction): void;
+    static handleOnNavigationStateChange(prevState: NavigationState, nextState: NavigationState): void;
     private static _navigator;
     private static _prevRoute?;
     private static _currentRoute?;

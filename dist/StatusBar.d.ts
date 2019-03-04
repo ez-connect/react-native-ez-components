@@ -8,7 +8,7 @@ export interface StatusBarState {
     hidden: boolean;
 }
 export declare class StatusBar extends React.PureComponent<StatusBarProps, StatusBarState> {
-    static setInstance(ref: StatusBar): void;
+    static setInstance(ref: StatusBar | null): void;
     static setHidden(hidden: boolean): void;
     private static s_instance;
     constructor(props: StatusBarProps);

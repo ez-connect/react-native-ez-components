@@ -12,16 +12,16 @@ export interface StatusBarState {
 }
 
 export class StatusBar extends React.PureComponent<StatusBarProps, StatusBarState>  {
-  public static setInstance(ref: StatusBar) {
+  public static setInstance(ref: StatusBar | null) {
     StatusBar.s_instance = ref;
   }
 
   public static setHidden(hidden: boolean) {
-    StatusBar.s_instance.setState({ hidden });
+    StatusBar.s_instance && StatusBar.s_instance.setState({ hidden });
   }
 
   // tslint:disable-next-line:variable-name
-  private static s_instance;
+  private static s_instance: StatusBar | null;
 
   ///////////////////////////////////////////////////////////////////
 

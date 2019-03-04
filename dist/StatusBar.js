@@ -13,7 +13,7 @@ export class StatusBar extends React.PureComponent {
         StatusBar.s_instance = ref;
     }
     static setHidden(hidden) {
-        StatusBar.s_instance.setState({ hidden });
+        StatusBar.s_instance && StatusBar.s_instance.setState({ hidden });
     }
     componentDidMount() {
         theme.addListener(ThemeEvent.OnChange, this._handleOnThemeChange);

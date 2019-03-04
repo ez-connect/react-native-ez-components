@@ -31,9 +31,9 @@ export class NavigationService {
     static getCurrentRoute() {
         return this._currentRoute;
     }
-    static handleOnNavigationStateChange(prevState, currentState, action) {
+    static handleOnNavigationStateChange(prevState, nextState) {
         NavigationService._prevRoute = NavigationService._getActiveRouteName(prevState);
-        NavigationService._currentRoute = NavigationService._getActiveRouteName(currentState);
+        NavigationService._currentRoute = NavigationService._getActiveRouteName(nextState);
     }
     static _getActiveRouteName(navigationState) {
         if (!navigationState) {
