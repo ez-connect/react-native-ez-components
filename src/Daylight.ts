@@ -116,24 +116,25 @@ class Daylight extends EventListener<DaylightEvent> {
       this._handleInterval && clearInterval(this._handleInterval);
       this._handleInterval = setInterval(this._handleOnInterval, kDaylightUpdateInterval);
       this._update(); // force update
-      const sun = await Helper.getSunTime();
-      if (sun) {
-        const { dawn, sunrise, sunset, dusk } = sun;
-        this.setSunTime(dawn, sunrise, sunset, dusk);
-      }
     } else {
       clearInterval(this._handleInterval);
     }
 
     super.emit(DaylightEvent.OnEnableChange, value);
+    this.setSunTime();
   }
 
-  public setSunTime(dawn: number, sunrise: number, sunset: number, dusk: number) {
-    this._dawn = dawn;
-    this._sunrise = sunrise;
-    this._sunset = sunset;
-    this._dusk = dusk;
-    super.emit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
+  public async setSunTime() {
+    const sun = await Helper.getSunTime();
+    if (sun) {
+      const { dawn, sunrise, sunset, dusk } = sun;
+      this._dawn = dawn;
+      this._sunrise = sunrise;
+      this._sunset = sunset;
+      this._dusk = dusk;
+
+      super.emit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
+    }
   }
 
   public getSunTime() {
@@ -255,13 +256,13 @@ class Daylight extends EventListener<DaylightEvent> {
       }
     }
 
-    return {  mode, kelvin };
+    return { mode, kelvin };
   }
 
   private _update(shouldForceUpdate = false, time?: number, wakeTime?: number, bedTime?: number) {
     const { mode, kelvin } = this._getTemperature(time, wakeTime, bedTime);
     const { red, green, blue } = Helper.kelvinToRGB(kelvin);
-    if (shouldForceUpdate || this._rgba.red !== red || this._rgba.green !== green || this._rgba.blue !== blue ) {
+    if (shouldForceUpdate || this._rgba.red !== red || this._rgba.green !== green || this._rgba.blue !== blue) {
       Object.assign(this._rgba, { red, green, blue });
       super.emit(DaylightEvent.OnChange, { mode, color: this._rgba });
     }

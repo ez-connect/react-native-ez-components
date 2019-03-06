@@ -36,7 +36,7 @@ declare class Daylight extends EventListener<DaylightEvent> {
     private _handleInterval;
     constructor(preset?: DaylightPreset);
     setEnable(value: boolean): Promise<void>;
-    setSunTime(dawn: number, sunrise: number, sunset: number, dusk: number): void;
+    setSunTime(): Promise<void>;
     getSunTime(): {
         dawn: number;
         sunrise: number;

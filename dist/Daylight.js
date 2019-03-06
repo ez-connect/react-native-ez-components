@@ -83,23 +83,23 @@ class Daylight extends EventListener {
             this._handleInterval && clearInterval(this._handleInterval);
             this._handleInterval = setInterval(this._handleOnInterval, kDaylightUpdateInterval);
             this._update();
-            const sun = await Helper.getSunTime();
-            if (sun) {
-                const { dawn, sunrise, sunset, dusk } = sun;
-                this.setSunTime(dawn, sunrise, sunset, dusk);
-            }
         }
         else {
             clearInterval(this._handleInterval);
         }
         super.emit(DaylightEvent.OnEnableChange, value);
+        this.setSunTime();
     }
-    setSunTime(dawn, sunrise, sunset, dusk) {
-        this._dawn = dawn;
-        this._sunrise = sunrise;
-        this._sunset = sunset;
-        this._dusk = dusk;
-        super.emit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
+    async setSunTime() {
+        const sun = await Helper.getSunTime();
+        if (sun) {
+            const { dawn, sunrise, sunset, dusk } = sun;
+            this._dawn = dawn;
+            this._sunrise = sunrise;
+            this._sunset = sunset;
+            this._dusk = dusk;
+            super.emit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
+        }
     }
     getSunTime() {
         return { dawn: this._dawn, sunrise: this._sunrise, sunset: this._sunset, dusk: this._dusk };
