@@ -1,4 +1,4 @@
-import { NavigationAction, NavigationActions, NavigationContainerComponent, NavigationState, StackActions } from 'react-navigation';
+import { NavigationActions, NavigationContainerComponent, StackActions } from 'react-navigation';
 
 export class NavigationService {
   public static setTopLevelNavigator(navigatorRef: NavigationContainerComponent | null) {
@@ -35,24 +35,27 @@ export class NavigationService {
     NavigationService._navigator.dispatch(NavigationActions.back());
   }
 
-  public static getPrevRoute(): string {
-    return this._prevRoute;
-  }
+  // public static getPrevRoute(): string {
+  //   return this._prevRoute;
+  // }
 
-  public static getCurrentRoute(): string {
-    return this._currentRoute;
-  }
+  // public static getCurrentRoute(): string {
+  //   return this._currentRoute;
+  // }
 
-  public static handleOnNavigationStateChange(prevState: NavigationState, nextState: NavigationState) {
-    NavigationService._prevRoute = NavigationService._getActiveRouteName(prevState);
-    NavigationService._currentRoute = NavigationService._getActiveRouteName(nextState);
-  }
+  // public static handleOnNavigationStateChange(prevState: NavigationState, nextState: NavigationState) {
+  //   NavigationService._prevRoute = NavigationService._getActiveRouteName(prevState);
+  //   const currentRoute = NavigationService._getActiveRouteName(nextState);
+  //   if (this._currentRoute !== currentRoute) {
+  //     this._currentRoute = currentRoute;
+  //   }
+  // }
 
   ///////////////////////////////////////////////////////////////////
 
   private static _navigator: NavigationContainerComponent;
-  private static _prevRoute?: string;
-  private static _currentRoute?: string;
+  // private static _prevRoute?: string;
+  // private static _currentRoute?: string;
 
   // Gets the current screen from navigation state
   // https://reactnavigation.org/docs/en/screen-tracking.html#listening-to-state-changes

@@ -25,16 +25,6 @@ export class NavigationService {
     static goBack() {
         NavigationService._navigator.dispatch(NavigationActions.back());
     }
-    static getPrevRoute() {
-        return this._prevRoute;
-    }
-    static getCurrentRoute() {
-        return this._currentRoute;
-    }
-    static handleOnNavigationStateChange(prevState, nextState) {
-        NavigationService._prevRoute = NavigationService._getActiveRouteName(prevState);
-        NavigationService._currentRoute = NavigationService._getActiveRouteName(nextState);
-    }
     static _getActiveRouteName(navigationState) {
         if (!navigationState) {
             return null;
