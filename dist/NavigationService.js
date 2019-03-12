@@ -1,4 +1,4 @@
-import { NavigationActions, StackActions } from 'react-navigation';
+import { DrawerActions, NavigationActions, StackActions } from 'react-navigation';
 export class NavigationService {
     static setTopLevelNavigator(navigatorRef) {
         NavigationService._navigator = navigatorRef;
@@ -24,6 +24,15 @@ export class NavigationService {
     }
     static goBack() {
         NavigationService._navigator.dispatch(NavigationActions.back());
+    }
+    static openDrawer() {
+        NavigationService._navigator.dispatch(DrawerActions.openDrawer());
+    }
+    static closeDrawer() {
+        NavigationService._navigator.dispatch(DrawerActions.closeDrawer());
+    }
+    static toggleDrawer() {
+        NavigationService._navigator.dispatch(DrawerActions.toggleDrawer());
     }
     static _getActiveRouteName(navigationState) {
         if (!navigationState) {

@@ -1,4 +1,4 @@
-import { NavigationActions, NavigationContainerComponent, StackActions } from 'react-navigation';
+import { DrawerActions, NavigationActions, NavigationContainerComponent, StackActions } from 'react-navigation';
 
 export class NavigationService {
   public static setTopLevelNavigator(navigatorRef: NavigationContainerComponent | null) {
@@ -33,6 +33,18 @@ export class NavigationService {
 
   public static goBack() {
     NavigationService._navigator.dispatch(NavigationActions.back());
+  }
+
+  public static openDrawer() {
+    NavigationService._navigator.dispatch(DrawerActions.openDrawer());
+  }
+
+  public static closeDrawer() {
+    NavigationService._navigator.dispatch(DrawerActions.closeDrawer());
+  }
+
+  public static toggleDrawer() {
+    NavigationService._navigator.dispatch(DrawerActions.toggleDrawer());
   }
 
   // public static getPrevRoute(): string {

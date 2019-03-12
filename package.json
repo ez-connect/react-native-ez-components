@@ -1,6 +1,6 @@
 {
   "name": "react-native-ez-components",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Component collections",
   "main": "dist/index.js",
   "repository": "https://github.com/ez-connect/react-native-ez-components.git",
@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "yarn tslint ./src/**/*",
     "build": "yarn tsc",
-    "copy": "cp -r dist/*.* ../ereader/node_modules/react-native-ez-components/dist/"
+    "copy": "cp -r dist/*.* ../media-cast/node_modules/react-native-ez-components/dist/"
   },
   "dependencies": {
     "react-native-modal": "^7.0.2",

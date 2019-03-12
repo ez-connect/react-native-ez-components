@@ -5,6 +5,9 @@ export declare class NavigationService {
     static push(routeName: string, params?: any): void;
     static resetAndPushToTop(routeName: string, params?: any): void;
     static goBack(): void;
+    static openDrawer(): void;
+    static closeDrawer(): void;
+    static toggleDrawer(): void;
     private static _navigator;
     private static _getActiveRouteName;
 }
