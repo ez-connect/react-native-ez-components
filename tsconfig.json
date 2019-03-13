@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "target": "esnext",
-    "lib": ["esnext"],
-    "jsx": "react-native",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "jsx": "react-native",
+    "lib": ["esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
     "noImplicitAny": false,
-    "removeComments": true,
-    "preserveConstEnums": true,
     "outDir": "./dist",
-    "declaration": true
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "target": "esnext"
   },
   "include": [
     "src/**/*"

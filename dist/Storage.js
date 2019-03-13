@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 export class Storage {
     static async save(key, item, excludes = [], encodeHandler) {
         Storage._logEnabled && console.info(`Storage.save: ${key}`);

@@ -1,6 +1,6 @@
 {
   "name": "react-native-ez-components",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Component collections",
   "main": "dist/index.js",
   "repository": "https://github.com/ez-connect/react-native-ez-components.git",
@@ -12,8 +12,10 @@
     "copy": "cp -r dist/*.* ../media-cast/node_modules/react-native-ez-components/dist/"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.2.0",
+    "react-native-elements": "^1.1.0",
     "react-native-modal": "^7.0.2",
-    "react-navigation": "^3.0.6"
+    "react-navigation": "^3.3.2"
   },
   "devDependencies": {
     "@types/react": "^16.7.18",
@@ -27,6 +29,5 @@
     "typescript": "^3.2.2"
   },
   "peerDependencies": {
-    "react-native-elements": "^1.1.0"
   }
 }
