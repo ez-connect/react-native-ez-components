@@ -77,7 +77,7 @@ export class Header extends React.PureComponent {
         const themeIcon = icon || { name: 'arrow-back' };
         return (<View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
-          <TouchableIcon {...themeIcon} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
+          <TouchableIcon {...themeIcon} color={theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
             {searchable && this._renderSearchComponent()}

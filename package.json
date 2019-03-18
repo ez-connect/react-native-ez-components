@@ -11,23 +11,20 @@
     "build": "yarn tsc",
     "copy": "cp -r dist/*.* ../media-cast/node_modules/react-native-ez-components/dist/"
   },
-  "dependencies": {
-    "@react-native-community/async-storage": "^1.2.0",
-    "react-native-elements": "^1.1.0",
-    "react-native-modal": "^7.0.2",
-    "react-navigation": "^3.3.2"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@react-native-community/async-storage": "^1.2.0",
     "@types/react": "^16.7.18",
     "@types/react-native": "^0.57.27",
-    "@types/react-navigation": "^3.0.1",
     "jest-expo": "^32.0.0",
     "prettier": "^1.15.3",
     "prettier-eslint": "^8.8.2",
+    "react-native-elements": "^1.1.0",
+    "react-native-modal": "^7.0.2",
+    "react-navigation": "^3.4.1",
     "tslint": "^5.12.1",
     "tslint-react": "^3.6.0",
     "typescript": "^3.2.2"
   },
-  "peerDependencies": {
-  }
+  "peerDependencies": {}
 }
