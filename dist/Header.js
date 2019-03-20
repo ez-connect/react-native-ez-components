@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { NavigationService } from './NavigationService';
+import { ProgressBar } from './ProgressBar';
 import { theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 const kAnimatedInterval = 200;
@@ -19,8 +20,7 @@ export class Header extends React.PureComponent {
                 loading = 0;
             }
             if (!this.props.loadingEnabled) {
-                loading = -1;
-                clearInterval(this._animated);
+                loading = 0;
             }
             this.setState({ loading });
         };
@@ -43,7 +43,7 @@ export class Header extends React.PureComponent {
             this.setState({ isSearching: !isSearching });
         };
         this.state = {
-            loading: -1,
+            loading: 0,
             isSearching: false,
         };
         this._debounceOnSearch = Header.debounce(this.props.onSearch);
@@ -66,14 +66,10 @@ export class Header extends React.PureComponent {
             }
         };
     }
-    componentWillUnmount() {
-        clearInterval(this._animated);
-    }
     render() {
         const { icon, searchable, rightComponent } = this.props;
         const backgroundColor = theme.primary;
         const borderColor = theme.primaryDark;
-        const color = theme.primaryText;
         const themeIcon = icon || { name: 'arrow-back' };
         return (<View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
@@ -107,17 +103,8 @@ export class Header extends React.PureComponent {
         return null;
     }
     _renderLoading() {
-        const { loading } = this.state;
         if (this.props.loadingEnabled) {
-            if (loading === -1) {
-                clearInterval(this._animated);
-                this._animated = setInterval(this._handleAnimated, kAnimatedInterval);
-            }
-            const style = StyleSheet.flatten([
-                styles.progress,
-                { width: `${loading}%`, backgroundColor: theme.primaryText },
-            ]);
-            return <View style={style}/>;
+            return (<ProgressBar style={styles.progress} color={theme.secondary} progress={this.state.loading} progressTintColor={theme.secondary} progressViewStyle='bar' styleAttr='Horizontal'/>);
         }
         return null;
     }
@@ -149,7 +136,9 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     progress: {
-        height: 1,
+        position: 'absolute',
+        width: '100%',
+        bottom: -8,
     },
     closeIcon: {
         width: 64,

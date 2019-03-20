@@ -19,9 +19,7 @@ export declare class Header extends React.PureComponent<HeaderProps, HeaderState
     static debounce(fn: any, wait?: number, immediate?: boolean): () => void;
     private static s_debounceTimeout;
     private _debounceOnSearch;
-    private _animated;
     constructor(props: HeaderProps);
-    componentWillUnmount(): void;
     render(): JSX.Element;
     private _renderTitle;
     private _renderSearchComponent;
