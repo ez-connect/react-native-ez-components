@@ -6,9 +6,7 @@ import { TouchableFeedback } from './TouchableFeedback';
 export class TouchableIcon extends React.PureComponent {
     render() {
         const { style, name, color, disabled, onPress, ...rest } = this.props;
-        const themeColor = color || disabled
-            ? theme.secondaryLight
-            : theme.secondary;
+        const themeColor = color || (disabled ? theme.secondaryLight : theme.secondary);
         return (<TouchableFeedback onPress={onPress} style={[styles.container, style]}>
         <View style={[styles.container, style]} pointerEvents={'box-none'}>
           <Icon name={name} color={themeColor} {...rest}/>

@@ -18,9 +18,7 @@ interface TouchableIconProps extends IconProps {
 export class TouchableIcon extends React.PureComponent<TouchableIconProps, {}> {
   public render() {
     const { style, name, color, disabled, onPress, ...rest } = this.props;
-    const themeColor = color || disabled
-      ? theme.secondaryLight
-      : theme.secondary;
+    const themeColor = color || (disabled ? theme.secondaryLight : theme.secondary);
 
     return (
       <TouchableFeedback
