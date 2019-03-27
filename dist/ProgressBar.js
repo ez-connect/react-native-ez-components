@@ -5,5 +5,9 @@ const Component = Platform.select({
     ios: ProgressViewIOS,
 });
 export const ProgressBar = (props) => {
-    return <Component {...props}/>;
+    const { visible, ...rest } = props;
+    if (visible) {
+        return <Component {...rest}/>;
+    }
+    return null;
 };

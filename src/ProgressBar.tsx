@@ -6,6 +6,14 @@ const Component = Platform.select({
   ios: ProgressViewIOS,
 });
 
-export const ProgressBar = (props: ProgressBarAndroidProps | ProgressViewIOSProps) => {
-  return <Component {...props} />;
+interface ProgressBarProps extends ProgressBarAndroidProps, ProgressViewIOSProps {
+  visible?: boolean;
+}
+
+export const ProgressBar = (props: ProgressBarProps) => {
+  const { visible, ...rest } = props;
+  if (visible) {
+    return <Component {...rest} />;
+  }
+  return null;
 };

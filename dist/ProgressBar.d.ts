@@ -1,2 +1,6 @@
 import { ProgressBarAndroidProps, ProgressViewIOSProps } from 'react-native';
-export declare const ProgressBar: (props: ProgressBarAndroidProps | ProgressViewIOSProps) => JSX.Element;
+interface ProgressBarProps extends ProgressBarAndroidProps, ProgressViewIOSProps {
+    visible?: boolean;
+}
+export declare const ProgressBar: (props: ProgressBarProps) => JSX.Element;
+export {};
