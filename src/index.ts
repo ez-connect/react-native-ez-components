@@ -9,6 +9,7 @@ import { Header } from './Header';
 import { Icon } from './Icon';
 import { ListItem } from './ListItem';
 import { NavigationService } from './NavigationService';
+import { ProgressBar } from './ProgressBar';
 import { PureComponent } from './PureComponent';
 import { SafeAreaView } from './SafeAreaView';
 import { ScrollView } from './ScrollView';
@@ -35,6 +36,7 @@ export {
   Icon,
   ListItem,
   NavigationService,
+  ProgressBar,
   PureComponent,
   SafeAreaView,
   ScrollView,
