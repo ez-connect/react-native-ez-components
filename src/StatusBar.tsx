@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StatusBar as Status, StatusBarProps as BProps, View } from 'react-native';
-import { theme, ThemeEvent } from './Theme';
+import { Theme, ThemeEvent } from './Theme';
 
 export interface StatusBarProps extends BProps {
   height: number;
@@ -31,17 +31,17 @@ export class StatusBar extends React.PureComponent<StatusBarProps, StatusBarStat
   }
 
   public componentDidMount() {
-    theme.addListener(ThemeEvent.OnChange, this._handleOnThemeChange);
+    Theme.addListener(ThemeEvent.OnChange, this._handleOnThemeChange);
   }
 
   public componentWillUnmount() {
-    theme.removeListener(ThemeEvent.OnChange, this._handleOnThemeChange);
+    Theme.removeListener(ThemeEvent.OnChange, this._handleOnThemeChange);
   }
 
   public render() {
     const { isIphoneX, ...rest } = this.props;
     let { backgroundColor, height } = this.props;
-    backgroundColor = backgroundColor || theme.primaryDark;
+    backgroundColor = backgroundColor || Theme.primaryDark;
     height = isIphoneX ? height : this.state.hidden ? 0 : height;
 
     return (

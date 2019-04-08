@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
-import { theme } from './Theme';
+import { Theme } from './Theme';
 let Component;
 if (Platform.OS === 'android') {
     Component = TouchableNativeFeedback;
@@ -23,7 +23,7 @@ export class TouchableFeedback extends React.PureComponent {
         return undefined;
     }
     render() {
-        const attributes = TouchableFeedback.getAttribs(theme.secondary);
+        const attributes = TouchableFeedback.getAttribs(Theme.secondary);
         return <Component {...attributes} {...this.props}/>;
     }
 }

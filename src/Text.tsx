@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleProp, StyleSheet, Text as BText, TextProps as BProps, TextStyle } from 'react-native';
 
-import { theme } from './Theme';
+import { Theme } from './Theme';
 
 export interface TextProps extends BProps {
   style?: TextStyle;
@@ -28,10 +28,10 @@ export const Text = (props: TextProps) => {
     ...rest
   } = props;
   const themeStyle = StyleSheet.flatten([
-    { color: (style && style.color) || theme.backgroundText },
-    primary && { color: theme.primaryText },
-    secondary && { color: theme.secondaryText },
-    surface && { color: theme.surfaceText },
+    { color: (style && style.color) || Theme.backgroundText },
+    primary && { color: Theme.primaryText },
+    secondary && { color: Theme.secondaryText },
+    surface && { color: Theme.surfaceText },
     fontSize && { fontSize },
     fontStyle && { fontStyle },
     fontWeight && { fontWeight },

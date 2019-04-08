@@ -27,7 +27,10 @@ export enum ThemeEvent {
   OnChange = 2,
 }
 
-class Theme extends EventListener<ThemeEvent> implements ThemeItem {
+type IconType = 'antdesign' | 'entypo' | 'evilicon' | 'feather' | 'font-awesome' | 'foundation'
+  | 'ionicon' | 'material' | 'material-community' | 'octicon' | 'simple-line-icon' | 'zocial';
+
+class SingletonTheme extends EventListener<ThemeEvent> implements ThemeItem {
   public name: string;
 
   public primary: string;
@@ -48,6 +51,8 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
 
   public transparent?: string;
 
+  public iconType: IconType = 'material';
+
   protected themes: ThemeItem[];
 
   public init(themes: ThemeItem[]) {
@@ -65,9 +70,13 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
   public getAllThemes() {
     return this.themes;
   }
+
+  public setDefaultIconSet(value: IconType) {
+    this.iconType = value;
+  }
 }
 
-const theme = new Theme();
+const Theme = new SingletonTheme();
 export {
-  theme,
+  Theme,
 };

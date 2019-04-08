@@ -2,10 +2,10 @@ import * as React from 'react';
 import {  StyleSheet } from 'react-native';
 import { Divider as BDivider, DividerProps } from 'react-native-elements';
 
-import { theme } from './Theme';
+import { Theme } from './Theme';
 
 export const Divider = (props: DividerProps) => {
-  const themeStyle = StyleSheet.flatten([styles.container, { backgroundColor: theme.primaryDark }]);
+  const themeStyle = StyleSheet.flatten([styles.container, { backgroundColor: Theme.primaryDark }]);
 
   return <BDivider style={themeStyle} />;
 };

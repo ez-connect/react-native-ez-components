@@ -2,7 +2,7 @@ import * as React from 'react';
 import {  StyleSheet } from 'react-native';
 import { Button as BButton, ButtonProps as BProps } from 'react-native-elements';
 
-import { theme } from './Theme';
+import { Theme } from './Theme';
 
 export interface ButtonProps extends BProps {
   clear?: boolean;
@@ -10,10 +10,10 @@ export interface ButtonProps extends BProps {
 
 export const Button = (props: ButtonProps) => {
   const { containerStyle, buttonStyle, titleStyle, clear, ...rest } = props;
-  const backgroundColor = clear ? theme.background : theme.secondary;
-  const color = clear ? theme.backgroundText : theme.secondaryText;
+  const backgroundColor = clear ? Theme.background : Theme.secondary;
+  const color = clear ? Theme.backgroundText : Theme.secondaryText;
   const borderWidth = clear ? 1 : 0;
-  const borderColor = theme.secondary;
+  const borderColor = Theme.secondary;
 
   const themeContainerStyle = StyleSheet.flatten([styles.container, containerStyle ]);
   const themeButtonStyle = StyleSheet.flatten([

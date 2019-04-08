@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Text, TextProps } from './Text';
-import { theme } from './Theme';
+import { Theme } from './Theme';
 import { TouchableFeedback} from './TouchableFeedback';
 
 export interface TouchableTextProps extends TextProps {
@@ -17,7 +17,7 @@ export const TouchableText = (props: TouchableTextProps) => {
     ...rest
   } = props;
   const themeStyle = StyleSheet.flatten([
-    { color: theme.secondary },
+    { color: Theme.secondary },
     styles.container,
     style && style,
   ]);

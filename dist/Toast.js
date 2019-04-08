@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { theme } from './Theme';
+import { Theme } from './Theme';
 import { TouchableText } from './TouchableText';
 const kInterval = 500;
 const kDefaultTimeOut = 3000;
@@ -70,8 +70,8 @@ export class Toast extends React.Component {
     }
     _renderItem(item, index) {
         let { itemStyle, titleStyle, messageStyle } = this.props;
-        const backgroundColor = theme.secondaryLight;
-        const color = theme.secondaryText;
+        const backgroundColor = Theme.secondaryLight;
+        const color = Theme.secondaryText;
         itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
         titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
         messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import { theme } from './Theme';
+import { Theme } from './Theme';
 import { TouchableText } from './TouchableText';
 
 const kInterval = 500; // check all items every 0.5s
@@ -95,8 +95,8 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   private _renderItem(item: ToastItem, index: number) {
     let { itemStyle, titleStyle, messageStyle } = this.props;
-    const backgroundColor = theme.secondaryLight;
-    const color = theme.secondaryText;
+    const backgroundColor = Theme.secondaryLight;
+    const color = Theme.secondaryText;
 
     itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
     titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);

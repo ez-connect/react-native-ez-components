@@ -2,13 +2,13 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { ListItem as BListItem, ListItemProps } from 'react-native-elements';
 
-import { theme } from './Theme';
+import { Theme } from './Theme';
 
 export const ListItem = (props: ListItemProps) => {
   const { containerStyle, titleStyle, subtitleStyle, ...rest } = props;
-  const backgroundColor = theme.background;
-  const color =  theme.backgroundText;
-  const colorSubTitle =  theme.surfaceText;
+  const backgroundColor = Theme.background;
+  const color =  Theme.backgroundText;
+  const colorSubTitle =  Theme.surfaceText;
 
   return (
     <BListItem

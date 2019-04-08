@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
-import { theme } from './Theme';
+import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 const kAnimatedInterval = 200;
 const kAnimatedStep = 20;
@@ -68,12 +68,12 @@ export class Header extends React.PureComponent {
     }
     render() {
         const { icon, searchable, rightComponent } = this.props;
-        const backgroundColor = theme.primary;
-        const borderColor = theme.primaryDark;
+        const backgroundColor = Theme.primary;
+        const borderColor = Theme.primaryDark;
         const themeIcon = icon || { name: 'arrow-back' };
         return (<View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
-          <TouchableIcon {...themeIcon} color={theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
+          <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
             {searchable && this._renderSearchComponent()}
@@ -87,7 +87,7 @@ export class Header extends React.PureComponent {
     _renderTitle() {
         const { title, placeholder } = this.props;
         const { isSearching } = this.state;
-        const color = theme.primaryText;
+        const color = Theme.primaryText;
         if (title && !isSearching) {
             return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
         }
@@ -104,7 +104,7 @@ export class Header extends React.PureComponent {
     }
     _renderLoading() {
         if (this.props.loadingEnabled) {
-            return (<ProgressBar style={styles.progress} color={theme.secondary} progress={this.state.loading} progressTintColor={theme.secondary} progressViewStyle='bar' styleAttr='Horizontal'/>);
+            return (<ProgressBar style={styles.progress} color={Theme.secondary} progress={this.state.loading} progressTintColor={Theme.secondary} progressViewStyle='bar' styleAttr='Horizontal'/>);
         }
         return null;
     }

@@ -4,7 +4,11 @@ export var ThemeEvent;
     ThemeEvent[ThemeEvent["OnInit"] = 1] = "OnInit";
     ThemeEvent[ThemeEvent["OnChange"] = 2] = "OnChange";
 })(ThemeEvent || (ThemeEvent = {}));
-class Theme extends EventListener {
+class SingletonTheme extends EventListener {
+    constructor() {
+        super(...arguments);
+        this.iconType = 'material';
+    }
     init(themes) {
         this.transparent = 'transparent';
         this.themes = themes;
@@ -18,6 +22,9 @@ class Theme extends EventListener {
     getAllThemes() {
         return this.themes;
     }
+    setDefaultIconSet(value) {
+        this.iconType = value;
+    }
 }
-const theme = new Theme();
-export { theme, };
+const Theme = new SingletonTheme();
+export { Theme, };

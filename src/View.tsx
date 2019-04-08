@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, View as BView, ViewProps as BProps, ViewStyle } from 'react-native';
 
-import { theme } from './Theme';
+import { Theme } from './Theme';
 
 interface ViewProps extends BProps {
   style?: ViewStyle;
@@ -12,9 +12,9 @@ interface ViewProps extends BProps {
 
 export const View = (props: ViewProps) => {
   const { style, primary, secondary, ...rest } = props;
-  let backgroundColor = primary ? theme.primary : secondary ? theme.secondary : theme.background;
+  let backgroundColor = primary ? Theme.primary : secondary ? Theme.secondary : Theme.background;
   backgroundColor = (style && style.backgroundColor) || backgroundColor;
-  let borderColor = primary ? theme.primary : secondary ? theme.secondary : theme.primaryDark;
+  let borderColor = primary ? Theme.primary : secondary ? Theme.secondary : Theme.primaryDark;
   borderColor = (style && style.borderColor) || borderColor;
 
   const themeStyle = StyleSheet.flatten([

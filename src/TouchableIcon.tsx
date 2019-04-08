@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Icon, IconProps } from 'react-native-elements';
 
-import { theme } from './Theme';
+import { Theme } from './Theme';
 import { TouchableFeedback } from './TouchableFeedback';
 
 interface TouchableIconProps extends IconProps {
@@ -17,8 +17,8 @@ interface TouchableIconProps extends IconProps {
 
 export class TouchableIcon extends React.PureComponent<TouchableIconProps, {}> {
   public render() {
-    const { style, name, color, disabled, onPress, ...rest } = this.props;
-    const themeColor = color || (disabled ? theme.secondaryLight : theme.secondary);
+    const { style, name, color, type, disabled, onPress, ...rest } = this.props;
+    const themeColor = color || (disabled ? Theme.secondaryLight : Theme.secondary);
 
     return (
       <TouchableFeedback
@@ -26,7 +26,7 @@ export class TouchableIcon extends React.PureComponent<TouchableIconProps, {}> {
         style={[styles.container, style]}
       >
         <View style={[styles.container, style]} pointerEvents={'box-none'}>
-          <Icon name={name} color={themeColor} {...rest} />
+          <Icon name={name} color={themeColor} type={type || Theme.iconType} {...rest} />
         </View>
       </TouchableFeedback>
     );

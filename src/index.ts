@@ -16,7 +16,7 @@ import { ScrollView } from './ScrollView';
 import { StatusBar } from './StatusBar';
 import { Storage } from './Storage';
 import { Text } from './Text';
-import { theme, ThemeEvent } from './Theme';
+import { Theme, ThemeEvent } from './Theme';
 import { Toast } from './Toast';
 import { TouchableFeedback } from './TouchableFeedback';
 import { TouchableIcon } from './TouchableIcon';
@@ -43,7 +43,7 @@ export {
   StatusBar,
   Storage,
   Text,
-  theme,
+  Theme,
   ThemeEvent,
   Toast,
   TouchableFeedback,

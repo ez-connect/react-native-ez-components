@@ -4,7 +4,7 @@ import { IconProps } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
-import { theme } from './Theme';
+import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 
 const kAnimatedInterval = 200;
@@ -73,14 +73,14 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
 
   public render() {
     const { icon, searchable, rightComponent } = this.props;
-    const backgroundColor = theme.primary;
-    const borderColor = theme.primaryDark;
+    const backgroundColor = Theme.primary;
+    const borderColor = Theme.primaryDark;
     const themeIcon = icon || { name: 'arrow-back' };
 
     return (
       <View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
-          <TouchableIcon {...themeIcon} color={theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon} />
+          <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon} />
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
             {searchable && this._renderSearchComponent()}
@@ -98,7 +98,7 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
   private _renderTitle() {
     const { title, placeholder } = this.props;
     const { isSearching } = this.state;
-    const color = theme.primaryText;
+    const color = Theme.primaryText;
     if (title && !isSearching) {
       return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
     }
@@ -133,9 +133,9 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
       return (
         <ProgressBar
           style={styles.progress}
-          color={theme.secondary}
+          color={Theme.secondary}
           progress={this.state.loading}
-          progressTintColor={theme.secondary}
+          progressTintColor={Theme.secondary}
           progressViewStyle='bar'
           styleAttr='Horizontal'
         />
