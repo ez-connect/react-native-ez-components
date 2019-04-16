@@ -4,25 +4,11 @@ import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
-const kAnimatedInterval = 200;
-const kAnimatedStep = 20;
-const kAnimatedFinish = 100;
 export class Header extends React.PureComponent {
     constructor(props) {
         super(props);
         this._search = (text) => {
             this._debounceOnSearch(text);
-        };
-        this._handleAnimated = () => {
-            let { loading } = this.state;
-            loading += kAnimatedStep;
-            if (loading > kAnimatedFinish) {
-                loading = 0;
-            }
-            if (!this.props.loadingEnabled) {
-                loading = 0;
-            }
-            this.setState({ loading });
         };
         this._handleOnPressBack = () => {
             if (this.state.isSearching) {
@@ -81,7 +67,7 @@ export class Header extends React.PureComponent {
           </View>
         </View>
 
-        {this._renderLoading()}
+        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.loading} progressTintColor={Theme.secondary} progressViewStyle='bar' styleAttr='Horizontal'/>
       </View>);
     }
     _renderTitle() {
@@ -99,12 +85,6 @@ export class Header extends React.PureComponent {
         const icon = { name: isSearching ? 'close' : 'search' };
         if (searchable) {
             return (<TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressSearch}/>);
-        }
-        return null;
-    }
-    _renderLoading() {
-        if (this.props.loadingEnabled) {
-            return (<ProgressBar style={styles.progress} color={Theme.secondary} progress={this.state.loading} progressTintColor={Theme.secondary} progressViewStyle='bar' styleAttr='Horizontal'/>);
         }
         return null;
     }

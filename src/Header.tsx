@@ -7,10 +7,6 @@ import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 
-const kAnimatedInterval = 200;
-const kAnimatedStep = 20;
-const kAnimatedFinish = 100;
-
 export interface HeaderProps {
   icon?: IconProps;
   height?: number;
@@ -88,7 +84,15 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
           </View>
         </View>
 
-        {this._renderLoading()}
+        <ProgressBar
+          visible={this.props.loadingEnabled}
+          style={styles.progress}
+          color={Theme.secondary}
+          progress={this.state.loading}
+          progressTintColor={Theme.secondary}
+          progressViewStyle='bar'
+          styleAttr='Horizontal'
+        />
       </View>
     );
   }
@@ -128,44 +132,12 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
     return null;
   }
 
-  private _renderLoading() {
-    if (this.props.loadingEnabled) {
-      return (
-        <ProgressBar
-          style={styles.progress}
-          color={Theme.secondary}
-          progress={this.state.loading}
-          progressTintColor={Theme.secondary}
-          progressViewStyle='bar'
-          styleAttr='Horizontal'
-        />
-      );
-    }
-
-    return null;
-  }
-
   ///////////////////////////////////////////////////////////////////
 
   private _search = (text: string) => {
     this._debounceOnSearch(text);
   }
 
-  ///////////////////////////////////////////////////////////////////
-
-  private _handleAnimated = () => {
-    let { loading } = this.state;
-    loading += kAnimatedStep;
-    if (loading > kAnimatedFinish) {
-      loading = 0;
-    }
-
-    if (!this.props.loadingEnabled) {
-      loading = 0;
-    }
-
-    this.setState({ loading });
-  }
 
   private _handleOnPressBack = () => {
     if (this.state.isSearching) {

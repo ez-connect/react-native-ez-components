@@ -23,9 +23,7 @@ export declare class Header extends React.PureComponent<HeaderProps, HeaderState
     render(): JSX.Element;
     private _renderTitle;
     private _renderSearchComponent;
-    private _renderLoading;
     private _search;
-    private _handleAnimated;
     private _handleOnPressBack;
     private _handleOnPressSearch;
 }
