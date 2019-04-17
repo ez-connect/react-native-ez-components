@@ -80,9 +80,11 @@ export class Header extends React.PureComponent {
         return (<TextInput style={[styles.input, { color }]} placeholder={placeholder} autoFocus={true} underlineColorAndroid='transparent' onChangeText={this._search}/>);
     }
     _renderSearchComponent() {
-        const { searchable } = this.props;
+        const { searchable, searchIcon, searchCancelIcon } = this.props;
         const { isSearching } = this.state;
-        const icon = { name: isSearching ? 'close' : 'search' };
+        const icon = isSearching
+            ? searchCancelIcon || { name: 'close' }
+            : searchIcon || { name: 'search' };
         if (searchable) {
             return (<TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressSearch}/>);
         }

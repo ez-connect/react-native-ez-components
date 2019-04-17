@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { IconProps } from 'react-native-elements';
 export interface HeaderProps {
-    icon?: IconProps;
     height?: number;
-    title?: string;
-    searchable?: boolean;
+    icon?: IconProps;
+    loadingEnabled?: boolean;
     placeholder?: string;
     rightComponent?: React.ReactNode;
-    loadingEnabled?: boolean;
+    searchable?: boolean;
+    searchCancelIcon?: IconProps;
+    searchIcon?: IconProps;
+    title?: string;
     onSearch?(query: string): void;
     onBack?(): void;
 }

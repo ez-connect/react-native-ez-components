@@ -8,13 +8,15 @@ import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 
 export interface HeaderProps {
-  icon?: IconProps;
   height?: number;
-  title?: string;
-  searchable?: boolean;
+  icon?: IconProps;
+  loadingEnabled?: boolean;
   placeholder?: string;
   rightComponent?: React.ReactNode;
-  loadingEnabled?: boolean;
+  searchable?: boolean;
+  searchCancelIcon?: IconProps;
+  searchIcon?: IconProps;
+  title?: string;
   onSearch?(query: string): void;
   onBack?(): void;
 }
@@ -30,7 +32,7 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function() {
+    return function () {
       const context = this;
       const args = arguments;
       const later = () => {
@@ -119,9 +121,12 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
   }
 
   private _renderSearchComponent() {
-    const { searchable } = this.props;
+    const { searchable, searchIcon, searchCancelIcon } = this.props;
     const { isSearching } = this.state;
-    const icon = { name: isSearching ? 'close' : 'search' };
+    // const icon = { name: isSearching ? 'close' : 'search' };
+    const icon = isSearching
+      ? searchCancelIcon || { name: 'close' }
+      : searchIcon || { name: 'search' };
 
     if (searchable) {
       return (
