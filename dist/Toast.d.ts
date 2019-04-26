@@ -5,22 +5,30 @@ export declare enum ToastType {
     Warning = 2,
     Error = 3
 }
-export interface ToastItem {
+export declare enum ToastDuration {
+    Short = 1000,
+    Length = 3000,
+    Forever = 0
+}
+interface ToastItem {
     title?: string;
     message: string;
     type?: ToastType;
-    delay?: number;
     timeout?: number;
-    dismiss?: string;
-    onDismiss?(): void;
+    duration?: ToastDuration | number;
+    action?: {
+        title: string;
+        color: string;
+        onPress: () => void;
+    };
 }
-export interface ToastProps {
+interface ToastProps {
     containerStyle?: ViewStyle;
     itemStyle?: ViewStyle;
     titleStyle?: TextStyle;
     messageStyle?: TextStyle;
 }
-export interface ToastState {
+interface ToastState {
     items: ToastItem[];
 }
 export declare class Toast extends React.Component<ToastProps, ToastState> {
@@ -33,7 +41,9 @@ export declare class Toast extends React.Component<ToastProps, ToastState> {
     show(item: ToastItem): void;
     private _renderItems;
     private _renderItem;
+    private _renderItemAction;
     private _removeItem;
-    private _handleCheckTimeout;
-    private _handleOnDismiss;
+    private _handleCheckDuration;
+    private _handleOnAction;
 }
+export {};

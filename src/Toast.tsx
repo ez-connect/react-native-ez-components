@@ -13,24 +13,33 @@ export enum ToastType {
   Error = 3,
 }
 
-export interface ToastItem {
+export enum ToastDuration {
+  Short = 1000, // 1 sec
+  Length = 3000, // 3sec
+  Forever = 0, // until dismiss
+}
+
+interface ToastItem {
   title?: string;
   message: string;
   type?: ToastType;
-  delay?: number;
   timeout?: number;
-  dismiss?: string;
-  onDismiss?(): void;
+  duration?: ToastDuration | number;
+  action?: {
+    title: string;
+    color: string;
+    onPress: () => void;
+  };
 }
 
-export interface ToastProps {
+interface ToastProps {
   containerStyle?: ViewStyle;
   itemStyle?: ViewStyle;
   titleStyle?: TextStyle;
   messageStyle?: TextStyle;
 }
 
-export interface ToastState {
+interface ToastState {
   items: ToastItem[];
 }
 
@@ -69,19 +78,19 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   ///////////////////////////////////////////////////////////////////
 
   public show(item: ToastItem) {
-    if (item.delay && item.delay > 0) {
+    if (item.timeout && item.timeout > 0) {
       setTimeout(() => {
-        item.delay = 0;
+        item.timeout = 0;
         this.show(item);
-      }, item.delay);
+      }, item.timeout);
     } else {
       const { items } = this.state;
-      item.timeout = new Date().getTime() + (item.timeout || kDefaultTimeOut);
+      item.duration = new Date().getTime() + (item.duration || ToastDuration.Length);
       items.unshift(item);
       this.setState({ items });
 
       this._intervalHandler && clearInterval(this._intervalHandler);
-      this._intervalHandler = setInterval(this._handleCheckTimeout, kInterval);
+      this._intervalHandler = setInterval(this._handleCheckDuration, kInterval);
     }
   }
 
@@ -101,25 +110,39 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
     titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
     messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
-    const dismissStyle = StyleSheet.flatten([styles.dismiss, { color }]);
+    const dismissStyle = StyleSheet.flatten([styles.action, { color }]);
 
-    const { title, message, dismiss } = item;
+    const { title, message, action } = item;
 
     return (
       <TouchableOpacity
         key={index}
-        onPress={this._handleOnDismiss(item)}
+        onPress={this._handleOnAction(item)}
       >
         <View style={itemStyle}>
           {title && <Text style={titleStyle}>{title}</Text>}
           <Text style={messageStyle}>{message}</Text>
-          {dismiss && <TouchableText style={dismissStyle} onPress={this._handleOnDismiss(item)}>{dismiss}</TouchableText>}
+          {this._renderItemAction(item)}
         </View>
       </TouchableOpacity>
     );
   }
 
   ///////////////////////////////////////////////////////////////////
+
+  private _renderItemAction(item: ToastItem) {
+    const color = Theme.secondaryText;
+    const actionStyle = StyleSheet.flatten([styles.action, { color }]);
+    const action = item.action;
+    if (action) {
+      return (
+        <TouchableText style={actionStyle} onPress={this._handleOnAction(item)}>
+          {action.title}
+        </TouchableText>
+      );
+    }
+    return null;
+  }
 
   private _removeItem(item: ToastItem) {
     const { items } = this.state;
@@ -130,12 +153,12 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   ///////////////////////////////////////////////////////////////////
 
-  private _handleCheckTimeout = () => {
+  private _handleCheckDuration = () => {
     const now = new Date().getTime();
     for (const item of this.state.items) {
-      if (now > item.timeout) {
+      if (now > item.duration) {
         this._removeItem(item);
-        item.onDismiss && item.onDismiss();
+        item.action && item.action.onPress();
       }
     }
 
@@ -144,9 +167,9 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     }
   }
 
-  private _handleOnDismiss = (item: ToastItem) => () => {
+  private _handleOnAction = (item: ToastItem) => () => {
     this._removeItem(item);
-    item.onDismiss && item.onDismiss();
+    item.action && item.action.onPress();
   }
 }
 
@@ -154,16 +177,15 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     position: 'absolute',
-    width: Dimensions.get('window').width,
-    bottom: 50,
+    width: '100%',
+    bottom: 6,
     elevation: 2,
-    zIndex: 1,
   },
   item: {
     flex: 1,
     padding: 12,
-    marginLeft: 12,
-    marginRight: 12,
+    marginLeft: 6,
+    marginRight: 6,
     marginTop: 6,
     marginBottom: 6,
   },
@@ -176,8 +198,10 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
     fontSize: 14,
   },
-  dismiss: {
+  action: {
     fontWeight: 'bold',
     textAlign: 'right',
+    paddingLeft: 12,
+    paddingRight: 12,
   },
 });

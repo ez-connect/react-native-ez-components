@@ -17,7 +17,7 @@ import { StatusBar } from './StatusBar';
 import { Storage } from './Storage';
 import { Text } from './Text';
 import { Theme, ThemeEvent } from './Theme';
-import { Toast } from './Toast';
+import { Toast, ToastDuration } from './Toast';
 import { TouchableFeedback } from './TouchableFeedback';
 import { TouchableIcon } from './TouchableIcon';
 import { TouchableText } from './TouchableText';
@@ -46,6 +46,7 @@ export {
   Theme,
   ThemeEvent,
   Toast,
+  ToastDuration,
   TouchableFeedback,
   TouchableIcon,
   TouchableText,
