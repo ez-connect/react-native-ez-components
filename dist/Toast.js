@@ -3,7 +3,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Theme } from './Theme';
 import { TouchableText } from './TouchableText';
 const kInterval = 500;
-const kDefaultTimeOut = 3000;
 export var ToastType;
 (function (ToastType) {
     ToastType[ToastType["Info"] = 1] = "Info";
@@ -81,8 +80,7 @@ export class Toast extends React.Component {
         itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
         titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
         messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
-        const dismissStyle = StyleSheet.flatten([styles.action, { color }]);
-        const { title, message, action } = item;
+        const { title, message } = item;
         return (<TouchableOpacity key={index} onPress={this._handleOnAction(item)}>
         <View style={itemStyle}>
           {title && <Text style={titleStyle}>{title}</Text>}

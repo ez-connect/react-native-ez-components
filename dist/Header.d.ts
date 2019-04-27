@@ -5,13 +5,13 @@ export interface HeaderProps {
     icon?: IconProps;
     loadingEnabled?: boolean;
     placeholder?: string;
-    rightComponent?: React.ReactNode;
+    rightElement?: React.ReactNode;
     searchable?: boolean;
     searchCancelIcon?: IconProps;
     searchIcon?: IconProps;
     title?: string;
-    onSearch?(query: string): void;
     onBack?(): void;
+    onSearch?(query: string): void;
 }
 export interface HeaderState {
     loading?: number;
@@ -23,6 +23,8 @@ export declare class Header extends React.PureComponent<HeaderProps, HeaderState
     private _debounceOnSearch;
     constructor(props: HeaderProps);
     render(): JSX.Element;
+    collapse(): void;
+    expand(): void;
     private _renderTitle;
     private _renderSearchComponent;
     private _search;

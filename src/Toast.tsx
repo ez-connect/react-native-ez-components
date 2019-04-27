@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Dimensions, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { Theme } from './Theme';
 import { TouchableText } from './TouchableText';
 
 const kInterval = 500; // check all items every 0.5s
-const kDefaultTimeOut = 3000; // 3 sec
 
 export enum ToastType {
   Info = 1,
@@ -110,9 +109,8 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
     titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
     messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
-    const dismissStyle = StyleSheet.flatten([styles.action, { color }]);
 
-    const { title, message, action } = item;
+    const { title, message } = item;
 
     return (
       <TouchableOpacity

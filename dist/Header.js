@@ -53,7 +53,7 @@ export class Header extends React.PureComponent {
         };
     }
     render() {
-        const { icon, searchable, rightComponent } = this.props;
+        const { icon, searchable, rightElement } = this.props;
         const backgroundColor = Theme.primary;
         const borderColor = Theme.primaryDark;
         const themeIcon = icon || { name: 'arrow-back' };
@@ -63,12 +63,16 @@ export class Header extends React.PureComponent {
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
             {searchable && this._renderSearchComponent()}
-            {rightComponent}
+            {rightElement}
           </View>
         </View>
 
         <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.loading} progressTintColor={Theme.secondary} progressViewStyle='bar' styleAttr='Horizontal'/>
       </View>);
+    }
+    collapse() {
+    }
+    expand() {
     }
     _renderTitle() {
         const { title, placeholder } = this.props;

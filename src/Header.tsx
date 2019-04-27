@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Animated, StyleSheet, Text, TextInput, View } from 'react-native';
 import { IconProps } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
@@ -8,17 +8,18 @@ import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 
 export interface HeaderProps {
+  // compactElement?: React.ReactNode;
   height?: number;
   icon?: IconProps;
   loadingEnabled?: boolean;
   placeholder?: string;
-  rightComponent?: React.ReactNode;
+  rightElement?: React.ReactNode;
   searchable?: boolean;
   searchCancelIcon?: IconProps;
   searchIcon?: IconProps;
   title?: string;
-  onSearch?(query: string): void;
   onBack?(): void;
+  onSearch?(query: string): void;
 }
 
 export interface HeaderState {
@@ -70,7 +71,7 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
   }
 
   public render() {
-    const { icon, searchable, rightComponent } = this.props;
+    const { icon, searchable, rightElement } = this.props;
     const backgroundColor = Theme.primary;
     const borderColor = Theme.primaryDark;
     const themeIcon = icon || { name: 'arrow-back' };
@@ -82,7 +83,7 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
             {searchable && this._renderSearchComponent()}
-            {rightComponent}
+            {rightElement}
           </View>
         </View>
 
@@ -99,7 +100,14 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
     );
   }
 
-  ///////////////////////////////////////////////////////////////////
+  public collapse() {
+    //
+  }
+
+  public expand() {
+    //
+  }
+
 
   private _renderTitle() {
     const { title, placeholder } = this.props;
