@@ -6,6 +6,7 @@ import { DaylightView } from './DaylightView';
 import { Divider } from './Divider';
 import EventListener from './EventListener';
 import { Header } from './Header';
+import { Hyperlink } from './Hyperlink';
 import { Icon } from './Icon';
 import { ListItem } from './ListItem';
 import { NavigationService } from './NavigationService';
@@ -33,6 +34,7 @@ export {
   Divider,
   EventListener,
   Header,
+  Hyperlink,
   Icon,
   ListItem,
   NavigationService,
