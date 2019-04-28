@@ -10,8 +10,8 @@ export class Hyperlink extends React.PureComponent {
         };
     }
     render() {
-        const { style, ...rest } = this.props;
+        const { style, onPress, ...rest } = this.props;
         const themeStyle = StyleSheet.flatten([{ color: Theme.secondary }, style]);
-        return <Text style={themeStyle} onPress={this._handleOnPress} {...rest}/>;
+        return <Text style={themeStyle} onPress={onPress || this._handleOnPress} {...rest}/>;
     }
 }
