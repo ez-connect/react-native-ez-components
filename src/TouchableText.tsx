@@ -20,7 +20,9 @@ export const TouchableText = (props: TextProps) => {
 
   return (
     <TouchableFeedback onPress={onPress}>
-      <Text style={themeStyle} {...rest} />
+      <View>
+        <Text style={themeStyle} {...rest} />
+      </View>
     </TouchableFeedback>
   );
 };
