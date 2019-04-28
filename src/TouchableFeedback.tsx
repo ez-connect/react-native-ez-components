@@ -1,33 +1,20 @@
 import * as React from 'react';
-import { Platform, TouchableNativeFeedback, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { Platform, TouchableNativeFeedback, TouchableNativeFeedbackProps, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 import { Theme } from './Theme';
 
-let Component;
-
-if (Platform.OS === 'android') {
-  Component = TouchableNativeFeedback;
-} else {
-  Component = TouchableOpacity;
+interface Props extends TouchableNativeFeedbackProps, TouchableOpacityProps {
+  backgroundColor: string;
 }
 
-export class TouchableFeedback extends React.PureComponent<TouchableOpacityProps, {}> {
-  public static getAttribs(color: string) {
+export class TouchableFeedback extends React.PureComponent<TouchableNativeFeedbackProps | TouchableOpacityProps, {}> {
+  public render() {
     if (Platform.OS === 'android') {
-      const attributes: any = {};
-      if (Platform.Version >= 21) {
-        attributes.background = TouchableNativeFeedback.Ripple(color, true);
-      } else {
-        attributes.background = TouchableNativeFeedback.SelectableBackground();
-      }
-
-      return attributes;
+      const background = Platform.Version >= 21
+        ? TouchableNativeFeedback.Ripple(Theme.secondary, false)
+        : TouchableNativeFeedback.SelectableBackground();
+      return <TouchableNativeFeedback {...background} {...this.props} />;
     }
 
-    return undefined;
-  }
-
-  public render() {
-    const attributes = TouchableFeedback.getAttribs(Theme.secondary);
-    return <Component {...attributes} {...this.props} />;
+    return <TouchableOpacity {...this.props} />;
   }
 }
