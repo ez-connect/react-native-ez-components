@@ -3,14 +3,10 @@ import { StyleSheet, View } from 'react-native';
 
 import { Text, TextProps } from './Text';
 import { Theme } from './Theme';
-import { TouchableFeedback} from './TouchableFeedback';
-
-export interface TouchableTextProps extends TextProps {
-  onPress: () => void;
-}
+import { TouchableFeedback } from './TouchableFeedback';
 
 // TODO: Use View instead of SafeAreaView because it has a placeholder for statusbar although it's hidden
-export const TouchableText = (props: TouchableTextProps) => {
+export const TouchableText = (props: TextProps) => {
   const {
     style,
     onPress,
@@ -24,9 +20,7 @@ export const TouchableText = (props: TouchableTextProps) => {
 
   return (
     <TouchableFeedback onPress={onPress}>
-      <View>
-        <Text style={themeStyle} {...rest} />
-      </View>
+      <Text style={themeStyle} {...rest} />
     </TouchableFeedback>
   );
 };

@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Linking } from 'react-native';
-import { TouchableText } from './TouchableText';
+import { Linking, StyleSheet } from 'react-native';
+import { Text } from './Text';
+import { Theme } from './Theme';
 export class Hyperlink extends React.PureComponent {
     constructor() {
         super(...arguments);
@@ -9,6 +10,8 @@ export class Hyperlink extends React.PureComponent {
         };
     }
     render() {
-        return <TouchableText onPress={this._handleOnPress} {...this.props}/>;
+        const { style, ...rest } = this.props;
+        const themeStyle = StyleSheet.flatten([{ color: Theme.secondary }, style]);
+        return <Text style={themeStyle} onPress={this._handleOnPress} {...rest}/>;
     }
 }

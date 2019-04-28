@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Text } from './Text';
 import { Theme } from './Theme';
 import { TouchableFeedback } from './TouchableFeedback';
@@ -11,9 +11,7 @@ export const TouchableText = (props) => {
         style && style,
     ]);
     return (<TouchableFeedback onPress={onPress}>
-      <View>
-        <Text style={themeStyle} {...rest}/>
-      </View>
+      <Text style={themeStyle} {...rest}/>
     </TouchableFeedback>);
 };
 const styles = StyleSheet.create({

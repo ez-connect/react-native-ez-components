@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { TouchableTextProps } from './TouchableText';
-interface Props extends TouchableTextProps {
+import { TextProps, TextStyle } from 'react-native';
+interface Props extends TextProps {
+    style: TextStyle;
     url: string;
 }
 export declare class Hyperlink extends React.PureComponent<Props> {

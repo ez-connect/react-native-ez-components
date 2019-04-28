@@ -1,15 +1,19 @@
 import * as React from 'react';
-import { Linking } from 'react-native';
+import { Linking, StyleSheet, TextProps, TextStyle } from 'react-native';
 
-import { TouchableText, TouchableTextProps } from './TouchableText';
+import { Text } from './Text';
+import { Theme } from './Theme';
 
-interface Props extends TouchableTextProps {
+interface Props extends TextProps {
+  style: TextStyle;
   url: string;
 }
 
 export class Hyperlink extends React.PureComponent<Props> {
   public render() {
-    return <TouchableText onPress={this._handleOnPress} {...this.props} />;
+    const { style, ...rest } = this.props;
+    const themeStyle = StyleSheet.flatten([{ color: Theme.secondary }, style]);
+    return <Text style={themeStyle} onPress={this._handleOnPress} {...rest} />;
   }
 
   private _handleOnPress = () => {
