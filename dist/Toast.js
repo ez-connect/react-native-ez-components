@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Theme } from './Theme';
 import { TouchableText } from './TouchableText';
-const kInterval = 500;
+const ANIM_OFFSET = -50;
+const ANIM_DURATION = 300;
 export var ToastType;
 (function (ToastType) {
     ToastType[ToastType["Info"] = 1] = "Info";
@@ -18,24 +19,35 @@ export var ToastDuration;
 export class Toast extends React.Component {
     constructor(props) {
         super(props);
-        this._intervalHandler = null;
-        this._handleCheckDuration = () => {
-            const now = new Date().getTime();
-            for (const item of this.state.items) {
-                if (now > item.duration) {
-                    this._removeItem(item);
-                    item.action && item.action.onPress();
-                }
-            }
-            if (this.state.items.length === 0) {
-                clearInterval(this._intervalHandler);
-            }
+        this._timeoutHandler = null;
+        this._anim = new Animated.Value(ANIM_OFFSET);
+        this._show = (item) => () => {
+            Animated.timing(this._anim, {
+                toValue: 0,
+                duration: ANIM_DURATION,
+            }).start();
+            this._add(item);
         };
-        this._handleOnAction = (item) => () => {
-            this._removeItem(item);
-            item.action && item.action.onPress();
+        this._add = (item) => {
+            item.duration = item.duration || ToastDuration.Length;
+            this._timeoutHandler && clearTimeout(this._timeoutHandler);
+            this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+            this.setState({ item });
         };
-        this.state = { items: [] };
+        this._remove = () => {
+            this.setState({ item: undefined });
+        };
+        this._handleOnTimeout = () => {
+            this._hide(this._remove);
+        };
+        this._handleOnPress = () => {
+            this._hide(this._handleOnTimeout);
+        };
+        this._handleOnAction = () => {
+            this._hide(this._remove);
+            this.state.item.action.onPress();
+        };
+        this.state = {};
     }
     static setInstance(ref) {
         Toast._instance = ref;
@@ -44,67 +56,65 @@ export class Toast extends React.Component {
         Toast._instance.show(item);
     }
     render() {
-        if (this.state.items.length > 0) {
+        if (this.state.item) {
             const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
             return (<View style={style}>
-          {this._renderItems()}
+          {this._renderItem()}
         </View>);
         }
         return null;
     }
     show(item) {
-        if (item.timeout && item.timeout > 0) {
+        if (!item.timeout) {
+            if (this.state.item) {
+                this._hide(this._show(item));
+            }
+            else {
+                this._show(item)();
+            }
+        }
+        else {
             setTimeout(() => {
                 item.timeout = 0;
                 this.show(item);
             }, item.timeout);
         }
-        else {
-            const { items } = this.state;
-            item.duration = new Date().getTime() + (item.duration || ToastDuration.Length);
-            items.unshift(item);
-            this.setState({ items });
-            this._intervalHandler && clearInterval(this._intervalHandler);
-            this._intervalHandler = setInterval(this._handleCheckDuration, kInterval);
-        }
     }
-    _renderItems() {
-        return this.state.items.map((item, index) => {
-            return this._renderItem(item, index);
-        });
-    }
-    _renderItem(item, index) {
+    _renderItem() {
         let { itemStyle, titleStyle, messageStyle } = this.props;
         const backgroundColor = Theme.secondaryLight;
         const color = Theme.secondaryText;
         itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
         titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
         messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
-        const { title, message } = item;
-        return (<TouchableOpacity key={index} onPress={this._handleOnAction(item)}>
-        <View style={itemStyle}>
-          {title && <Text style={titleStyle}>{title}</Text>}
-          <Text style={messageStyle}>{message}</Text>
-          {this._renderItemAction(item)}
-        </View>
+        const { title, message } = this.state.item;
+        return (<TouchableOpacity onPress={this._handleOnPress}>
+        <Animated.View style={{ bottom: this._anim }}>
+          <View style={itemStyle}>
+            {title && <Text style={titleStyle}>{title}</Text>}
+            <Text style={messageStyle}>{message}</Text>
+            {this._renderItemAction()}
+          </View>
+        </Animated.View>
       </TouchableOpacity>);
     }
-    _renderItemAction(item) {
+    _renderItemAction() {
         const color = Theme.secondaryText;
         const actionStyle = StyleSheet.flatten([styles.action, { color }]);
-        const action = item.action;
+        const action = this.state.item.action;
         if (action) {
-            return (<TouchableText style={actionStyle} onPress={this._handleOnAction(item)}>
+            return (<TouchableText style={actionStyle} onPress={this._handleOnAction}>
           {action.title}
         </TouchableText>);
         }
         return null;
     }
-    _removeItem(item) {
-        const { items } = this.state;
-        const index = items.indexOf(item);
-        items.splice(index, 1);
-        this.setState({ items });
+    _hide(callback) {
+        this._timeoutHandler && clearTimeout(this._timeoutHandler);
+        Animated.timing(this._anim, {
+            toValue: ANIM_OFFSET,
+            duration: ANIM_DURATION,
+        }).start(callback);
     }
 }
 const styles = StyleSheet.create({

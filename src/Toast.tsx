@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Animated, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { Theme } from './Theme';
 import { TouchableText } from './TouchableText';
 
-const kInterval = 500; // check all items every 0.5s
+const ANIM_OFFSET = -50;
+const ANIM_DURATION = 300;
 
 export enum ToastType {
   Info = 1,
@@ -39,7 +40,7 @@ interface ToastProps {
 }
 
 interface ToastState {
-  items: ToastItem[];
+  item?: ToastItem;
 }
 
 export class Toast extends React.Component<ToastProps, ToastState> {
@@ -55,19 +56,20 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   ///////////////////////////////////////////////////////////////////
 
-  private _intervalHandler: any = null;
+  private _timeoutHandler: any = null;
+  private _anim = new Animated.Value(ANIM_OFFSET);
 
   constructor(props) {
     super(props);
-    this.state = { items: [] };
+    this.state = {};
   }
 
   public render() {
-    if (this.state.items.length > 0) {
+    if (this.state.item) {
       const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
       return (
         <View style={style}>
-          {this._renderItems()}
+          {this._renderItem()}
         </View>
       );
     }
@@ -77,31 +79,23 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   ///////////////////////////////////////////////////////////////////
 
   public show(item: ToastItem) {
-    if (item.timeout && item.timeout > 0) {
+    if (!item.timeout) { // immediately
+      if (this.state.item) {
+        this._hide(this._show(item));
+      } else {
+        this._show(item)();
+      }
+    } else { // delay to show
       setTimeout(() => {
         item.timeout = 0;
         this.show(item);
       }, item.timeout);
-    } else {
-      const { items } = this.state;
-      item.duration = new Date().getTime() + (item.duration || ToastDuration.Length);
-      items.unshift(item);
-      this.setState({ items });
-
-      this._intervalHandler && clearInterval(this._intervalHandler);
-      this._intervalHandler = setInterval(this._handleCheckDuration, kInterval);
     }
   }
 
   ///////////////////////////////////////////////////////////////////
 
-  private _renderItems() {
-    return this.state.items.map((item, index) => {
-      return this._renderItem(item, index);
-    });
-  }
-
-  private _renderItem(item: ToastItem, index: number) {
+  private _renderItem() {
     let { itemStyle, titleStyle, messageStyle } = this.props;
     const backgroundColor = Theme.secondaryLight;
     const color = Theme.secondaryText;
@@ -110,31 +104,28 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
     messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
 
-    const { title, message } = item;
+    const { title, message } = this.state.item;
 
     return (
-      <TouchableOpacity
-        key={index}
-        onPress={this._handleOnAction(item)}
-      >
-        <View style={itemStyle}>
-          {title && <Text style={titleStyle}>{title}</Text>}
-          <Text style={messageStyle}>{message}</Text>
-          {this._renderItemAction(item)}
-        </View>
+      <TouchableOpacity onPress={this._handleOnPress}>
+        <Animated.View style={{ bottom: this._anim }}>
+          <View style={itemStyle}>
+            {title && <Text style={titleStyle}>{title}</Text>}
+            <Text style={messageStyle}>{message}</Text>
+            {this._renderItemAction()}
+          </View>
+        </Animated.View>
       </TouchableOpacity>
     );
   }
 
-  ///////////////////////////////////////////////////////////////////
-
-  private _renderItemAction(item: ToastItem) {
+  private _renderItemAction() {
     const color = Theme.secondaryText;
     const actionStyle = StyleSheet.flatten([styles.action, { color }]);
-    const action = item.action;
+    const action = this.state.item.action;
     if (action) {
       return (
-        <TouchableText style={actionStyle} onPress={this._handleOnAction(item)}>
+        <TouchableText style={actionStyle} onPress={this._handleOnAction}>
           {action.title}
         </TouchableText>
       );
@@ -142,34 +133,53 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     return null;
   }
 
-  private _removeItem(item: ToastItem) {
-    const { items } = this.state;
-    const index = items.indexOf(item);
-    items.splice(index, 1);
-    this.setState({ items });
+  ///////////////////////////////////////////////////////////////////
+
+  private _show = (item: ToastItem) => () => {
+    Animated.timing(this._anim, {
+      toValue: 0,
+      duration: ANIM_DURATION,
+    }).start();
+
+    this._add(item);
+  }
+
+  private _hide(callback: Animated.EndCallback) {
+    this._timeoutHandler && clearTimeout(this._timeoutHandler);
+    Animated.timing(this._anim, {
+      toValue: ANIM_OFFSET,
+      duration: ANIM_DURATION,
+    }).start(callback);
+  }
+
+  private _add = (item: ToastItem) => {
+    item.duration = item.duration || ToastDuration.Length;
+    this._timeoutHandler && clearTimeout(this._timeoutHandler);
+    this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+    this.setState({ item });
+  }
+
+  private _remove = () => {
+    this.setState({ item: undefined });
   }
 
   ///////////////////////////////////////////////////////////////////
 
-  private _handleCheckDuration = () => {
-    const now = new Date().getTime();
-    for (const item of this.state.items) {
-      if (now > item.duration) {
-        this._removeItem(item);
-        item.action && item.action.onPress();
-      }
-    }
-
-    if (this.state.items.length === 0) {
-      clearInterval(this._intervalHandler);
-    }
+  private _handleOnTimeout = () => {
+    this._hide(this._remove);
   }
 
-  private _handleOnAction = (item: ToastItem) => () => {
-    this._removeItem(item);
-    item.action && item.action.onPress();
+  private _handleOnPress = () => {
+    this._hide(this._handleOnTimeout);
+  }
+
+  private _handleOnAction = () => {
+    this._hide(this._remove);
+    this.state.item.action.onPress();
   }
 }
+
+///////////////////////////////////////////////////////////////////
 
 const styles = StyleSheet.create({
   mainContainer: {

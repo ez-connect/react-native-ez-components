@@ -29,21 +29,25 @@ interface ToastProps {
     messageStyle?: TextStyle;
 }
 interface ToastState {
-    items: ToastItem[];
+    item?: ToastItem;
 }
 export declare class Toast extends React.Component<ToastProps, ToastState> {
     static setInstance(ref: Toast | null): void;
     static show(item: ToastItem): void;
     private static _instance;
-    private _intervalHandler;
+    private _timeoutHandler;
+    private _anim;
     constructor(props: any);
     render(): JSX.Element;
     show(item: ToastItem): void;
-    private _renderItems;
     private _renderItem;
     private _renderItemAction;
-    private _removeItem;
-    private _handleCheckDuration;
+    private _show;
+    private _hide;
+    private _add;
+    private _remove;
+    private _handleOnTimeout;
+    private _handleOnPress;
     private _handleOnAction;
 }
 export {};
