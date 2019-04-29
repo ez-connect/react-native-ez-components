@@ -27,8 +27,8 @@ interface ToastItem {
   duration?: ToastDuration | number;
   action?: {
     title: string;
-    color: string;
-    onPress: () => void;
+    color?: string;
+    onPress?: () => void;
   };
 }
 
@@ -110,8 +110,10 @@ export class Toast extends React.Component<ToastProps, ToastState> {
       <TouchableOpacity onPress={this._handleOnPress}>
         <Animated.View style={{ bottom: this._anim }}>
           <View style={itemStyle}>
-            {title && <Text style={titleStyle}>{title}</Text>}
-            <Text style={messageStyle}>{message}</Text>
+            <View style={styles.body}>
+              {title && <Text style={titleStyle}>{title}</Text>}
+              <Text style={messageStyle}>{message}</Text>
+            </View>
             {this._renderItemAction()}
           </View>
         </Animated.View>
@@ -120,14 +122,17 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   }
 
   private _renderItemAction() {
-    const color = Theme.secondaryText;
-    const actionStyle = StyleSheet.flatten([styles.action, { color }]);
     const action = this.state.item.action;
+    const color = (action && action.color) || Theme.secondaryText;
+    const buttonStyle = StyleSheet.flatten([styles.button, { color }]);
+
     if (action) {
       return (
-        <TouchableText style={actionStyle} onPress={this._handleOnAction}>
+        <View style={styles.action}>
+        <TouchableText style={buttonStyle} onPress={this._handleOnAction}>
           {action.title}
         </TouchableText>
+        </View>
       );
     }
     return null;
@@ -175,7 +180,8 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   private _handleOnAction = () => {
     this._hide(this._remove);
-    this.state.item.action.onPress();
+    const callback = this.state.item.action.onPress || this._handleOnPress;
+    callback();
   }
 }
 
@@ -191,11 +197,16 @@ const styles = StyleSheet.create({
   },
   item: {
     flex: 1,
+    flexDirection: 'row',
     padding: 12,
     marginLeft: 6,
     marginRight: 6,
     marginTop: 6,
     marginBottom: 6,
+    alignItems: 'center',
+  },
+  body: {
+    flex: 1,
   },
   title: {
     fontWeight: 'bold',
@@ -207,8 +218,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   action: {
+    alignItems: 'center',
+  },
+  button: {
     fontWeight: 'bold',
-    textAlign: 'right',
+    fontSize: 16,
     paddingLeft: 12,
     paddingRight: 12,
   },

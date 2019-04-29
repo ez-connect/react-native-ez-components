@@ -18,8 +18,8 @@ interface ToastItem {
     duration?: ToastDuration | number;
     action?: {
         title: string;
-        color: string;
-        onPress: () => void;
+        color?: string;
+        onPress?: () => void;
     };
 }
 interface ToastProps {
