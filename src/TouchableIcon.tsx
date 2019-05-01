@@ -35,9 +35,9 @@ export class TouchableIcon extends React.PureComponent<TouchableIconProps, {}> {
 
 const styles = StyleSheet.create({
   container: {
-    minWidth: 36,
-    minHeight: 36,
-    borderRadius: 18,
+    minWidth: 48,
+    minHeight: 48,
+    // borderRadius: 24, // TouchableNativeFeedback.Ripple(color, true) to enable
     justifyContent: 'center',
     alignContent: 'center',
   },

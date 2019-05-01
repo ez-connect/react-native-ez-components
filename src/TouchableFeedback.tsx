@@ -12,7 +12,7 @@ export class TouchableFeedback extends React.PureComponent<TouchableNativeFeedba
       const background = Platform.Version >= 21
         ? TouchableNativeFeedback.Ripple(Theme.secondary, false)
         : TouchableNativeFeedback.SelectableBackground();
-      return <TouchableNativeFeedback {...background} {...this.props} />;
+      return <TouchableNativeFeedback background={background} {...this.props} />;
     }
 
     return <TouchableOpacity {...this.props} />;
