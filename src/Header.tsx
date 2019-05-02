@@ -82,8 +82,8 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
           <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon} />
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
-            {searchable && this._renderSearchComponent()}
             {rightElement}
+            {searchable && this._renderSearchComponent()}
           </View>
         </View>
 
@@ -113,11 +113,8 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
     const { title, placeholder } = this.props;
     const { isSearching } = this.state;
     const color = Theme.primaryText;
-    if (title && !isSearching) {
-      return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
-    }
-
-    return (
+    if (isSearching) {
+      return (
       <TextInput
         style={[styles.input, { color }]}
         placeholder={placeholder}
@@ -125,7 +122,10 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
         underlineColorAndroid='transparent'
         onChangeText={this._search}
       />
-    );
+      );
+    }
+
+    return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
   }
 
   private _renderSearchComponent() {
