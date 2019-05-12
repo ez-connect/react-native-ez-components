@@ -129,9 +129,9 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     if (action) {
       return (
         <View style={styles.action}>
-        <TouchableText style={buttonStyle} onPress={this._handleOnAction}>
-          {action.title}
-        </TouchableText>
+          <TouchableText style={buttonStyle} onPress={this._handleOnAction}>
+            {action.title}
+          </TouchableText>
         </View>
       );
     }
@@ -192,17 +192,12 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     width: '100%',
-    bottom: 6,
     elevation: 2,
   },
   item: {
     flex: 1,
     flexDirection: 'row',
     padding: 12,
-    marginLeft: 6,
-    marginRight: 6,
-    marginTop: 6,
-    marginBottom: 6,
     alignItems: 'center',
   },
   body: {
