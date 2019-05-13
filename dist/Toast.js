@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         position: 'absolute',
+        bottom: 0,
         width: '100%',
         elevation: 2,
     },
