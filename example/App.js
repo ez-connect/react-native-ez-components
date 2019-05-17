@@ -9,13 +9,12 @@ import { Header,
   ScrollView,
   StatusBar,
   Text,
+  Theme,
   Toast,
   TouchableFeedback,
   TouchableIcon,
   TouchableText,
   View,
-  theme,
-
 } from 'react-native-ez-components';
 import colors from './Colors';
 import { ToastType } from 'react-native-ez-components/dist/Toast';
@@ -28,12 +27,12 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    theme.init(colors);
-    theme.setTheme(this.state.selectedTheme);
+    Theme.init(colors);
+    Theme.setTheme(this.state.selectedTheme);
   }
 
   componentDidMount() {
-    theme.addListener(theme)
+    Theme.addListener(Theme)
   }
 
   render() {
@@ -93,8 +92,8 @@ export default class App extends React.Component {
           <View style={styles.container}>
             <Button title="Toast" onPress={this._handleOnPressToast} />
           </View>
-          <Toast ref={x => Toast.setInstance(x)} />
         </ScrollView>
+        <Toast ref={x => Toast.setInstance(x)} />
       </SafeAreaView>
     );
   }
@@ -102,11 +101,11 @@ export default class App extends React.Component {
   ///////////////////////////////////////////////////////////////////
 
   _renderThemes() {
-    return theme.getAllThemes().map(item => {
+    return Theme.getAllThemes().map(item => {
       const borderWidth = item.name == this.state.selectedTheme ? 1 : 0;
       return (
         <TouchableFeedback key={item.name} onPress={this._handleOnPressTheme(item.name)}>
-          <View style={[styles.item, { borderWidth, borderColor: theme.secondaryLight }]}>
+          <View style={[styles.item, { borderWidth, borderColor: Theme.secondaryLight }]}>
             <Text
               style={StyleSheet.flatten([
                 styles.theme,
@@ -147,7 +146,7 @@ export default class App extends React.Component {
   _handleOnPressTheme = selectedTheme => () => {
     console.log(`Select theme: ${selectedTheme}`);
     this.setState({ selectedTheme });
-    theme.setTheme(selectedTheme);
+    Theme.setTheme(selectedTheme);
   };
 
   _toastMessageIndex = 1;

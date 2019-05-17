@@ -1,5 +1,7 @@
-import AsyncStorage from '@react-native-community/async-storage';
 export class Storage {
+    static setStorageBase(value) {
+        Storage._storageBase = value;
+    }
     static async save(key, item, excludes = [], encodeHandler) {
         Storage._logEnabled && console.info(`Storage.save: ${key}`);
         try {
@@ -25,7 +27,7 @@ export class Storage {
             else {
                 buf = JSON.stringify(data);
             }
-            await AsyncStorage.setItem(key, buf);
+            await Storage._storageBase.setItem(key, buf);
         }
         catch (err) {
             console.warn(err);
@@ -34,7 +36,7 @@ export class Storage {
     static async load(key, excludes = [], decodeHandler) {
         Storage._logEnabled && console.info(`Store.load: ${key}`);
         try {
-            const buf = await AsyncStorage.getItem(key);
+            const buf = await Storage._storageBase.getItem(key);
             if (buf) {
                 Storage._logEnabled && console.info(buf);
                 let data;
