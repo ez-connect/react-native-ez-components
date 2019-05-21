@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
+const PROGRESS_DELAY = 50;
 export class Header extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -28,11 +29,21 @@ export class Header extends React.PureComponent {
             }
             this.setState({ isSearching: !isSearching });
         };
+        this._handleOnProgressInterval = () => {
+            const progress = (this.state.progress + (PROGRESS_DELAY / 1000)) % 1;
+            if (!this.props.loadingEnabled && progress > 0.9) {
+                clearInterval(this._progressHandler);
+            }
+            this.setState({ progress });
+        };
         this.state = {
-            loading: 0,
             isSearching: false,
+            progress: this.props.progress || 0,
         };
         this._debounceOnSearch = Header.debounce(this.props.onSearch);
+        if (Platform.OS === 'ios' && !this.props.progress) {
+            this._progressHandler = setInterval(this._handleOnProgressInterval, PROGRESS_DELAY);
+        }
     }
     static debounce(fn, wait = 500, immediate = false) {
         return function () {
@@ -57,6 +68,7 @@ export class Header extends React.PureComponent {
         const backgroundColor = Theme.primary;
         const borderColor = Theme.primaryDark;
         const themeIcon = icon || { name: 'arrow-back' };
+        console.warn('render');
         return (<View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
           <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
@@ -67,7 +79,7 @@ export class Header extends React.PureComponent {
           </View>
         </View>
 
-        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.loading} progressTintColor={Theme.secondary} progressViewStyle='bar' styleAttr='Horizontal'/>
+        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.primaryText} progress={this.state.progress} progressTintColor={Theme.primaryText} progressViewStyle='bar' styleAttr='Horizontal'/>
       </View>);
     }
     collapse() {
@@ -124,7 +136,10 @@ const styles = StyleSheet.create({
     progress: {
         position: 'absolute',
         width: '100%',
-        bottom: -8,
+        bottom: Platform.select({
+            android: -8,
+            ios: 0,
+        }),
     },
     closeIcon: {
         width: 64,

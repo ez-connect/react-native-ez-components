@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
 import { IconProps } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
@@ -7,12 +7,13 @@ import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 
-export interface HeaderProps {
+interface Props {
   // compactElement?: React.ReactNode;
   height?: number;
   icon?: IconProps;
   loadingEnabled?: boolean;
   placeholder?: string;
+  progress?: number;
   rightElement?: React.ReactNode;
   searchable?: boolean;
   searchCancelIcon?: IconProps;
@@ -22,18 +23,20 @@ export interface HeaderProps {
   onSearch?(query: string): void;
 }
 
-export interface HeaderState {
-  loading?: number;
+interface State {
   isSearching?: boolean;
+  progress?: number;
 }
 
-export class Header extends React.PureComponent<HeaderProps, HeaderState> {
+const PROGRESS_DELAY = 50; // fake progress on iOS - without `progress` props
+
+export class Header extends React.PureComponent<Props, State> {
   // Returns a function, that, as long as it continues to be invoked, will not
   // be triggered. The function will be called after it stops being called for
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function() {
+    return function () {
       const context = this;
       const args = arguments;
       const later = () => {
@@ -59,15 +62,19 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
   ///////////////////////////////////////////////////////////////////
 
   private _debounceOnSearch: any;
+  private _progressHandler: any;
 
-  constructor(props: HeaderProps) {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      loading: 0,
       isSearching: false,
+      progress: this.props.progress || 0,
     };
 
     this._debounceOnSearch = Header.debounce(this.props.onSearch);
+    if (Platform.OS === 'ios' && !this.props.progress) {
+      this._progressHandler = setInterval(this._handleOnProgressInterval, PROGRESS_DELAY);
+    }
   }
 
   public render() {
@@ -75,6 +82,8 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
     const backgroundColor = Theme.primary;
     const borderColor = Theme.primaryDark;
     const themeIcon = icon || { name: 'arrow-back' };
+
+    console.warn('render');
 
     return (
       <View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
@@ -90,9 +99,9 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
         <ProgressBar
           visible={this.props.loadingEnabled}
           style={styles.progress}
-          color={Theme.secondary}
-          progress={this.state.loading}
-          progressTintColor={Theme.secondary}
+          color={Theme.primaryText}
+          progress={this.state.progress}
+          progressTintColor={Theme.primaryText}
           progressViewStyle='bar'
           styleAttr='Horizontal'
         />
@@ -115,13 +124,13 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
     const color = Theme.primaryText;
     if (isSearching) {
       return (
-      <TextInput
-        style={[styles.input, { color }]}
-        placeholder={placeholder}
-        autoFocus={true}
-        underlineColorAndroid='transparent'
-        onChangeText={this._search}
-      />
+        <TextInput
+          style={[styles.input, { color }]}
+          placeholder={placeholder}
+          autoFocus={true}
+          underlineColorAndroid='transparent'
+          onChangeText={this._search}
+        />
       );
     }
 
@@ -171,6 +180,14 @@ export class Header extends React.PureComponent<HeaderProps, HeaderState> {
 
     this.setState({ isSearching: !isSearching });
   }
+
+  private _handleOnProgressInterval = () => {
+    const progress = (this.state.progress + (PROGRESS_DELAY / 1000)) % 1;
+    if (!this.props.loadingEnabled && progress > 0.9) {
+      clearInterval(this._progressHandler);
+    }
+    this.setState({ progress });
+  }
 }
 
 const styles = StyleSheet.create({
@@ -201,7 +218,10 @@ const styles = StyleSheet.create({
   progress: {
     position: 'absolute',
     width: '100%',
-    bottom: -8,
+    bottom: Platform.select({
+      android: -8,
+      ios: 0,
+    }),
   },
   closeIcon: {
     width: 64,

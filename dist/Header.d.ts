@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { IconProps } from 'react-native-elements';
-export interface HeaderProps {
+interface Props {
     height?: number;
     icon?: IconProps;
     loadingEnabled?: boolean;
     placeholder?: string;
+    progress?: number;
     rightElement?: React.ReactNode;
     searchable?: boolean;
     searchCancelIcon?: IconProps;
@@ -13,15 +14,16 @@ export interface HeaderProps {
     onBack?(): void;
     onSearch?(query: string): void;
 }
-export interface HeaderState {
-    loading?: number;
+interface State {
     isSearching?: boolean;
+    progress?: number;
 }
-export declare class Header extends React.PureComponent<HeaderProps, HeaderState> {
+export declare class Header extends React.PureComponent<Props, State> {
     static debounce(fn: any, wait?: number, immediate?: boolean): () => void;
     private static s_debounceTimeout;
     private _debounceOnSearch;
-    constructor(props: HeaderProps);
+    private _progressHandler;
+    constructor(props: Props);
     render(): JSX.Element;
     collapse(): void;
     expand(): void;
@@ -30,4 +32,6 @@ export declare class Header extends React.PureComponent<HeaderProps, HeaderState
     private _search;
     private _handleOnPressBack;
     private _handleOnPressSearch;
+    private _handleOnProgressInterval;
 }
+export {};
