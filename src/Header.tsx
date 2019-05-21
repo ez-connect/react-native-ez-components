@@ -82,9 +82,6 @@ export class Header extends React.PureComponent<Props, State> {
     const backgroundColor = Theme.primary;
     const borderColor = Theme.primaryDark;
     const themeIcon = icon || { name: 'arrow-back' };
-
-    console.warn('render');
-
     return (
       <View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>

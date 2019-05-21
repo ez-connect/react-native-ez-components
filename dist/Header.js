@@ -68,7 +68,6 @@ export class Header extends React.PureComponent {
         const backgroundColor = Theme.primary;
         const borderColor = Theme.primaryDark;
         const themeIcon = icon || { name: 'arrow-back' };
-        console.warn('render');
         return (<View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
         <View style={styles.container}>
           <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
