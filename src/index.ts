@@ -13,6 +13,7 @@ import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { SafeAreaView } from './SafeAreaView';
 import { ScrollView } from './ScrollView';
+import { Sheet } from './Sheet';
 import { StatusBar } from './StatusBar';
 import { Storage } from './Storage';
 import { Text } from './Text';
@@ -40,6 +41,7 @@ export {
   ProgressBar,
   SafeAreaView,
   ScrollView,
+  Sheet,
   StatusBar,
   Storage,
   Text,

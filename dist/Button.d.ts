@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { ButtonProps as BProps } from 'react-native-elements';
 export interface ButtonProps extends BProps {
     clear?: boolean;
