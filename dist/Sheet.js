@@ -62,7 +62,7 @@ export class Sheet extends React.PureComponent {
             ]);
             if (title) {
                 const color = disabled ? Theme.surfaceText : Theme.backgroundText;
-                return (<ListItem bottomDivider={this._options && this._options.bottomDivider} containerStyle={containerStyle} key={index} leftIcon={{ type: 'material-community', name: icon, color }} onPress={disabled ? undefined : this._handleOnPressItem(value)} subtitle={item.subtitle} title={title} titleStyle={{ color }}/>);
+                return (<ListItem bottomDivider={this._options && this._options.bottomDivider} containerStyle={containerStyle} key={index} leftIcon={{ type: Theme.iconType, name: icon, color }} onPress={disabled ? undefined : this._handleOnPressItem(value)} subtitle={item.subtitle} title={title} titleStyle={{ color }}/>);
             }
             else {
                 return <View key={index} style={{ backgroundColor: Theme.surfaceText, ...styles.divider }}/>;
