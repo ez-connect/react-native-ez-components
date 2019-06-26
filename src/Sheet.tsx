@@ -110,7 +110,7 @@ export class Sheet extends React.PureComponent<{}, State> {
             bottomDivider={this._options && this._options.bottomDivider}
             containerStyle={containerStyle}
             key={index}
-            leftIcon={{ type: 'material-community', name: icon, color }}
+            leftIcon={{ type: Theme.iconType, name: icon, color }}
             onPress={disabled ? undefined : this._handleOnPressItem(value)}
             subtitle={item.subtitle}
             title={title}
