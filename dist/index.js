@@ -1,4 +1,4 @@
-import { AnimatedScrollView } from '../dist/AnimatedScrollView';
+import { AnimatedScrollView } from './AnimatedScrollView';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { CheckBox } from './CheckBox';
