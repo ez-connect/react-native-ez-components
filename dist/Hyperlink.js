@@ -9,7 +9,7 @@ export class Hyperlink extends React.PureComponent {
         };
     }
     render() {
-        const { style, onPress, ...rest } = this.props;
+        const { onPress, ...rest } = this.props;
         return <TouchableText onPress={onPress || this._handleOnPress} {...rest}/>;
     }
 }
