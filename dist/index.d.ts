@@ -1,3 +1,4 @@
+import { AnimatedScrollView } from '../dist/AnimatedScrollView';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { CheckBox } from './CheckBox';
@@ -23,4 +24,4 @@ import { TouchableFeedback } from './TouchableFeedback';
 import { TouchableIcon } from './TouchableIcon';
 import { TouchableText } from './TouchableText';
 import { View } from './View';
-export { Badge, Button, CheckBox, daylight, DaylightEvent, DaylightView, Divider, EventListener, Header, Hyperlink, Icon, ListItem, NavigationService, ProgressBar, SafeAreaView, ScrollView, Sheet, StatusBar, Storage, Text, Theme, ThemeEvent, Toast, ToastDuration, TouchableFeedback, TouchableIcon, TouchableText, View, };
+export { AnimatedScrollView, Badge, Button, CheckBox, daylight, DaylightEvent, DaylightView, Divider, EventListener, Header, Hyperlink, Icon, ListItem, NavigationService, ProgressBar, SafeAreaView, ScrollView, Sheet, StatusBar, Storage, Text, Theme, ThemeEvent, Toast, ToastDuration, TouchableFeedback, TouchableIcon, TouchableText, View, };

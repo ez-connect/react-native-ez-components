@@ -1,3 +1,4 @@
+import { AnimatedScrollView } from '../dist/AnimatedScrollView';
 import { Badge } from './Badge';
 import { Button } from './Button';
 import { CheckBox } from './CheckBox';
@@ -25,6 +26,7 @@ import { TouchableText } from './TouchableText';
 import { View } from './View';
 
 export {
+  AnimatedScrollView,
   Badge,
   Button,
   CheckBox,
