@@ -1,8 +1,9 @@
 import { Component } from 'react';
-import { Animated, ScrollViewProps } from 'react-native';
+import { Animated, ScrollViewProps, ViewStyle } from 'react-native';
 interface Props extends ScrollViewProps {
     header: JSX.Element;
-    range: number;
+    headerHeight: number;
+    style?: ViewStyle;
 }
 interface State {
     scrollAnim: Animated.Value;

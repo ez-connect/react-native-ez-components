@@ -6,7 +6,7 @@ import { Theme } from './Theme';
 
 interface Props extends ScrollViewProps {
   header: JSX.Element; // auto hide when reach to range
-  range: number;
+  headerHeight: number;
   style?: ViewStyle;
 }
 
@@ -42,17 +42,23 @@ export class AnimatedScrollView extends Component<Props, State> {
   public render() {
     const { scrollAnim, offsetAnim } = this.state;
     const translateY = Animated.add(scrollAnim, offsetAnim).interpolate({
-      inputRange: [0, this.props.range],
-      outputRange: [0, -this.props.range],
+      inputRange: [0, this.props.headerHeight],
+      outputRange: [0, -this.props.headerHeight],
       extrapolate: 'clamp',
     });
 
     const { style, scrollEventThrottle, ...rest } = this.props;
     const backgroundColor = (style && style.backgroundColor) || Theme.surface;
     const themeStyle = StyleSheet.flatten([
-      { backgroundColor },
+      { backgroundColor, paddingTop: this.props.headerHeight },
       style && style,
     ]);
+    const headerStyle = [
+      styles.header,
+      {
+        height: this.props.headerHeight, transform: [{ translateY }],
+      },
+    ];
 
     return (
       <View style={styles.container}>
@@ -72,7 +78,7 @@ export class AnimatedScrollView extends Component<Props, State> {
           {this.props.children}
         </Animated.ScrollView>
 
-        <Animated.View style={[styles.header, { transform: [{ translateY }] }]}>
+        <Animated.View style={headerStyle}>
           {this.props.header}
         </Animated.View>
       </View>
@@ -98,7 +104,7 @@ export class AnimatedScrollView extends Component<Props, State> {
     const previous = this._previousScrollvalue;
     const current = this._currentScrollValue;
 
-    if (previous > current || current < this.props.range) {
+    if (previous > current || current < this.props.headerHeight) {
       // User scrolled down or scroll amount was too less, lets snap back our header
       Animated.spring(this.state.offsetAnim, {
         toValue: -current,
