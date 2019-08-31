@@ -9,7 +9,6 @@ interface Props {
     rightElement?: React.ReactNode;
     searchable?: boolean;
     searchCancelIcon?: IconProps;
-    searchIcon?: IconProps;
     title?: string;
     onBack?(): void;
     onSearch?(query: string): void;
@@ -17,6 +16,7 @@ interface Props {
 interface State {
     isSearching?: boolean;
     progress?: number;
+    text?: string;
 }
 export declare class Header extends React.PureComponent<Props, State> {
     static debounce(fn: any, wait?: number, immediate?: boolean): () => void;
@@ -28,10 +28,10 @@ export declare class Header extends React.PureComponent<Props, State> {
     collapse(): void;
     expand(): void;
     private _renderTitle;
-    private _renderSearchComponent;
-    private _search;
+    private _renderCancelSearchComponent;
+    private _handleOnSearch;
     private _handleOnPressBack;
-    private _handleOnPressSearch;
+    private _handleOnPressCancelSearch;
     private _handleOnProgressInterval;
 }
 export {};

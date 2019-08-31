@@ -17,7 +17,6 @@ interface Props {
   rightElement?: React.ReactNode;
   searchable?: boolean;
   searchCancelIcon?: IconProps;
-  searchIcon?: IconProps;
   title?: string;
   onBack?(): void;
   onSearch?(query: string): void;
@@ -26,6 +25,7 @@ interface Props {
 interface State {
   isSearching?: boolean;
   progress?: number;
+  text?: string;
 }
 
 const PROGRESS_DELAY = 50; // fake progress on iOS - without `progress` props
@@ -78,7 +78,7 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { icon, searchable, rightElement } = this.props;
+    const { icon, rightElement } = this.props;
     const backgroundColor = Theme.primary;
     const borderColor = Theme.primaryDark;
     const themeIcon = icon || { name: 'arrow-back' };
@@ -88,8 +88,8 @@ export class Header extends React.PureComponent<Props, State> {
           <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon} />
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
+            {this.state.isSearching && this._renderCancelSearchComponent()}
             {rightElement}
-            {searchable && this._renderSearchComponent()}
           </View>
         </View>
 
@@ -116,17 +116,17 @@ export class Header extends React.PureComponent<Props, State> {
 
 
   private _renderTitle() {
-    const { title, placeholder } = this.props;
-    const { isSearching } = this.state;
+    const { title, placeholder, searchable } = this.props;
     const color = Theme.primaryText;
-    if (isSearching) {
+    if (searchable) {
       return (
         <TextInput
-          style={[styles.input, { color }]}
-          placeholder={placeholder}
           autoFocus={true}
+          placeholder={placeholder}
+          style={[styles.input, { color }]}
           underlineColorAndroid='transparent'
-          onChangeText={this._search}
+          value={this.state.text}
+          onChangeText={this._handleOnSearch}
         />
       );
     }
@@ -134,17 +134,11 @@ export class Header extends React.PureComponent<Props, State> {
     return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
   }
 
-  private _renderSearchComponent() {
-    const { searchable, searchIcon, searchCancelIcon } = this.props;
-    const { isSearching } = this.state;
-    // const icon = { name: isSearching ? 'close' : 'search' };
-    const icon = isSearching
-      ? searchCancelIcon || { name: 'close' }
-      : searchIcon || { name: 'search' };
-
-    if (searchable) {
+  private _renderCancelSearchComponent() {
+    if (this.state.isSearching) {
+      const icon = this.props.searchCancelIcon || { name: 'close' };
       return (
-        <TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressSearch} />
+        <TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressCancelSearch} />
       );
     }
 
@@ -153,10 +147,12 @@ export class Header extends React.PureComponent<Props, State> {
 
   ///////////////////////////////////////////////////////////////////
 
-  private _search = (text: string) => {
+  private _handleOnSearch = (text: string) => {
+    if (text !== '') {
+      this.setState({ isSearching: true, text });
+    }
     this._debounceOnSearch(text);
   }
-
 
   private _handleOnPressBack = () => {
     if (this.state.isSearching) {
@@ -168,14 +164,9 @@ export class Header extends React.PureComponent<Props, State> {
     }
   }
 
-  private _handleOnPressSearch = () => {
-    const { isSearching } = this.state;
-
-    if (isSearching) {
-      this._search('');
-    }
-
-    this.setState({ isSearching: !isSearching });
+  private _handleOnPressCancelSearch = () => {
+    this._handleOnSearch('');
+    this.setState({ isSearching: false, text: undefined });
   }
 
   private _handleOnProgressInterval = () => {
@@ -189,6 +180,7 @@ export class Header extends React.PureComponent<Props, State> {
 
 const styles = StyleSheet.create({
   mainContainer: {
+    alignItems: 'center',
     borderBottomWidth: 0.5,
   },
   container: {

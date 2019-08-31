@@ -8,7 +8,10 @@ const PROGRESS_DELAY = 50;
 export class Header extends React.PureComponent {
     constructor(props) {
         super(props);
-        this._search = (text) => {
+        this._handleOnSearch = (text) => {
+            if (text !== '') {
+                this.setState({ isSearching: true, text });
+            }
             this._debounceOnSearch(text);
         };
         this._handleOnPressBack = () => {
@@ -22,12 +25,9 @@ export class Header extends React.PureComponent {
                 NavigationService.goBack();
             }
         };
-        this._handleOnPressSearch = () => {
-            const { isSearching } = this.state;
-            if (isSearching) {
-                this._search('');
-            }
-            this.setState({ isSearching: !isSearching });
+        this._handleOnPressCancelSearch = () => {
+            this._handleOnSearch('');
+            this.setState({ isSearching: false, text: undefined });
         };
         this._handleOnProgressInterval = () => {
             const progress = (this.state.progress + (PROGRESS_DELAY / 1000)) % 1;
@@ -64,7 +64,7 @@ export class Header extends React.PureComponent {
         };
     }
     render() {
-        const { icon, searchable, rightElement } = this.props;
+        const { icon, rightElement } = this.props;
         const backgroundColor = Theme.primary;
         const borderColor = Theme.primaryDark;
         const themeIcon = icon || { name: 'arrow-back' };
@@ -73,8 +73,8 @@ export class Header extends React.PureComponent {
           <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
           <View style={styles.leftContainer}>{this._renderTitle()}</View>
           <View style={styles.rightContainer}>
+            {this.state.isSearching && this._renderCancelSearchComponent()}
             {rightElement}
-            {searchable && this._renderSearchComponent()}
           </View>
         </View>
 
@@ -86,22 +86,17 @@ export class Header extends React.PureComponent {
     expand() {
     }
     _renderTitle() {
-        const { title, placeholder } = this.props;
-        const { isSearching } = this.state;
+        const { title, placeholder, searchable } = this.props;
         const color = Theme.primaryText;
-        if (isSearching) {
-            return (<TextInput style={[styles.input, { color }]} placeholder={placeholder} autoFocus={true} underlineColorAndroid='transparent' onChangeText={this._search}/>);
+        if (searchable) {
+            return (<TextInput autoFocus={true} placeholder={placeholder} style={[styles.input, { color }]} underlineColorAndroid='transparent' value={this.state.text} onChangeText={this._handleOnSearch}/>);
         }
         return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
     }
-    _renderSearchComponent() {
-        const { searchable, searchIcon, searchCancelIcon } = this.props;
-        const { isSearching } = this.state;
-        const icon = isSearching
-            ? searchCancelIcon || { name: 'close' }
-            : searchIcon || { name: 'search' };
-        if (searchable) {
-            return (<TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressSearch}/>);
+    _renderCancelSearchComponent() {
+        if (this.state.isSearching) {
+            const icon = this.props.searchCancelIcon || { name: 'close' };
+            return (<TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressCancelSearch}/>);
         }
         return null;
     }
@@ -109,6 +104,7 @@ export class Header extends React.PureComponent {
 Header.s_debounceTimeout = null;
 const styles = StyleSheet.create({
     mainContainer: {
+        alignItems: 'center',
         borderBottomWidth: 0.5,
     },
     container: {
