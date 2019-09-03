@@ -1,4 +1,5 @@
-import { DrawerActions, NavigationActions, StackActions } from 'react-navigation';
+import { NavigationActions, StackActions } from 'react-navigation';
+import { DrawerActions } from 'react-navigation-drawer';
 export class NavigationService {
     static setTopLevelNavigator(navigatorRef) {
         NavigationService._navigator = navigatorRef;

@@ -4,7 +4,7 @@ import { Badge as BBadge } from 'react-native-elements';
 import { Theme } from './Theme';
 export const Badge = (props) => {
     const { badgeStyle, textStyle, clear, ...rest } = props;
-    const backgroundColor = clear ? Theme.background : Theme.secondaryLight;
+    const backgroundColor = clear ? Theme.surface : Theme.secondaryLight;
     const borderColor = Theme.secondaryLight;
     const color = clear ? Theme.backgroundText : Theme.secondaryText;
     const themeBadgeStyle = StyleSheet.flatten([
@@ -17,7 +17,10 @@ export const Badge = (props) => {
 };
 const styles = StyleSheet.create({
     badge: {
+        alignItems: 'flex-start',
+        borderRadius: 24,
         borderWidth: 0.5,
+        padding: 12,
     },
     text: {
         fontSize: 12,

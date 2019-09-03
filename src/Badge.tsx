@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Badge as BBadge, BadgeProps as BProps } from 'react-native-elements';
 
 import { Theme } from './Theme';
@@ -10,7 +10,7 @@ export interface BadgeProps extends BProps {
 
 export const Badge = (props: BadgeProps) => {
   const { badgeStyle, textStyle, clear, ...rest } = props;
-  const backgroundColor = clear ? Theme.background : Theme.secondaryLight;
+  const backgroundColor = clear ? Theme.surface : Theme.secondaryLight;
   const borderColor = Theme.secondaryLight;
   const color = clear ? Theme.backgroundText : Theme.secondaryText;
 
@@ -32,7 +32,10 @@ export const Badge = (props: BadgeProps) => {
 
 const styles = StyleSheet.create({
   badge: {
+    alignItems: 'flex-start',
+    borderRadius: 24,
     borderWidth: 0.5,
+    padding: 12,
   },
   text: {
     fontSize: 12,

@@ -1,4 +1,5 @@
-import { DrawerActions, NavigationActions, NavigationContainerComponent, StackActions } from 'react-navigation';
+import { NavigationActions, NavigationContainerComponent, StackActions } from 'react-navigation';
+import { DrawerActions } from 'react-navigation-drawer';
 
 export class NavigationService {
   public static setTopLevelNavigator(navigatorRef: NavigationContainerComponent | null) {
