@@ -3,15 +3,18 @@ import { ScrollView as BScrollView, ScrollViewProps, StyleSheet, ViewStyle } fro
 
 import { Theme } from './Theme';
 
-interface ScrollViewExProps  extends ScrollViewProps {
+interface ScrollViewExProps extends ScrollViewProps {
   style?: ViewStyle;
+  surface?: boolean;
   children?: React.ReactNode;
 }
 
 export const ScrollView = (props: ScrollViewExProps) => {
-  const { style, ...rest } = props;
-  const backgroundColor = (style && style.backgroundColor) || Theme.surface;
-  const themeStyle = StyleSheet.flatten([
+  const { style, surface, ...rest } = props;
+  const backgroundColor = (style && style.backgroundColor)
+    ? style.backgroundColor
+    : surface ? Theme.surface : Theme.background;
+  const themeStyle = StyleSheet.flatten<ViewStyle>([
     { backgroundColor },
     style && style,
   ]);
