@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
-import { View } from './View';
 
 interface Props {
   // compactElement?: React.ReactNode;
@@ -123,8 +122,8 @@ export class Header extends React.PureComponent<Props, State> {
       return (
         <Input
           autoFocus={true}
+          inputContainerStyle={styles.input}
           placeholder={placeholder}
-          style={styles.input}
           underlineColorAndroid='transparent'
           value={this.state.text}
           onChangeText={this._handleOnSearch}
@@ -202,8 +201,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   input: {
-    flex: 1,
-    marginLeft: 10,
+    borderBottomWidth: 0,
   },
   progress: {
     position: 'absolute',

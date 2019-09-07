@@ -201,5 +201,5 @@ class Daylight extends EventListener {
         }
     }
 }
-const daylight = new Daylight();
-export { daylight };
+const daylightStatic = new Daylight();
+export { daylightStatic as Daylight };

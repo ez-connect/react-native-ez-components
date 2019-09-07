@@ -25,7 +25,7 @@ interface ToastItem {
   duration?: ToastDuration | number;
   action?: {
     title: string;
-    color: string;
+    color?: string;
     onPress?: () => void;
   };
 }

@@ -1,9 +1,7 @@
 // https://snack.expo.io/B1v5RS7ix
 
 import React, { Component } from 'react';
-import { Animated, ScrollViewProps, StyleSheet, ViewStyle } from 'react-native';
-import { Theme } from './Theme';
-import { View } from './View';
+import { Animated, ScrollViewProps, StyleSheet, View, ViewStyle } from 'react-native';
 
 interface Props extends ScrollViewProps {
   header: JSX.Element; // auto hide when reach to range

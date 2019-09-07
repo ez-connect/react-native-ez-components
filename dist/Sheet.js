@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Animated, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import { Animated, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Divider, ListItem, Text } from 'react-native-elements';
 import { Theme } from './Theme';
-import { View } from './View';
 const CONTAINER_OPACITY = 80;
 const ANIM_DURATION = 300;
 export class Sheet extends React.PureComponent {

@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Divider, ListItem, Text } from 'react-native-elements';
 
 import { Theme } from './Theme';
-import { View } from './View';
 
 export interface SheetItem {
   disabled?: boolean;

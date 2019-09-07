@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Input, Text } from 'react-native-elements';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
-import { View } from './View';
 const PROGRESS_DELAY = 50;
 export class Header extends React.PureComponent {
     constructor(props) {
@@ -90,7 +89,7 @@ export class Header extends React.PureComponent {
     _renderTitle() {
         const { title, placeholder, searchable } = this.props;
         if (searchable) {
-            return (<Input autoFocus={true} placeholder={placeholder} style={styles.input} underlineColorAndroid='transparent' value={this.state.text} onChangeText={this._handleOnSearch}/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.input} placeholder={placeholder} underlineColorAndroid='transparent' value={this.state.text} onChangeText={this._handleOnSearch}/>);
         }
         return <Text style={styles.title} numberOfLines={1}>{title}</Text>;
     }
@@ -126,8 +125,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     input: {
-        flex: 1,
-        marginLeft: 10,
+        borderBottomWidth: 0,
     },
     progress: {
         position: 'absolute',
