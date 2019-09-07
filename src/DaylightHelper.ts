@@ -1,17 +1,17 @@
 
-export interface RGBA {
+interface RGBA {
   red: number;
   green: number;
   blue: number;
   alpha?: number;
 }
 
-export default class Helper {
+class DaylightHelper {
   /**
    * http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
    * Reference: https://github.com/mattdesl/kelvin-to-rgb
    */
-  public static kelvinToRGB(temperature: number): RGBA {
+  public kelvinToRGB(temperature: number): RGBA {
     temperature = temperature / 100;
     let red = 0;
     let blue = 0;
@@ -70,7 +70,7 @@ export default class Helper {
     return { red, green, blue };
   }
 
-  public static async getSunTime() {
+  public async getSunTime() {
     try {
       const res = await fetch('https://sun.p.rapidapi.com/api/sun/?ip_address=174.20.20.55&date=2016-07-18', {
         headers: { 'X-RapidAPI-Key': 'WCJzCLMx65mshtSVxIToCLKUgNUpp1jLyIljsntAp3bd7WhRJE' },
@@ -107,3 +107,9 @@ export default class Helper {
     }
   }
 }
+
+const daylightHelperStatic = new DaylightHelper();
+export {
+  daylightHelperStatic as DaylightHelper,
+  RGBA,
+};

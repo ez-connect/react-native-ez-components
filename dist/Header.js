@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
+import { Input, Text } from 'react-native-elements';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
+import { View } from './View';
 const PROGRESS_DELAY = 50;
 export class Header extends React.PureComponent {
     constructor(props) {
@@ -65,20 +67,20 @@ export class Header extends React.PureComponent {
     }
     render() {
         const { icon, rightElement } = this.props;
-        const backgroundColor = Theme.primary;
-        const borderColor = Theme.primaryDark;
-        const themeIcon = icon || { name: 'arrow-back' };
-        return (<View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
+        const colors = Theme.getTheme().colors;
+        return (<View style={styles.mainContainer}>
         <View style={styles.container}>
-          <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
-          <View style={styles.leftContainer}>{this._renderTitle()}</View>
+          <TouchableIcon {...icon} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
+          <View style={styles.leftContainer}>
+            {this._renderTitle()}
+          </View>
           <View style={styles.rightContainer}>
             {this.state.isSearching && this._renderCancelSearchComponent()}
             {rightElement}
           </View>
         </View>
 
-        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.primaryText} progress={this.state.progress} progressTintColor={Theme.primaryText} progressViewStyle='bar' styleAttr='Horizontal'/>
+        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={colors.secondary} progress={this.state.progress} progressTintColor={colors.primary} progressViewStyle='bar' styleAttr='Horizontal'/>
       </View>);
     }
     collapse() {
@@ -87,11 +89,10 @@ export class Header extends React.PureComponent {
     }
     _renderTitle() {
         const { title, placeholder, searchable } = this.props;
-        const color = Theme.primaryText;
         if (searchable) {
-            return (<TextInput autoFocus={true} placeholder={placeholder} style={[styles.input, { color }]} underlineColorAndroid='transparent' value={this.state.text} onChangeText={this._handleOnSearch}/>);
+            return (<Input autoFocus={true} placeholder={placeholder} style={styles.input} underlineColorAndroid='transparent' value={this.state.text} onChangeText={this._handleOnSearch}/>);
         }
-        return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
+        return <Text style={styles.title} numberOfLines={1}>{title}</Text>;
     }
     _renderCancelSearchComponent() {
         if (this.state.isSearching) {

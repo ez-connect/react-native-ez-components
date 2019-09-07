@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { Theme } from './Theme';
 import { TouchableFeedback } from './TouchableFeedback';
+import { View } from './View';
 export class TouchableIcon extends React.PureComponent {
     render() {
-        const { style, name, color, type, disabled, onPress, ...rest } = this.props;
-        const themeColor = color || (disabled ? Theme.secondaryLight : Theme.secondary);
-        return (<TouchableFeedback onPress={onPress} style={[styles.container, style]}>
-        <View style={[styles.container, style]} pointerEvents={'box-none'}>
-          <Icon name={name} color={themeColor} type={type || Theme.iconType} {...rest}/>
+        const { onPress, ...rest } = this.props;
+        return (<TouchableFeedback onPress={onPress} style={styles.container}>
+        <View style={styles.container} pointerEvents={'box-none'}>
+          <Icon {...rest}/>
         </View>
       </TouchableFeedback>);
     }

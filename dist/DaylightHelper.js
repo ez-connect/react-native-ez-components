@@ -1,5 +1,5 @@
-export default class Helper {
-    static kelvinToRGB(temperature) {
+class DaylightHelper {
+    kelvinToRGB(temperature) {
         temperature = temperature / 100;
         let red = 0;
         let blue = 0;
@@ -57,7 +57,7 @@ export default class Helper {
         }
         return { red, green, blue };
     }
-    static async getSunTime() {
+    async getSunTime() {
         try {
             const res = await fetch('https://sun.p.rapidapi.com/api/sun/?ip_address=174.20.20.55&date=2016-07-18', {
                 headers: { 'X-RapidAPI-Key': 'WCJzCLMx65mshtSVxIToCLKUgNUpp1jLyIljsntAp3bd7WhRJE' },
@@ -95,3 +95,5 @@ export default class Helper {
         }
     }
 }
+const daylightHelperStatic = new DaylightHelper();
+export { daylightHelperStatic as DaylightHelper, };

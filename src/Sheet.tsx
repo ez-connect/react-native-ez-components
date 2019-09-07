@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import { Divider, ListItem, Text } from 'react-native-elements';
 
-import { ListItem } from './ListItem';
-import { Text } from './Text';
 import { Theme } from './Theme';
+import { View } from './View';
 
 export interface SheetItem {
   disabled?: boolean;
@@ -75,11 +75,11 @@ export class Sheet extends React.PureComponent<{}, State> {
 
   public render() {
     if (this.state.visible) {
-      const containerStyle = StyleSheet.flatten([
+      const containerStyle = StyleSheet.flatten<ViewStyle>([
         styles.mainContainer,
-        { backgroundColor: `${Theme.secondary}${CONTAINER_OPACITY}` },
         this._options && this._options.containerStyle,
       ]);
+
       return (
         <View style={containerStyle}>
           <TouchableOpacity onPress={this.close} style={styles.overlay}>
@@ -104,26 +104,27 @@ export class Sheet extends React.PureComponent<{}, State> {
       );
 
       if (title) {
-        const color = disabled ? Theme.surfaceText : Theme.backgroundText;
         return (
           <ListItem
             bottomDivider={this._options && this._options.bottomDivider}
             containerStyle={containerStyle}
             key={index}
-            leftIcon={{ type: Theme.iconType, name: icon, color }}
+            leftIcon={{ name: icon }}
             onPress={disabled ? undefined : this._handleOnPressItem(value)}
             subtitle={item.subtitle}
             title={title}
-            titleStyle={{ color }}
           />
         );
       } else {
-        return <View key={index} style={{ backgroundColor: Theme.surfaceText, ...styles.divider }} />;
+        return <Divider />;
       }
     });
 
 
-    const titleStyle = StyleSheet.flatten([styles.title, { backgroundColor: Theme.background }]);
+    const titleStyle = StyleSheet.flatten([
+      styles.title,
+      { backgroundColor: Theme.getTheme().colors.primary },
+    ]);
     const style: ViewStyle = { position: 'absolute', width: '100%' };
     if (this._options && this._options.position === 'top') {
       Object.assign(style, { top: this._anim });

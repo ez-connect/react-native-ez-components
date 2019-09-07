@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Theme } from './Theme';
-import { TouchableText } from './TouchableText';
+import { Button } from 'react-native-elements';
 const ANIM_OFFSET = -50;
 const ANIM_DURATION = 300;
 export var ToastType;
@@ -82,13 +81,11 @@ export class Toast extends React.Component {
         }
     }
     _renderItem() {
-        let { itemStyle, titleStyle, messageStyle } = this.props;
-        const backgroundColor = Theme.secondaryLight;
-        const color = Theme.secondaryText;
-        itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
-        titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
-        messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
         const { title, message } = this.state.item;
+        let { itemStyle, titleStyle, messageStyle } = this.props;
+        itemStyle = StyleSheet.flatten([styles.item, itemStyle]);
+        titleStyle = StyleSheet.flatten([styles.title, titleStyle]);
+        messageStyle = StyleSheet.flatten([styles.message, messageStyle]);
         return (<TouchableOpacity onPress={this._handleOnPress}>
         <Animated.View style={{ bottom: this._anim }}>
           <View style={itemStyle}>
@@ -103,13 +100,11 @@ export class Toast extends React.Component {
     }
     _renderItemAction() {
         const action = this.state.item.action;
-        const color = (action && action.color) || Theme.secondaryText;
+        const color = (action && action.color);
         const buttonStyle = StyleSheet.flatten([styles.button, { color }]);
         if (action) {
             return (<View style={styles.action}>
-          <TouchableText style={buttonStyle} onPress={this._handleOnAction}>
-            {action.title}
-          </TouchableText>
+          <Button title={action.title} onPress={this._handleOnAction}/>
         </View>);
         }
         return null;

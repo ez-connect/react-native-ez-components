@@ -1,8 +1,9 @@
 // https://snack.expo.io/B1v5RS7ix
 
 import React, { Component } from 'react';
-import { Animated, ScrollViewProps, StyleSheet, View, ViewStyle } from 'react-native';
+import { Animated, ScrollViewProps, StyleSheet, ViewStyle } from 'react-native';
 import { Theme } from './Theme';
+import { View } from './View';
 
 interface Props extends ScrollViewProps {
   header: JSX.Element; // auto hide when reach to range
@@ -48,9 +49,8 @@ export class AnimatedScrollView extends Component<Props, State> {
     });
 
     const { style, scrollEventThrottle, ...rest } = this.props;
-    const backgroundColor = (style && style.backgroundColor) || Theme.surface;
     const themeStyle = StyleSheet.flatten([
-      { backgroundColor, paddingTop: this.props.headerHeight },
+      { paddingTop: this.props.headerHeight },
       style && style,
     ]);
     const headerStyle = [

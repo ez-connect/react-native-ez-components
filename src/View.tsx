@@ -1,21 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, View as BView, ViewProps as BProps, ViewStyle } from 'react-native';
-
+import { StyleSheet, View as BView, ViewProps, ViewStyle } from 'react-native';
 import { Theme } from './Theme';
 
-interface ViewProps extends BProps {
-  style?: ViewStyle;
-  primary?: boolean;
-  secondary?: boolean;
-  children?: any;
-}
-
-export const View = (props: ViewProps) => {
-  const { style, primary, secondary, ...rest } = props;
-  let backgroundColor = primary ? Theme.primary : secondary ? Theme.secondary : Theme.background;
-  backgroundColor = (style && style.backgroundColor) || backgroundColor;
-  let borderColor = primary ? Theme.primary : secondary ? Theme.secondary : Theme.primaryDark;
-  borderColor = (style && style.borderColor) || borderColor;
+export const View = (props: ViewProps | any) => {
+  const { style, ...rest } = props;
+  const viewStyle = style as ViewStyle;
+  const backgroundColor = (style && viewStyle.backgroundColor) || Theme.getTheme().colors.primary;
+  const borderColor = (style && viewStyle.borderColor) || Theme.getTheme().colors.grey0;
 
   const themeStyle = StyleSheet.flatten([
     { backgroundColor },

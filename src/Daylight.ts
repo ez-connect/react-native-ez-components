@@ -1,5 +1,5 @@
+import { DaylightHelper, RGBA } from './DaylightHelper';
 import EventListener from './EventListener';
-import Helper, { RGBA } from './Helper';
 
 export const kDaylighPresets = [
   {
@@ -125,7 +125,7 @@ class Daylight extends EventListener<DaylightEvent> {
   }
 
   public async setSunTime() {
-    const sun = await Helper.getSunTime();
+    const sun = await DaylightHelper.getSunTime();
     if (sun) {
       const { dawn, sunrise, sunset, dusk } = sun;
       this._dawn = dawn;
@@ -190,28 +190,28 @@ class Daylight extends EventListener<DaylightEvent> {
       for (let minute = 0; minute < 60; minute += step) {
         const time = new Date().setHours(hour, minute, 0);
         const kelvin = this._getTemperature(time).kelvin;
-        const rgba = Helper.kelvinToRGB(kelvin);
+        const rgba = DaylightHelper.kelvinToRGB(kelvin);
         items.push({ time, kelvin, rgba });
       }
     }
 
     const day = {
-      argb: Helper.kelvinToRGB(this._preset.day),
+      argb: DaylightHelper.kelvinToRGB(this._preset.day),
       height: 1,
     };
 
     const night = {
-      argb: Helper.kelvinToRGB(this._preset.night),
+      argb: DaylightHelper.kelvinToRGB(this._preset.night),
       height: this._preset.night / this._preset.day,
     };
     const late = {
-      argb: Helper.kelvinToRGB(this._preset.late),
+      argb: DaylightHelper.kelvinToRGB(this._preset.late),
       height: this._preset.late / this._preset.day,
     };
 
     const { kelvin } = this._getTemperature(new Date().getTime());
     const now = {
-      argb: Helper.kelvinToRGB(kelvin),
+      argb: DaylightHelper.kelvinToRGB(kelvin),
       height: kelvin / this._preset.day,
     };
 
@@ -261,7 +261,7 @@ class Daylight extends EventListener<DaylightEvent> {
 
   private _update(shouldForceUpdate = false, time?: number, wakeTime?: number, bedTime?: number) {
     const { mode, kelvin } = this._getTemperature(time, wakeTime, bedTime);
-    const { red, green, blue } = Helper.kelvinToRGB(kelvin);
+    const { red, green, blue } = DaylightHelper.kelvinToRGB(kelvin);
     if (shouldForceUpdate || this._rgba.red !== red || this._rgba.green !== green || this._rgba.blue !== blue) {
       Object.assign(this._rgba, { red, green, blue });
       super.emit(DaylightEvent.OnChange, { mode, color: this._rgba });

@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
-import { IconProps } from 'react-native-elements';
+import { Platform, StyleSheet } from 'react-native';
+import { IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
+import { View } from './View';
 
 interface Props {
   // compactElement?: React.ReactNode;
   height?: number;
-  icon?: IconProps;
+  icon: IconProps;
   loadingEnabled?: boolean;
   placeholder?: string;
   progress?: number;
@@ -36,7 +37,7 @@ export class Header extends React.PureComponent<Props, State> {
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function() {
+    return function () {
       const context = this;
       const args = arguments;
       const later = () => {
@@ -79,14 +80,15 @@ export class Header extends React.PureComponent<Props, State> {
 
   public render() {
     const { icon, rightElement } = this.props;
-    const backgroundColor = Theme.primary;
-    const borderColor = Theme.primaryDark;
-    const themeIcon = icon || { name: 'arrow-back' };
+    const colors = Theme.getTheme().colors;
+
     return (
-      <View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
+      <View style={styles.mainContainer}>
         <View style={styles.container}>
-          <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon} />
-          <View style={styles.leftContainer}>{this._renderTitle()}</View>
+          <TouchableIcon {...icon} onPress={this._handleOnPressBack} style={styles.closeIcon} />
+          <View style={styles.leftContainer}>
+            {this._renderTitle()}
+          </View>
           <View style={styles.rightContainer}>
             {this.state.isSearching && this._renderCancelSearchComponent()}
             {rightElement}
@@ -96,9 +98,9 @@ export class Header extends React.PureComponent<Props, State> {
         <ProgressBar
           visible={this.props.loadingEnabled}
           style={styles.progress}
-          color={Theme.primaryText}
+          color={colors.secondary}
           progress={this.state.progress}
-          progressTintColor={Theme.primaryText}
+          progressTintColor={colors.primary}
           progressViewStyle='bar'
           styleAttr='Horizontal'
         />
@@ -117,13 +119,12 @@ export class Header extends React.PureComponent<Props, State> {
 
   private _renderTitle() {
     const { title, placeholder, searchable } = this.props;
-    const color = Theme.primaryText;
     if (searchable) {
       return (
-        <TextInput
+        <Input
           autoFocus={true}
           placeholder={placeholder}
-          style={[styles.input, { color }]}
+          style={styles.input}
           underlineColorAndroid='transparent'
           value={this.state.text}
           onChangeText={this._handleOnSearch}
@@ -131,7 +132,7 @@ export class Header extends React.PureComponent<Props, State> {
       );
     }
 
-    return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
+    return <Text style={styles.title} numberOfLines={1}>{title}</Text>;
   }
 
   private _renderCancelSearchComponent() {
