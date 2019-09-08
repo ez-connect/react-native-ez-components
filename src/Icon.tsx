@@ -4,16 +4,11 @@ import { Icon as BIcon, IconProps } from 'react-native-elements';
 import { Theme } from './Theme';
 
 export const Icon = (props: IconProps) => {
-  const { color, reverse, reverseColor, type, ...rest } = props;
-  const themeColor = color || Theme.backgroundText;
-  const themeReverseColor = reverseColor || Theme.secondaryText;
+  const { color, type, ...rest } = props;
 
   return (
     <BIcon
-      color={themeColor}
-      reverse={reverse}
-      reverseColor={themeReverseColor}
-      type={type || Theme.iconType}
+      type={type || Theme.iconset}
       {...rest}
     />
   );

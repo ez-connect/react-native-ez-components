@@ -10,10 +10,7 @@ export interface StatusBarState {
 export declare class StatusBar extends React.PureComponent<StatusBarProps, StatusBarState> {
     static setInstance(ref: StatusBar | null): void;
     static setHidden(hidden: boolean): void;
-    private static s_instance;
+    private static _instance;
     constructor(props: StatusBarProps);
-    componentDidMount(): void;
-    componentWillUnmount(): void;
     render(): JSX.Element;
-    private _handleOnThemeChange;
 }

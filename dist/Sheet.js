@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Animated, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { ListItem } from './ListItem';
-import { Text } from './Text';
+import { ListItem, Text } from 'react-native-elements';
 import { Theme } from './Theme';
 const CONTAINER_OPACITY = 80;
 const ANIM_DURATION = 300;
@@ -58,14 +57,15 @@ export class Sheet extends React.PureComponent {
             const { icon, title, value, disabled } = item;
             const containerStyle = StyleSheet.flatten([
                 styles.item,
-                this._options && this._options.itemsStyle
+                { backgroundColor: Theme.background },
+                this._options && this._options.itemsStyle,
             ]);
             if (title) {
-                const color = disabled ? Theme.surfaceText : Theme.backgroundText;
-                return (<ListItem bottomDivider={this._options && this._options.bottomDivider} containerStyle={containerStyle} key={index} leftIcon={{ type: Theme.iconType, name: icon, color }} onPress={disabled ? undefined : this._handleOnPressItem(value)} subtitle={item.subtitle} title={title} titleStyle={{ color }}/>);
+                const color = disabled ? Theme.onSurface : Theme.onBackground;
+                return (<ListItem bottomDivider={this._options && this._options.bottomDivider} containerStyle={containerStyle} key={index} leftIcon={{ type: Theme.iconset, name: icon, color }} onPress={disabled ? undefined : this._handleOnPressItem(value)} subtitle={item.subtitle} title={title} titleStyle={{ color }}/>);
             }
             else {
-                return <View key={index} style={{ backgroundColor: Theme.surfaceText, ...styles.divider }}/>;
+                return <View key={index} style={{ backgroundColor: Theme.onSurface, ...styles.divider }}/>;
             }
         });
         const titleStyle = StyleSheet.flatten([styles.title, { backgroundColor: Theme.background }]);

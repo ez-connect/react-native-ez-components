@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-import { Theme } from './Theme';
 const DEFAULT_SCROLL_THROTTLE = 20;
 export class AnimatedScrollView extends Component {
     constructor(props) {
@@ -53,9 +52,8 @@ export class AnimatedScrollView extends Component {
             extrapolate: 'clamp',
         });
         const { style, scrollEventThrottle, ...rest } = this.props;
-        const backgroundColor = (style && style.backgroundColor) || Theme.surface;
         const themeStyle = StyleSheet.flatten([
-            { backgroundColor, paddingTop: this.props.headerHeight },
+            { paddingTop: this.props.headerHeight },
             style && style,
         ]);
         const headerStyle = [

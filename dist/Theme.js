@@ -1,30 +1,80 @@
+import color from 'color';
 import EventListener from './EventListener';
-export var ThemeEvent;
+var ThemeEvent;
 (function (ThemeEvent) {
-    ThemeEvent[ThemeEvent["OnInit"] = 1] = "OnInit";
     ThemeEvent[ThemeEvent["OnChange"] = 2] = "OnChange";
 })(ThemeEvent || (ThemeEvent = {}));
-class SingletonTheme extends EventListener {
-    constructor() {
-        super(...arguments);
-        this.iconType = 'material';
+class Theme extends EventListener {
+    init(provider) {
+        this._themeProvider = provider;
     }
-    init(themes) {
-        this.transparent = 'transparent';
-        this.themes = themes;
-        super.emit(ThemeEvent.OnInit);
+    setTheme(value) {
+        this._themeProvider.updateTheme(value);
+        super.emit(ThemeEvent.OnChange);
     }
-    setTheme(name) {
-        const item = this.themes.find((x) => x.name === name);
-        Object.assign(this, item);
-        super.emit(ThemeEvent.OnChange, name);
+    setThemeItem(value) {
+        Object.assign(this, value);
+        const { primary, onPrimary, secondary, onSecondary, background, onBackground, onSurface } = value;
+        const theme = {
+            Badge: {
+                badgeStyle: {
+                    borderRadius: 24,
+                    padding: 12,
+                },
+                textStyle: {
+                    color: onSecondary,
+                },
+            },
+            Button: {
+                titleStyle: {
+                    color: onPrimary,
+                },
+            },
+            ButtonGroup: {
+                buttonStyle: { backgroundColor: background },
+                selectedButtonStyle: { backgroundColor: secondary },
+                selectedTextStyle: { color: onSecondary },
+                textStyle: { color: onBackground, fontSize: 14 },
+            },
+            Icon: {
+                type: this.iconset,
+                color: onBackground,
+            },
+            ListItem: {
+                containerStyle: {
+                    backgroundColor: 'transparent',
+                },
+                leftIcon: {
+                    color: onBackground,
+                },
+            },
+            Text: {
+                style: {
+                    color: onBackground,
+                },
+            },
+            colors: {
+                primary,
+                secondary,
+                grey0: color(background).darken(0.8).toString(),
+                grey1: color(background).darken(0.6).toString(),
+                grey2: color(background).darken(0.4).toString(),
+                grey3: color(background).darken(0.8).toString(),
+                grey4: color(background).darken(0.6).toString(),
+                grey5: color(background).darken(0.4).toString(),
+                greyOutline: color(background).darken(0.5).toString(),
+                disabled: color(background).darken(0.2).toString(),
+                divider: onSurface,
+            },
+        };
+        this.setTheme(theme);
     }
-    getAllThemes() {
-        return this.themes;
-    }
-    setDefaultIconSet(value) {
-        this.iconType = value;
+    getTheme() {
+        const theme = this._themeProvider
+            ? this._themeProvider.getTheme()
+            : undefined;
+        return theme;
     }
 }
-const Theme = new SingletonTheme();
-export { Theme, };
+const themeStatic = new Theme();
+export { themeStatic as Theme, ThemeEvent, };

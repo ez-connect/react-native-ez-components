@@ -1,46 +1,44 @@
+import { FullTheme, ThemeProvider } from 'react-native-elements';
 import EventListener from './EventListener';
-export interface ThemeItem {
+interface ThemeItem {
     name: string;
     primary: string;
-    primaryLight: string;
-    primaryDark: string;
-    primaryText: string;
+    primaryDark?: string;
+    primaryLight?: string;
+    onPrimary: string;
     secondary: string;
-    secondaryLight: string;
-    secondaryDark: string;
-    secondaryText: string;
+    secondaryDark?: string;
+    secondaryLight?: string;
+    onSecondary: string;
     background: string;
-    backgroundText: string;
+    onBackground: string;
     surface: string;
-    surfaceText: string;
-    transparent?: string;
+    onSurface: string;
+    iconset?: string;
 }
-export declare enum ThemeEvent {
-    OnInit = 1,
+declare enum ThemeEvent {
     OnChange = 2
 }
-declare type IconType = 'antdesign' | 'entypo' | 'evilicon' | 'feather' | 'font-awesome' | 'foundation' | 'ionicon' | 'material' | 'material-community' | 'octicon' | 'simple-line-icon' | 'zocial';
-declare class SingletonTheme extends EventListener<ThemeEvent> implements ThemeItem {
+declare class Theme extends EventListener<ThemeEvent> implements ThemeItem {
     name: string;
     primary: string;
+    primaryDark?: string;
     primaryLight: string;
-    primaryDark: string;
-    primaryText: string;
+    onPrimary: string;
     secondary: string;
-    secondaryLight: string;
-    secondaryDark: string;
-    secondaryText: string;
+    secondaryDark?: string;
+    secondaryLight?: string;
+    onSecondary: string;
     background: string;
-    backgroundText: string;
+    onBackground: string;
     surface: string;
-    surfaceText: string;
-    transparent?: string;
-    iconType: IconType;
-    protected themes: ThemeItem[];
-    init(themes: ThemeItem[]): void;
-    setTheme(name: string): void;
-    getAllThemes(): ThemeItem[];
-    setDefaultIconSet(value: IconType): void;
+    onSurface: string;
+    iconset?: string;
+    private _themeProvider?;
+    init(provider: ThemeProvider<any>): void;
+    setTheme(value: Partial<FullTheme>): void;
+    setThemeItem(value: ThemeItem): void;
+    getTheme(): FullTheme | undefined;
 }
-declare const Theme: SingletonTheme;
-export { Theme, };
+declare const themeStatic: Theme;
+export { themeStatic as Theme, ThemeEvent, ThemeItem, };

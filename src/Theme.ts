@@ -1,82 +1,160 @@
+import color from 'color';
+import { FullTheme, ThemeProvider } from 'react-native-elements';
+
 import EventListener from './EventListener';
 
-export interface ThemeItem {
+interface ThemeItem {
   name: string;
 
+  // A primary color is the color displayed most frequently across your app’s screens and components.
+  // If you don’t have a secondary color, your primary color can also be used to accent elements.
+  //
+  // You can make a color theme for your app using your primary color,
+  // as well as dark and light primary variants.
   primary: string;
-  primaryLight: string;
-  primaryDark: string;
-  primaryText: string;
+  primaryDark?: string;
+  primaryLight?: string;
+  onPrimary: string;
 
+  // A secondary color provides more ways to accent and distinguish your product.
+  // Having a secondary color is optional, and should be applied sparingly
+  // to accent select parts of your UI.
+  //
+  // Secondary colors are best for:
+  // - Floating action buttons
+  // - Selection controls, like sliders and switches
+  // - Highlighting selected text
+  // - Progress bars
+  // - Links and headlines
+  //
+  // Just like the primary color, your secondary color can have dark and light variants.
+  // You can make a color theme by using your primary color, secondary color, and dark and light variants of each color.
   secondary: string;
-  secondaryLight: string;
-  secondaryDark: string;
-  secondaryText: string;
+  secondaryDark?: string;
+  secondaryLight?: string;
+  onSecondary: string;
 
+  // Surface, background, and error colors typically don’t represent brand:
+  // - Surface colors affect surfaces of components, such as cards, sheets, and menus.
+  // - The background color appears behind scrollable content.
+  //   The baseline background and surface color is #FFFFFF.
+  // - Error color indicates errors in components, such as invalid text in a text field.
+  //   The baseline error color is #B00020.
   background: string;
-  backgroundText: string;
+  onBackground: string;
 
   surface: string;
-  surfaceText: string;
+  onSurface: string;
 
-  transparent?: string;
+  iconset?: string;
 }
 
-export enum ThemeEvent {
-  OnInit = 1,
+enum ThemeEvent {
   OnChange = 2,
 }
 
-type IconType = 'antdesign' | 'entypo' | 'evilicon' | 'feather' | 'font-awesome' | 'foundation'
-  | 'ionicon' | 'material' | 'material-community' | 'octicon' | 'simple-line-icon' | 'zocial';
-
-class SingletonTheme extends EventListener<ThemeEvent> implements ThemeItem {
+class Theme extends EventListener<ThemeEvent> implements ThemeItem {
   public name: string;
-
   public primary: string;
+  public primaryDark?: string;
   public primaryLight: string;
-  public primaryDark: string;
-  public primaryText: string;
-
+  public onPrimary: string;
   public secondary: string;
-  public secondaryLight: string;
-  public secondaryDark: string;
-  public secondaryText: string;
-
+  public secondaryDark?: string;
+  public secondaryLight?: string;
+  public onSecondary: string;
   public background: string;
-  public backgroundText: string;
+  public onBackground: string;
 
   public surface: string;
-  public surfaceText: string;
+  public onSurface: string;
 
-  public transparent?: string;
+  public iconset?: string;
 
-  public iconType: IconType = 'material';
+  private _themeProvider?: ThemeProvider<any>;
 
-  protected themes: ThemeItem[];
-
-  public init(themes: ThemeItem[]) {
-    this.transparent = 'transparent';
-    this.themes = themes;
-    super.emit(ThemeEvent.OnInit);
+  public init(provider: ThemeProvider<any>) {
+    this._themeProvider = provider;
   }
 
-  public setTheme(name: string) {
-    const item = this.themes.find((x) => x.name === name);
-    Object.assign(this, item);
-    super.emit(ThemeEvent.OnChange, name);
+  public setTheme(value: Partial<FullTheme>) {
+    this._themeProvider.updateTheme(value);
+    super.emit(ThemeEvent.OnChange);
   }
 
-  public getAllThemes() {
-    return this.themes;
+  public setThemeItem(value: ThemeItem) {
+    Object.assign(this, value);
+
+    const { primary, onPrimary, secondary, onSecondary, background, onBackground, onSurface } = value;
+    const theme: Partial<FullTheme> = {
+      Badge: {
+        badgeStyle: {
+          borderRadius: 24,
+          padding: 12,
+        },
+        textStyle: {
+          color: onSecondary,
+        },
+      },
+      Button: {
+        titleStyle: {
+          color: onPrimary,
+        },
+      },
+      ButtonGroup: {
+        buttonStyle: { backgroundColor: background },
+        selectedButtonStyle: { backgroundColor: secondary },
+        selectedTextStyle: { color: onSecondary },
+        textStyle: { color: onBackground, fontSize: 14 },
+      },
+      Icon: {
+        type: this.iconset,
+        color: onBackground,
+      },
+      ListItem: {
+        containerStyle: {
+          backgroundColor: 'transparent',
+        },
+        leftIcon: {
+          color: onBackground,
+        },
+      },
+      Text: {
+        style: {
+          color: onBackground,
+        },
+      },
+      colors: {
+        primary,
+        secondary,
+        grey0: color(background).darken(0.8).toString(),
+        grey1: color(background).darken(0.6).toString(),
+        grey2: color(background).darken(0.4).toString(),
+        grey3: color(background).darken(0.8).toString(),
+        grey4: color(background).darken(0.6).toString(),
+        grey5: color(background).darken(0.4).toString(),
+        greyOutline: color(background).darken(0.5).toString(),
+        disabled: color(background).darken(0.2).toString(),
+        // TODO: Darker color if hairlineWidth is not thin enough
+        divider: onSurface,
+      },
+    };
+
+    this.setTheme(theme);
   }
 
-  public setDefaultIconSet(value: IconType) {
-    this.iconType = value;
+
+  public getTheme(): FullTheme | undefined {
+    const theme = this._themeProvider
+      ? this._themeProvider.getTheme()
+      : undefined;
+    return theme;
   }
 }
 
-const Theme = new SingletonTheme();
+const themeStatic = new Theme();
 export {
-  Theme,
+  themeStatic as Theme,
+  ThemeEvent,
+  ThemeItem,
 };

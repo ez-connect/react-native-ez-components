@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Theme } from './Theme';
-import { TouchableText } from './TouchableText';
 const ANIM_OFFSET = -50;
 const ANIM_DURATION = 300;
 export var ToastType;
@@ -83,8 +83,8 @@ export class Toast extends React.Component {
     }
     _renderItem() {
         let { itemStyle, titleStyle, messageStyle } = this.props;
-        const backgroundColor = Theme.secondaryLight;
-        const color = Theme.secondaryText;
+        const backgroundColor = Theme.secondary;
+        const color = Theme.onSecondary;
         itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
         titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
         messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
@@ -103,13 +103,11 @@ export class Toast extends React.Component {
     }
     _renderItemAction() {
         const action = this.state.item.action;
-        const color = (action && action.color) || Theme.secondaryText;
-        const buttonStyle = StyleSheet.flatten([styles.button, { color }]);
+        const color = (action && action.color) || Theme.onSecondary;
+        const titleStyle = StyleSheet.flatten([styles.button, { color }]);
         if (action) {
             return (<View style={styles.action}>
-          <TouchableText style={buttonStyle} onPress={this._handleOnAction}>
-            {action.title}
-          </TouchableText>
+          <Button title={action.title} titleStyle={titleStyle} type='clear' onPress={this._handleOnAction}/>
         </View>);
         }
         return null;

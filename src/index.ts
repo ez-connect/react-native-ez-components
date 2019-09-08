@@ -1,15 +1,8 @@
 import { AnimatedScrollView } from './AnimatedScrollView';
-import { Badge } from './Badge';
-import { Button } from './Button';
-import { CheckBox } from './CheckBox';
-import { daylight, DaylightEvent } from './Daylight';
+import { Daylight, DaylightEvent } from './Daylight';
 import { DaylightView } from './DaylightView';
-import { Divider } from './Divider';
 import EventListener from './EventListener';
 import { Header } from './Header';
-import { Hyperlink } from './Hyperlink';
-import { Icon } from './Icon';
-import { ListItem } from './ListItem';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { SafeAreaView } from './SafeAreaView';
@@ -17,28 +10,19 @@ import { ScrollView } from './ScrollView';
 import { Sheet } from './Sheet';
 import { StatusBar } from './StatusBar';
 import { Storage } from './Storage';
-import { Text } from './Text';
-import { Theme, ThemeEvent } from './Theme';
+import { Theme, ThemeEvent, ThemeItem } from './Theme';
 import { Toast, ToastDuration } from './Toast';
 import { TouchableFeedback } from './TouchableFeedback';
 import { TouchableIcon } from './TouchableIcon';
-import { TouchableText } from './TouchableText';
 import { View } from './View';
 
 export {
   AnimatedScrollView,
-  Badge,
-  Button,
-  CheckBox,
-  daylight,
+  Daylight,
   DaylightEvent,
   DaylightView,
-  Divider,
   EventListener,
   Header,
-  Hyperlink,
-  Icon,
-  ListItem,
   NavigationService,
   ProgressBar,
   SafeAreaView,
@@ -46,13 +30,12 @@ export {
   Sheet,
   StatusBar,
   Storage,
-  Text,
   Theme,
   ThemeEvent,
+  ThemeItem,
   Toast,
   ToastDuration,
   TouchableFeedback,
   TouchableIcon,
-  TouchableText,
   View,
 };

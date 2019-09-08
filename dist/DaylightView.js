@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import { daylight, DaylightEvent } from './Daylight';
+import { Daylight, DaylightEvent } from './Daylight';
 export class DaylightView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -15,11 +15,11 @@ export class DaylightView extends React.PureComponent {
         this.state = { enable: false };
     }
     componentDidMount() {
-        daylight.addListener(DaylightEvent.OnEnableChange, this._handleOnDaylightEnableChange);
-        daylight.addListener(DaylightEvent.OnChange, this._handleOnDaylightChange);
+        Daylight.addListener(DaylightEvent.OnEnableChange, this._handleOnDaylightEnableChange);
+        Daylight.addListener(DaylightEvent.OnChange, this._handleOnDaylightChange);
     }
     componentWillUnmount() {
-        daylight.removeAllListeners();
+        Daylight.removeAllListeners();
     }
     render() {
         if (this.state.enable) {

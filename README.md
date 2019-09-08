@@ -18,7 +18,6 @@ Almost components of `react-native-elements` and:
 - `DaylightView`: a view used to apply daylight to apps
 - `EventListener`: a base class, used to add event listeners
 - `Header`
-- `Hyperlink`: clickable an url
 - `NavigationService`: a helper to help navigation between screens easy without use `react-navigation` props
 - `ProgressBar`: simple wrap `ProgressBarAndroid` and `ProgressViewIOS`
 - `Storage`: load and save objects to disks
@@ -26,62 +25,74 @@ Almost components of `react-native-elements` and:
 - `Toast`: like Toast on Android use pure JS
 - `TouchableFeedback`: uses `TouchableNativeFeedback` and `TouchableOpacity` based on platforms
 - `TouchableIcon`: an `Icon` uses `TouchableFeedback`
-- `TouchableText`: touchable text uses `TouchableFeedback`
 
 ## Theme
 
-Define your colors, see more in `/example/Colors.js`.
+Define your `ThemeItem`
 
 ```javascript
-const colors = [
-  ///////////////////////////////////////////////////////////////////
+const themes = [
   {
-    name: 'Default',
-    primary: '#fafafa',
-    primaryLight: '#ffffff',
-    primaryDark: '#c7c7c7',
-    primaryText: '#000000',
-
+    name: 'Light',
+    primary: '#212121',
+    onPrimary: '#ffffff',
     secondary: '#212121',
-    secondaryLight: '#484848',
-    secondaryDark: '#000000',
-    secondaryText: '#ffffff',
-
+    onSecondary: '#ffffff',
     background: '#ffffff',
-    surface: '#fafafa',
-    backgroundText: '#000000',
-    surfaceText: '#616161',
+    onBackground: '#000000',
+    surface: '#eceff1',
+    onSurface: '#616161',
+    iconset: 'ionicon',
   },
   {
     name: 'Dark',
-    primary: '#000000',
-    primaryLight: '#212121',
-    primaryDark: '#000000',
-    primaryText: '#ffffff',
-
+    primary: '#fafafa',
+    onPrimary: '#000000',
     secondary: '#fafafa',
-    secondaryLight: '#ffffff',
-    secondaryDark: '#c7c7c7',
-    secondaryText: '#000000',
-
+    onSecondary: '#000000',
     background: '#000000',
+    onBackground: '#bdbdbd',
     surface: '#0f0f0f',
-    backgroundText: '#bdbdbd',
-    surfaceText: '#8d8d8d',
+    onSurface: '#8d8d8d',
+    iconset: 'ionicon',
   },
   // ...
 ];
 ```
 
-Init `Theme` when init an application.
+Add `ThemeProvider` to your root component
 
 ```javascript
-Theme.init(colors);
-Theme.setTheme('a-theme-name');
-Theme.setDefaultIconSet('material-community');
+import { ThemeProvider } from 'react-native-elements';
+...
+<ThemeProvider ref={v => Theme.init(v)}>
+  ...
+</ThemeProvider>
 ```
 
-Handle on changes
+Init a `Theme`.
+
+```javascript
+// Apply color
+const item = themes[0]; // or pick one of them
+Theme.setThemeItem(item);
+
+// Override
+Theme.setTheme({
+  Badge: {
+    containerStyle: { marginRight: 6 },
+  },
+  Button: {
+    titleStyle: {
+      fontSize: 14,
+    },
+  },
+  ...
+});
+
+```
+
+Add listeners to do what you want then
 
 ```javascript
 Theme.addListener(ThemeEvent.OnChange, this._handleOnThemeChange);
@@ -91,20 +102,18 @@ _handleOnThemeChange = (name: string) {
 };
 ```
 
-Use a new theme in the runtime.
+Apply another theme
 
 ```javascript
-Theme.setTheme('a-new-theme-name');
+Theme.setThemeItem(<another-theme>);
 ```
 
-That's all. All components will be use the color that has been set.
+That's all. All components will be use the colors that has been set.
 
 ## Example
 
 See the `example` in this repository.
 
-## API
+## References
 
-All of them have types. Please check [react-native-elements](https://react-native-training.github.io/react-native-elements/docs/overview.html) and the source.
-
-Thanks!
+[react-native-elements](https://react-native-training.github.io/react-native-elements/docs/overview.html)

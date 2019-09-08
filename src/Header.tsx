@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Platform, StyleSheet, Text, TextInput, View } from 'react-native';
-import { IconProps } from 'react-native-elements';
+import { Platform, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
@@ -9,9 +9,11 @@ import { TouchableIcon } from './TouchableIcon';
 
 interface Props {
   // compactElement?: React.ReactNode;
+  backgroundColor?: string;
   height?: number;
-  icon?: IconProps;
+  icon: IconProps;
   loadingEnabled?: boolean;
+  onBackgroundColor?: string;
   placeholder?: string;
   progress?: number;
   rightElement?: React.ReactNode;
@@ -36,7 +38,7 @@ export class Header extends React.PureComponent<Props, State> {
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function() {
+    return function () {
       const context = this;
       const args = arguments;
       const later = () => {
@@ -79,14 +81,19 @@ export class Header extends React.PureComponent<Props, State> {
 
   public render() {
     const { icon, rightElement } = this.props;
-    const backgroundColor = Theme.primary;
-    const borderColor = Theme.primaryDark;
-    const themeIcon = icon || { name: 'arrow-back' };
+    const backgroundColor = this.props.backgroundColor || Theme.primary;
+    const containerStyle = [styles.mainContainer, { backgroundColor }];
+    const color = (icon && icon.color)
+      ? icon.color
+      : (this.props.onBackgroundColor || Theme.onPrimary);
+
     return (
-      <View style={[styles.mainContainer, { backgroundColor, borderColor }]}>
+      <View style={containerStyle}>
         <View style={styles.container}>
-          <TouchableIcon {...themeIcon} color={Theme.primaryText} onPress={this._handleOnPressBack} style={styles.closeIcon} />
-          <View style={styles.leftContainer}>{this._renderTitle()}</View>
+          <TouchableIcon {...icon} color={color} onPress={this._handleOnPressBack} style={styles.closeIcon} />
+          <View style={styles.leftContainer}>
+            {this._renderTitle()}
+          </View>
           <View style={styles.rightContainer}>
             {this.state.isSearching && this._renderCancelSearchComponent()}
             {rightElement}
@@ -96,9 +103,9 @@ export class Header extends React.PureComponent<Props, State> {
         <ProgressBar
           visible={this.props.loadingEnabled}
           style={styles.progress}
-          color={Theme.primaryText}
+          color={Theme.secondary}
           progress={this.state.progress}
-          progressTintColor={Theme.primaryText}
+          progressTintColor={Theme.primary}
           progressViewStyle='bar'
           styleAttr='Horizontal'
         />
@@ -116,14 +123,17 @@ export class Header extends React.PureComponent<Props, State> {
 
 
   private _renderTitle() {
-    const { title, placeholder, searchable } = this.props;
-    const color = Theme.primaryText;
+    const { title, placeholder, searchable, onBackgroundColor } = this.props;
+    const titleStyle = StyleSheet.flatten<TextStyle>([
+      styles.title,
+      { color: onBackgroundColor || Theme.onPrimary },
+    ]);
     if (searchable) {
       return (
-        <TextInput
+        <Input
           autoFocus={true}
+          inputContainerStyle={styles.input}
           placeholder={placeholder}
-          style={[styles.input, { color }]}
           underlineColorAndroid='transparent'
           value={this.state.text}
           onChangeText={this._handleOnSearch}
@@ -131,7 +141,7 @@ export class Header extends React.PureComponent<Props, State> {
       );
     }
 
-    return <Text style={[styles.title, { color }]} numberOfLines={1}>{title}</Text>;
+    return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
   }
 
   private _renderCancelSearchComponent() {
@@ -201,8 +211,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   input: {
-    flex: 1,
-    marginLeft: 10,
+    borderBottomWidth: 0,
   },
   progress: {
     position: 'absolute',

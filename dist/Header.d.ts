@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { IconProps } from 'react-native-elements';
 interface Props {
+    backgroundColor?: string;
     height?: number;
-    icon?: IconProps;
+    icon: IconProps;
     loadingEnabled?: boolean;
+    onBackgroundColor?: string;
     placeholder?: string;
     progress?: number;
     rightElement?: React.ReactNode;

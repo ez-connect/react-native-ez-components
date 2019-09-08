@@ -1,5 +1,5 @@
+import { RGBA } from './DaylightHelper';
 import EventListener from './EventListener';
-import { RGBA } from './Helper';
 export declare const kDaylighPresets: {
     name: string;
     desc: string;
@@ -70,5 +70,5 @@ declare class Daylight extends EventListener<DaylightEvent> {
     private _update;
     private _handleOnInterval;
 }
-declare const daylight: Daylight;
-export { daylight };
+declare const daylightStatic: Daylight;
+export { daylightStatic as Daylight };
