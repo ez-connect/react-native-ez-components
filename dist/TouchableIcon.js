@@ -2,12 +2,15 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { TouchableFeedback } from './TouchableFeedback';
+import { Theme } from './Theme';
 export class TouchableIcon extends React.PureComponent {
     render() {
-        const { onPress, ...rest } = this.props;
+        const { color, reverse, reverseColor, onPress, ...rest } = this.props;
+        const themeColor = color || Theme.secondary;
+        const themeReverseColor = reverse && (reverseColor || Theme.onSecondary);
         return (<TouchableFeedback onPress={onPress} style={styles.container}>
         <View style={styles.container} pointerEvents={'box-none'}>
-          <Icon {...rest}/>
+          <Icon color={themeColor} reverse={reverse} reverseColor={themeReverseColor} {...rest}/>
         </View>
       </TouchableFeedback>);
     }

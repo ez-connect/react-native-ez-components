@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Icon, IconProps } from 'react-native-elements';
 
 import { TouchableFeedback } from './TouchableFeedback';
+import { Theme } from './Theme';
 
 interface TouchableIconProps extends IconProps {
   onPress: () => void;
@@ -10,14 +11,16 @@ interface TouchableIconProps extends IconProps {
 
 export class TouchableIcon extends React.PureComponent<TouchableIconProps, {}> {
   public render() {
-    const { onPress, ...rest } = this.props;
+    const { color, reverse, reverseColor, onPress, ...rest } = this.props;
+    const themeColor = color || Theme.secondary;
+    const themeReverseColor = reverse && (reverseColor || Theme.onSecondary);
     return (
       <TouchableFeedback
         onPress={onPress}
         style={styles.container}
       >
         <View style={styles.container} pointerEvents={'box-none'}>
-          <Icon {...rest} />
+          <Icon color={themeColor} reverse={reverse} reverseColor={themeReverseColor} {...rest} />
         </View>
       </TouchableFeedback>
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TextStyle, View } from 'react-native';
+import { Platform, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
@@ -9,9 +9,11 @@ import { TouchableIcon } from './TouchableIcon';
 
 interface Props {
   // compactElement?: React.ReactNode;
+  backgroundColor?: string;
   height?: number;
   icon: IconProps;
   loadingEnabled?: boolean;
+  onBackgroundColor?: string;
   placeholder?: string;
   progress?: number;
   rightElement?: React.ReactNode;
@@ -36,7 +38,7 @@ export class Header extends React.PureComponent<Props, State> {
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function() {
+    return function () {
       const context = this;
       const args = arguments;
       const later = () => {
@@ -79,8 +81,11 @@ export class Header extends React.PureComponent<Props, State> {
 
   public render() {
     const { icon, rightElement } = this.props;
-    const containerStyle = [styles.mainContainer, { backgroundColor: Theme.primary }];
-    const color = (icon && icon.color) ? icon.color : Theme.onPrimary;
+    const backgroundColor = this.props.backgroundColor || Theme.primary;
+    const containerStyle = [styles.mainContainer, { backgroundColor }];
+    const color = (icon && icon.color)
+      ? icon.color
+      : (this.props.onBackgroundColor || Theme.onPrimary);
 
     return (
       <View style={containerStyle}>
@@ -118,8 +123,11 @@ export class Header extends React.PureComponent<Props, State> {
 
 
   private _renderTitle() {
-    const { title, placeholder, searchable } = this.props;
-    const titleStyle = StyleSheet.flatten<TextStyle>([styles.title, { color: Theme.onPrimary }]);
+    const { title, placeholder, searchable, onBackgroundColor } = this.props;
+    const titleStyle = StyleSheet.flatten<TextStyle>([
+      styles.title,
+      { color: onBackgroundColor || Theme.onPrimary },
+    ]);
     if (searchable) {
       return (
         <Input

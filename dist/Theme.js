@@ -14,10 +14,39 @@ class Theme extends EventListener {
     }
     setThemeItem(value) {
         Object.assign(this, value);
-        const { primary, secondary, background, onBackground, onSurface } = value;
+        const { primary, onPrimary, secondary, onSecondary, background, onBackground, onSurface } = value;
         const theme = {
+            Badge: {
+                badgeStyle: {
+                    borderRadius: 24,
+                    padding: 12,
+                },
+                textStyle: {
+                    color: onSecondary,
+                },
+            },
+            Button: {
+                titleStyle: {
+                    color: onPrimary,
+                },
+            },
+            ButtonGroup: {
+                buttonStyle: { backgroundColor: background },
+                selectedButtonStyle: { backgroundColor: secondary },
+                selectedTextStyle: { color: onSecondary },
+                textStyle: { color: onBackground, fontSize: 14 },
+            },
             Icon: {
                 type: this.iconset,
+                color: onBackground,
+            },
+            ListItem: {
+                containerStyle: {
+                    backgroundColor: 'transparent',
+                },
+                leftIcon: {
+                    color: onBackground,
+                },
             },
             Text: {
                 style: {

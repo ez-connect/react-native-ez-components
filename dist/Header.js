@@ -66,8 +66,11 @@ export class Header extends React.PureComponent {
     }
     render() {
         const { icon, rightElement } = this.props;
-        const containerStyle = [styles.mainContainer, { backgroundColor: Theme.primary }];
-        const color = (icon && icon.color) ? icon.color : Theme.onPrimary;
+        const backgroundColor = this.props.backgroundColor || Theme.primary;
+        const containerStyle = [styles.mainContainer, { backgroundColor }];
+        const color = (icon && icon.color)
+            ? icon.color
+            : (this.props.onBackgroundColor || Theme.onPrimary);
         return (<View style={containerStyle}>
         <View style={styles.container}>
           <TouchableIcon {...icon} color={color} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
@@ -88,8 +91,11 @@ export class Header extends React.PureComponent {
     expand() {
     }
     _renderTitle() {
-        const { title, placeholder, searchable } = this.props;
-        const titleStyle = StyleSheet.flatten([styles.title, { color: Theme.onPrimary }]);
+        const { title, placeholder, searchable, onBackgroundColor } = this.props;
+        const titleStyle = StyleSheet.flatten([
+            styles.title,
+            { color: onBackgroundColor || Theme.onPrimary },
+        ]);
         if (searchable) {
             return (<Input autoFocus={true} inputContainerStyle={styles.input} placeholder={placeholder} underlineColorAndroid='transparent' value={this.state.text} onChangeText={this._handleOnSearch}/>);
         }
