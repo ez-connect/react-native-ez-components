@@ -7,7 +7,7 @@ export class TouchableIcon extends React.PureComponent {
         const { onPress, ...rest } = this.props;
         return (<TouchableFeedback onPress={onPress} style={styles.container}>
         <View style={styles.container} pointerEvents={'box-none'}>
-          <Icon type='ionicon' {...rest}/>
+          <Icon {...rest}/>
         </View>
       </TouchableFeedback>);
     }

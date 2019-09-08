@@ -58,11 +58,7 @@ export class Toast extends React.Component {
     }
     render() {
         if (this.state.item) {
-            const style = StyleSheet.flatten([
-                styles.mainContainer,
-                { backgroundColor: Theme.secondary },
-                this.props.containerStyle,
-            ]);
+            const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
             return (<View style={style}>
           {this._renderItem()}
         </View>);
@@ -86,11 +82,13 @@ export class Toast extends React.Component {
         }
     }
     _renderItem() {
-        const { title, message } = this.state.item;
         let { itemStyle, titleStyle, messageStyle } = this.props;
-        itemStyle = StyleSheet.flatten([styles.item, itemStyle]);
-        titleStyle = StyleSheet.flatten([styles.title, titleStyle]);
-        messageStyle = StyleSheet.flatten([styles.message, messageStyle]);
+        const backgroundColor = Theme.secondary;
+        const color = Theme.onSecondary;
+        itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
+        titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
+        messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
+        const { title, message } = this.state.item;
         return (<TouchableOpacity onPress={this._handleOnPress}>
         <Animated.View style={{ bottom: this._anim }}>
           <View style={itemStyle}>
@@ -105,11 +103,11 @@ export class Toast extends React.Component {
     }
     _renderItemAction() {
         const action = this.state.item.action;
-        const color = (action && action.color);
-        const buttonStyle = StyleSheet.flatten([styles.button, { color }]);
+        const color = (action && action.color) || Theme.onSecondary;
+        const titleStyle = StyleSheet.flatten([styles.button, { color }]);
         if (action) {
             return (<View style={styles.action}>
-          <Button title={action.title} onPress={this._handleOnAction}/>
+          <Button title={action.title} titleStyle={titleStyle} type='clear' onPress={this._handleOnAction}/>
         </View>);
         }
         return null;

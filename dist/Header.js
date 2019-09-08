@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { Input, Text } from 'react-native-elements';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
-import { View } from './View';
 const PROGRESS_DELAY = 50;
 export class Header extends React.PureComponent {
     constructor(props) {
@@ -67,10 +66,11 @@ export class Header extends React.PureComponent {
     }
     render() {
         const { icon, rightElement } = this.props;
-        const colors = Theme.getTheme().colors;
-        return (<View style={styles.mainContainer}>
+        const containerStyle = [styles.mainContainer, { backgroundColor: Theme.primary }];
+        const color = (icon && icon.color) ? icon.color : Theme.onPrimary;
+        return (<View style={containerStyle}>
         <View style={styles.container}>
-          <TouchableIcon {...icon} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
+          <TouchableIcon {...icon} color={color} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
           <View style={styles.leftContainer}>
             {this._renderTitle()}
           </View>
@@ -80,7 +80,7 @@ export class Header extends React.PureComponent {
           </View>
         </View>
 
-        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={colors.secondary} progress={this.state.progress} progressTintColor={colors.primary} progressViewStyle='bar' styleAttr='Horizontal'/>
+        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.progress} progressTintColor={Theme.primary} progressViewStyle='bar' styleAttr='Horizontal'/>
       </View>);
     }
     collapse() {
@@ -89,10 +89,11 @@ export class Header extends React.PureComponent {
     }
     _renderTitle() {
         const { title, placeholder, searchable } = this.props;
+        const titleStyle = StyleSheet.flatten([styles.title, { color: Theme.onPrimary }]);
         if (searchable) {
             return (<Input autoFocus={true} inputContainerStyle={styles.input} placeholder={placeholder} underlineColorAndroid='transparent' value={this.state.text} onChangeText={this._handleOnSearch}/>);
         }
-        return <Text style={styles.title} numberOfLines={1}>{title}</Text>;
+        return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }
     _renderCancelSearchComponent() {
         if (this.state.isSearching) {

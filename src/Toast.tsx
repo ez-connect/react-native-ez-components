@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Animated, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Button } from 'react-native-elements';
+
 import { Theme } from './Theme';
 
 const ANIM_OFFSET = -50;
@@ -65,11 +66,7 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   public render() {
     if (this.state.item) {
-      const style = StyleSheet.flatten([
-        styles.mainContainer,
-        { backgroundColor: Theme.secondary },
-        this.props.containerStyle,
-      ]);
+      const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
       return (
         <View style={style}>
           {this._renderItem()}
@@ -99,11 +96,15 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   ///////////////////////////////////////////////////////////////////
 
   private _renderItem() {
-    const { title, message } = this.state.item;
     let { itemStyle, titleStyle, messageStyle } = this.props;
-    itemStyle = StyleSheet.flatten([styles.item, itemStyle]);
-    titleStyle = StyleSheet.flatten([styles.title, titleStyle]);
-    messageStyle = StyleSheet.flatten([styles.message, messageStyle]);
+    const backgroundColor = Theme.secondary;
+    const color = Theme.onSecondary;
+
+    itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
+    titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
+    messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
+
+    const { title, message } = this.state.item;
 
     return (
       <TouchableOpacity onPress={this._handleOnPress}>
@@ -122,14 +123,16 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   private _renderItemAction() {
     const action = this.state.item.action;
-    const color = (action && action.color);
-    const buttonStyle = StyleSheet.flatten([styles.button, { color }]);
+    const color = (action && action.color) || Theme.onSecondary;
+    const titleStyle = StyleSheet.flatten([styles.button, { color }]);
 
     if (action) {
       return (
         <View style={styles.action}>
           <Button
             title={action.title}
+            titleStyle={titleStyle}
+            type='clear'
             onPress={this._handleOnAction}
           />
         </View>

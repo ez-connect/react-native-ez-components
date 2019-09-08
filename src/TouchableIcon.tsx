@@ -17,7 +17,7 @@ export class TouchableIcon extends React.PureComponent<TouchableIconProps, {}> {
         style={styles.container}
       >
         <View style={styles.container} pointerEvents={'box-none'}>
-          <Icon type='ionicon' {...rest} />
+          <Icon {...rest} />
         </View>
       </TouchableFeedback>
     );

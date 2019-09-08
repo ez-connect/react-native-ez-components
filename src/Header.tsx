@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, TextStyle, View } from 'react-native';
 import { IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
-import { View } from './View';
 
 interface Props {
   // compactElement?: React.ReactNode;
@@ -80,12 +79,13 @@ export class Header extends React.PureComponent<Props, State> {
 
   public render() {
     const { icon, rightElement } = this.props;
-    const colors = Theme.getTheme().colors;
+    const containerStyle = [styles.mainContainer, { backgroundColor: Theme.primary }];
+    const color = (icon && icon.color) ? icon.color : Theme.onPrimary;
 
     return (
-      <View style={styles.mainContainer}>
+      <View style={containerStyle}>
         <View style={styles.container}>
-          <TouchableIcon {...icon} onPress={this._handleOnPressBack} style={styles.closeIcon} />
+          <TouchableIcon {...icon} color={color} onPress={this._handleOnPressBack} style={styles.closeIcon} />
           <View style={styles.leftContainer}>
             {this._renderTitle()}
           </View>
@@ -98,9 +98,9 @@ export class Header extends React.PureComponent<Props, State> {
         <ProgressBar
           visible={this.props.loadingEnabled}
           style={styles.progress}
-          color={colors.secondary}
+          color={Theme.secondary}
           progress={this.state.progress}
-          progressTintColor={colors.primary}
+          progressTintColor={Theme.primary}
           progressViewStyle='bar'
           styleAttr='Horizontal'
         />
@@ -119,6 +119,7 @@ export class Header extends React.PureComponent<Props, State> {
 
   private _renderTitle() {
     const { title, placeholder, searchable } = this.props;
+    const titleStyle = StyleSheet.flatten<TextStyle>([styles.title, { color: Theme.onPrimary }]);
     if (searchable) {
       return (
         <Input
@@ -132,7 +133,7 @@ export class Header extends React.PureComponent<Props, State> {
       );
     }
 
-    return <Text style={styles.title} numberOfLines={1}>{title}</Text>;
+    return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
   }
 
   private _renderCancelSearchComponent() {

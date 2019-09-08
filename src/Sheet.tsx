@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { Divider, ListItem, Text } from 'react-native-elements';
+import { ListItem, Text } from 'react-native-elements';
 
 import { Theme } from './Theme';
 
@@ -74,11 +74,11 @@ export class Sheet extends React.PureComponent<{}, State> {
 
   public render() {
     if (this.state.visible) {
-      const containerStyle = StyleSheet.flatten<ViewStyle>([
+      const containerStyle = StyleSheet.flatten([
         styles.mainContainer,
+        { backgroundColor: `${Theme.secondary}${CONTAINER_OPACITY}` },
         this._options && this._options.containerStyle,
       ]);
-
       return (
         <View style={containerStyle}>
           <TouchableOpacity onPress={this.close} style={styles.overlay}>
@@ -99,31 +99,31 @@ export class Sheet extends React.PureComponent<{}, State> {
       const { icon, title, value, disabled } = item;
       const containerStyle = StyleSheet.flatten([
         styles.item,
-        this._options && this._options.itemsStyle],
-      );
+        { backgroundColor: Theme.background },
+        this._options && this._options.itemsStyle,
+      ]);
 
       if (title) {
+        const color = disabled ? Theme.onSurface : Theme.onBackground;
         return (
           <ListItem
             bottomDivider={this._options && this._options.bottomDivider}
             containerStyle={containerStyle}
             key={index}
-            leftIcon={{ name: icon }}
+            leftIcon={{ type: Theme.iconset, name: icon, color }}
             onPress={disabled ? undefined : this._handleOnPressItem(value)}
             subtitle={item.subtitle}
             title={title}
+            titleStyle={{ color }}
           />
         );
       } else {
-        return <Divider />;
+        return <View key={index} style={{ backgroundColor: Theme.onSurface, ...styles.divider }} />;
       }
     });
 
 
-    const titleStyle = StyleSheet.flatten([
-      styles.title,
-      { backgroundColor: Theme.getTheme().colors.primary },
-    ]);
+    const titleStyle = StyleSheet.flatten([styles.title, { backgroundColor: Theme.background }]);
     const style: ViewStyle = { position: 'absolute', width: '100%' };
     if (this._options && this._options.position === 'top') {
       Object.assign(style, { top: this._anim });
