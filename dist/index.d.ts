@@ -14,4 +14,5 @@ import { Theme, ThemeEvent, ThemeItem } from './Theme';
 import { Toast, ToastDuration } from './Toast';
 import { TouchableFeedback } from './TouchableFeedback';
 import { TouchableIcon } from './TouchableIcon';
-export { AnimatedScrollView, Daylight, DaylightEvent, DaylightView, EventListener, Header, NavigationService, ProgressBar, SafeAreaView, ScrollView, Sheet, StatusBar, Storage, Theme, ThemeEvent, ThemeItem, Toast, ToastDuration, TouchableFeedback, TouchableIcon, };
+import { View } from './View';
+export { AnimatedScrollView, Daylight, DaylightEvent, DaylightView, EventListener, Header, NavigationService, ProgressBar, SafeAreaView, ScrollView, Sheet, StatusBar, Storage, Theme, ThemeEvent, ThemeItem, Toast, ToastDuration, TouchableFeedback, TouchableIcon, View, };

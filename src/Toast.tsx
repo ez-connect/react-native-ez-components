@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Animated, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Button } from 'react-native-elements';
+import { Theme } from './Theme';
 
 const ANIM_OFFSET = -50;
 const ANIM_DURATION = 300;
@@ -64,7 +65,11 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   public render() {
     if (this.state.item) {
-      const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
+      const style = StyleSheet.flatten([
+        styles.mainContainer,
+        { backgroundColor: Theme.secondary },
+        this.props.containerStyle,
+      ]);
       return (
         <View style={style}>
           {this._renderItem()}

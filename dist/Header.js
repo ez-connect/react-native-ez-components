@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { Input, Text } from 'react-native-elements';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
+import { View } from './View';
 const PROGRESS_DELAY = 50;
 export class Header extends React.PureComponent {
     constructor(props) {

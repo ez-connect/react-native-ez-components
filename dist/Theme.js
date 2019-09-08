@@ -1,5 +1,4 @@
 import color from 'color';
-import { StyleSheet } from 'react-native';
 import EventListener from './EventListener';
 var ThemeEvent;
 (function (ThemeEvent) {
@@ -15,10 +14,15 @@ class Theme extends EventListener {
     }
     setThemeItem(value) {
         Object.assign(this, value);
-        const { primary, secondary, background, onBackground } = value;
+        const { primary, secondary, background, onBackground, onSurface } = value;
         const theme = {
             Icon: {
                 type: this.iconset,
+            },
+            Text: {
+                style: {
+                    color: onBackground,
+                },
             },
             colors: {
                 primary,
@@ -31,9 +35,7 @@ class Theme extends EventListener {
                 grey5: color(background).darken(0.4).toString(),
                 greyOutline: color(background).darken(0.5).toString(),
                 disabled: color(background).darken(0.2).toString(),
-                divider: StyleSheet.hairlineWidth < 1
-                    ? color(background).darken(0.4).toString()
-                    : color(onBackground).darken(0.4).toString(),
+                divider: onSurface,
             },
         };
         this.setTheme(theme);

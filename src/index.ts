@@ -14,6 +14,7 @@ import { Theme, ThemeEvent, ThemeItem } from './Theme';
 import { Toast, ToastDuration } from './Toast';
 import { TouchableFeedback } from './TouchableFeedback';
 import { TouchableIcon } from './TouchableIcon';
+import { View } from './View';
 
 export {
   AnimatedScrollView,
@@ -36,4 +37,5 @@ export {
   ToastDuration,
   TouchableFeedback,
   TouchableIcon,
+  View,
 };

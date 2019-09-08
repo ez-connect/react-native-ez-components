@@ -3,7 +3,11 @@ import { ScrollView as BScrollView, ScrollViewProps, StyleSheet, ViewStyle } fro
 
 import { Theme } from './Theme';
 
-export const ScrollView = (props: ScrollViewProps) => {
+interface Props extends ScrollViewProps {
+  children?: React.ReactNode; // add here because not found children in ScroolViewProps when lint
+}
+
+export const ScrollView = (props: Props) => {
   const { style, ...rest } = props;
   const viewStyle = style as ViewStyle;
   const backgroundColor = (style && viewStyle.backgroundColor)

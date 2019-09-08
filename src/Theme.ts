@@ -86,10 +86,15 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
   public setThemeItem(value: ThemeItem) {
     Object.assign(this, value);
 
-    const { primary, secondary, background, onBackground } = value;
+    const { primary, secondary, background, onBackground, onSurface } = value;
     const theme: Partial<FullTheme> = {
       Icon: {
         type: this.iconset,
+      },
+      Text: {
+        style: {
+          color: onBackground,
+        },
       },
       colors: {
         primary,
@@ -102,15 +107,14 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
         grey5: color(background).darken(0.4).toString(),
         greyOutline: color(background).darken(0.5).toString(),
         disabled: color(background).darken(0.2).toString(),
-        // Darker color if hairlineWidth is not thin enough
-        divider: StyleSheet.hairlineWidth < 1
-          ? color(background).darken(0.4).toString()
-          : color(onBackground).darken(0.4).toString(),
+        // TODO: Darker color if hairlineWidth is not thin enough
+        divider: onSurface,
       },
     };
 
     this.setTheme(theme);
   }
+
 
   public getTheme(): FullTheme | undefined {
     const theme = this._themeProvider

@@ -1,2 +1,7 @@
+import * as React from 'react';
 import { ScrollViewProps } from 'react-native';
-export declare const ScrollView: (props: ScrollViewProps) => JSX.Element;
+interface Props extends ScrollViewProps {
+    children?: React.ReactNode;
+}
+export declare const ScrollView: (props: Props) => JSX.Element;
+export {};

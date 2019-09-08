@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
+import { View } from './View';
 
 interface Props {
   // compactElement?: React.ReactNode;
@@ -36,7 +37,7 @@ export class Header extends React.PureComponent<Props, State> {
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function () {
+    return function() {
       const context = this;
       const args = arguments;
       const later = () => {
