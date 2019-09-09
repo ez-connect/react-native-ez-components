@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { TouchableFeedback } from './TouchableFeedback';
 import { Theme } from './Theme';
+import { TouchableFeedback } from './TouchableFeedback';
 export class TouchableIcon extends React.PureComponent {
     render() {
         const { color, reverse, reverseColor, onPress, ...rest } = this.props;

@@ -7,6 +7,7 @@ interface Props {
     loadingEnabled?: boolean;
     onBackgroundColor?: string;
     placeholder?: string;
+    placeholderTextColor?: string;
     progress?: number;
     rightElement?: React.ReactNode;
     searchable?: boolean;

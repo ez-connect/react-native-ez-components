@@ -91,13 +91,13 @@ export class Header extends React.PureComponent {
     expand() {
     }
     _renderTitle() {
-        const { title, placeholder, searchable, onBackgroundColor } = this.props;
+        const { title, placeholder, placeholderTextColor, searchable, onBackgroundColor } = this.props;
         const titleStyle = StyleSheet.flatten([
             styles.title,
             { color: onBackgroundColor || Theme.onPrimary },
         ]);
         if (searchable) {
-            return (<Input autoFocus={true} inputContainerStyle={styles.input} placeholder={placeholder} underlineColorAndroid='transparent' value={this.state.text} onChangeText={this._handleOnSearch}/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.input} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} style={{ color: onBackgroundColor || Theme.onPrimary }} underlineColorAndroid='transparent' onChangeText={this._handleOnSearch}/>);
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }

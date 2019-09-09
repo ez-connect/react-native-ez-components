@@ -15,6 +15,7 @@ interface Props {
   loadingEnabled?: boolean;
   onBackgroundColor?: string;
   placeholder?: string;
+  placeholderTextColor?: string;
   progress?: number;
   rightElement?: React.ReactNode;
   searchable?: boolean;
@@ -38,7 +39,7 @@ export class Header extends React.PureComponent<Props, State> {
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function () {
+    return function() {
       const context = this;
       const args = arguments;
       const later = () => {
@@ -123,7 +124,7 @@ export class Header extends React.PureComponent<Props, State> {
 
 
   private _renderTitle() {
-    const { title, placeholder, searchable, onBackgroundColor } = this.props;
+    const { title, placeholder, placeholderTextColor, searchable, onBackgroundColor } = this.props;
     const titleStyle = StyleSheet.flatten<TextStyle>([
       styles.title,
       { color: onBackgroundColor || Theme.onPrimary },
@@ -134,8 +135,9 @@ export class Header extends React.PureComponent<Props, State> {
           autoFocus={true}
           inputContainerStyle={styles.input}
           placeholder={placeholder}
+          placeholderTextColor={placeholderTextColor || Theme.onSurface}
+          style={{ color: onBackgroundColor || Theme.onPrimary }}
           underlineColorAndroid='transparent'
-          value={this.state.text}
           onChangeText={this._handleOnSearch}
         />
       );

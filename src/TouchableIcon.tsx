@@ -2,8 +2,8 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, IconProps } from 'react-native-elements';
 
-import { TouchableFeedback } from './TouchableFeedback';
 import { Theme } from './Theme';
+import { TouchableFeedback } from './TouchableFeedback';
 
 interface TouchableIconProps extends IconProps {
   onPress: () => void;
