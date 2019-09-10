@@ -134,9 +134,9 @@ export class Header extends React.PureComponent<Props, State> {
         <Input
           autoFocus={true}
           inputContainerStyle={styles.input}
+          inputStyle={{ color: onBackgroundColor || Theme.onPrimary }}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor || Theme.onSurface}
-          style={{ color: onBackgroundColor || Theme.onPrimary }}
           underlineColorAndroid='transparent'
           onChangeText={this._handleOnSearch}
         />

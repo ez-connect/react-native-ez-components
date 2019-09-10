@@ -40,6 +40,11 @@ class Theme extends EventListener {
                 type: this.iconset,
                 color: onBackground,
             },
+            Input: {
+                inputStyle: {
+                    color: onBackground,
+                },
+            },
             ListItem: {
                 containerStyle: {
                     backgroundColor: 'transparent',

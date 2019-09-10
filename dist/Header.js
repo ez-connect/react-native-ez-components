@@ -97,7 +97,7 @@ export class Header extends React.PureComponent {
             { color: onBackgroundColor || Theme.onPrimary },
         ]);
         if (searchable) {
-            return (<Input autoFocus={true} inputContainerStyle={styles.input} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} style={{ color: onBackgroundColor || Theme.onPrimary }} underlineColorAndroid='transparent' onChangeText={this._handleOnSearch}/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.input} inputStyle={{ color: onBackgroundColor || Theme.onPrimary }} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} underlineColorAndroid='transparent' onChangeText={this._handleOnSearch}/>);
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }
