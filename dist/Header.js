@@ -9,6 +9,7 @@ const PROGRESS_DELAY = 50;
 export class Header extends React.PureComponent {
     constructor(props) {
         super(props);
+        this._isMounted = false;
         this._handleOnSearch = (text) => {
             if (text !== '') {
                 this.setState({ isSearching: true, text });
@@ -64,10 +65,28 @@ export class Header extends React.PureComponent {
             }
         };
     }
+    setState(value) {
+        if (this._isMounted) {
+            super.setState(value);
+        }
+    }
+    componentDidMount() {
+        this._isMounted = true;
+    }
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
     render() {
         const { icon, rightElement } = this.props;
         const backgroundColor = this.props.backgroundColor || Theme.primary;
-        const containerStyle = [styles.mainContainer, { backgroundColor }];
+        const containerStyle = [
+            styles.mainContainer,
+            { backgroundColor },
+            this.props.borderColor && {
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                borderColor: this.props.borderColor,
+            },
+        ];
         const color = (icon && icon.color)
             ? icon.color
             : (this.props.onBackgroundColor || Theme.onPrimary);
@@ -97,7 +116,7 @@ export class Header extends React.PureComponent {
             { color: onBackgroundColor || Theme.onPrimary },
         ]);
         if (searchable) {
-            return (<Input autoFocus={true} inputContainerStyle={styles.input} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} style={{ color: onBackgroundColor || Theme.onPrimary }} underlineColorAndroid='transparent' onChangeText={this._handleOnSearch}/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.input} inputStyle={{ color: onBackgroundColor || Theme.onPrimary }} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} underlineColorAndroid='transparent' onChangeText={this._handleOnSearch}/>);
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }
@@ -113,7 +132,6 @@ Header.s_debounceTimeout = null;
 const styles = StyleSheet.create({
     mainContainer: {
         alignItems: 'center',
-        borderBottomWidth: 0.5,
     },
     container: {
         flexDirection: 'row',

@@ -111,6 +111,11 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
         type: this.iconset,
         color: onBackground,
       },
+      Input: {
+        inputStyle: {
+          color: onBackground,
+        },
+      },
       ListItem: {
         containerStyle: {
           backgroundColor: 'transparent',

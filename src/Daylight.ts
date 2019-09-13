@@ -80,41 +80,31 @@ const kAlphaDefault = 0.2;
 class Daylight extends EventListener<DaylightEvent> {
   private _enable: boolean;
 
-  private _dawn: number;
-  private _sunrise: number;
-  private _sunset: number;
-  private _dusk: number;
+  private _dawn: number = new Date().setHours(5, 0, 0);
+  private _sunrise: number = new Date().setHours(6, 0, 0);
+  private _sunset: number = new Date().setHours(17, 0, 0);
+  private _dusk: number = new Date().setHours(18, 0, 0);
 
-  private _wakeTime: number;
-  private _bedTime: number;
+  private _wakeTime: number = new Date().setHours(6, 0, 0);
+  private _bedTime: number = new Date().setHours(22, 0, 0);
 
   private _preset: DaylightPreset;
-  private _rgba: RGBA;
+  private _rgba: RGBA = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
 
-  private _handleInterval: number;
+  private _handleInterval: number = 0;
 
   constructor(preset?: DaylightPreset) {
     super();
-
-    this._dawn = new Date().setHours(5, 0, 0);
-    this._sunrise = new Date().setHours(6, 0, 0);
-    this._sunset = new Date().setHours(17, 0, 0);
-    this._dusk = new Date().setHours(18, 0, 0);
-
-    this._wakeTime = new Date().setHours(6, 0, 0);
-    this._bedTime = new Date().setHours(22, 0, 0);
-
     this._preset = preset || kDaylighPresets[0];
-
-    this._rgba = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
-    this._handleInterval = 0;
   }
 
   public async setEnable(value: boolean) {
     this._enable = value;
     if (value) {
-      this._handleInterval && clearInterval(this._handleInterval);
-      this._handleInterval = setInterval(this._handleOnInterval, kDaylightUpdateInterval);
+      if (this._handleInterval) {
+        clearInterval(this._handleInterval);
+      }
+      this._handleInterval = setInterval(this._update, kDaylightUpdateInterval);
       this._update(); // force update
     } else {
       clearInterval(this._handleInterval);
@@ -266,12 +256,6 @@ class Daylight extends EventListener<DaylightEvent> {
       Object.assign(this._rgba, { red, green, blue });
       super.emit(DaylightEvent.OnChange, { mode, color: this._rgba });
     }
-  }
-
-  ///////////////////////////////////////////////////////////////////
-
-  private _handleOnInterval = () => {
-    this._update();
   }
 }
 

@@ -68,7 +68,6 @@ declare class Daylight extends EventListener<DaylightEvent> {
     };
     private _getTemperature;
     private _update;
-    private _handleOnInterval;
 }
 declare const daylightStatic: Daylight;
 export { daylightStatic as Daylight };

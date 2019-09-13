@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 const DEFAULT_SCROLL_THROTTLE = 20;
 export class AnimatedScrollView extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super(...arguments);
+        this.state = {
+            scrollAnim: new Animated.Value(0),
+            offsetAnim: new Animated.Value(0),
+        };
         this._previousScrollvalue = 0;
         this._currentScrollValue = 0;
         this._handleScroll = ({ value }) => {
@@ -32,10 +36,6 @@ export class AnimatedScrollView extends Component {
                     duration: 500,
                 }).start();
             }
-        };
-        this.state = {
-            scrollAnim: new Animated.Value(0),
-            offsetAnim: new Animated.Value(0),
         };
     }
     componentDidMount() {

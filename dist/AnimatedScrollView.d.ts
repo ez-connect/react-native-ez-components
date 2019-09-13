@@ -10,11 +10,11 @@ interface State {
     offsetAnim: Animated.Value;
 }
 export declare class AnimatedScrollView extends Component<Props, State> {
+    state: State;
     private _previousScrollvalue;
     private _currentScrollValue;
     private _scrollEndTimer?;
     private _scrollAnimEvent?;
-    constructor(props: any);
     componentDidMount(): void;
     componentWillUnmount(): void;
     render(): JSX.Element;

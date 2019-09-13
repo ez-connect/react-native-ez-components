@@ -1,7 +1,7 @@
 // https://snack.expo.io/B1v5RS7ix
 
 import React, { Component } from 'react';
-import { Animated, ScrollViewProps, StyleSheet, View, ViewStyle } from 'react-native';
+import { Animated, ScrollView, ScrollViewProps, StyleSheet, View, ViewStyle } from 'react-native';
 
 interface Props extends ScrollViewProps {
   header: JSX.Element; // auto hide when reach to range
@@ -17,18 +17,15 @@ interface State {
 const DEFAULT_SCROLL_THROTTLE = 20;
 
 export class AnimatedScrollView extends Component<Props, State> {
+  public state: State = {
+    scrollAnim: new Animated.Value(0),
+    offsetAnim: new Animated.Value(0),
+  };
+
   private _previousScrollvalue: number = 0;
   private _currentScrollValue: number = 0;
   private _scrollEndTimer?: any;
   private _scrollAnimEvent?: string;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      scrollAnim: new Animated.Value(0),
-      offsetAnim: new Animated.Value(0),
-    };
-  }
 
   public componentDidMount() {
     this._scrollAnimEvent = this.state.scrollAnim.addListener(this._handleScroll);
