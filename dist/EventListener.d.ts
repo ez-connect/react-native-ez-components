@@ -5,7 +5,6 @@ interface Listener<T> {
 }
 export default class EventListener<T> {
     private _listeners;
-    constructor();
     addListener(event: T, handler: Handler): void;
     removeListener(event: T, handler: Handler): void;
     addListeners(listeners: Array<Listener<T>>): void;

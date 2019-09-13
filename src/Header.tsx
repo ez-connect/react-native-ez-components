@@ -10,6 +10,7 @@ import { TouchableIcon } from './TouchableIcon';
 interface Props {
   // compactElement?: React.ReactNode;
   backgroundColor?: string;
+  borderColor?: string;
   height?: number;
   icon: IconProps;
   loadingEnabled?: boolean;
@@ -39,7 +40,7 @@ export class Header extends React.PureComponent<Props, State> {
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function() {
+    return function () {
       const context = this;
       const args = arguments;
       const later = () => {
@@ -66,6 +67,7 @@ export class Header extends React.PureComponent<Props, State> {
 
   private _debounceOnSearch: any;
   private _progressHandler: any;
+  private _isMounted = false;
 
   constructor(props: Props) {
     super(props);
@@ -80,10 +82,31 @@ export class Header extends React.PureComponent<Props, State> {
     }
   }
 
+  public setState(value: State) {
+    if (this._isMounted) {
+      super.setState(value);
+    }
+  }
+
+  public componentDidMount() {
+    this._isMounted = true;
+  }
+
+  public componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   public render() {
     const { icon, rightElement } = this.props;
     const backgroundColor = this.props.backgroundColor || Theme.primary;
-    const containerStyle = [styles.mainContainer, { backgroundColor }];
+    const containerStyle = [
+      styles.mainContainer,
+      { backgroundColor },
+      this.props.borderColor && {
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: this.props.borderColor,
+      },
+    ];
     const color = (icon && icon.color)
       ? icon.color
       : (this.props.onBackgroundColor || Theme.onPrimary);
@@ -190,10 +213,11 @@ export class Header extends React.PureComponent<Props, State> {
   }
 }
 
+///////////////////////////////////////////////////////////////////
+
 const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center',
-    borderBottomWidth: 0.5,
   },
   container: {
     flexDirection: 'row',

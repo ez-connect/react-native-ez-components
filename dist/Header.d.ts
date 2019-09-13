@@ -2,6 +2,7 @@ import * as React from 'react';
 import { IconProps } from 'react-native-elements';
 interface Props {
     backgroundColor?: string;
+    borderColor?: string;
     height?: number;
     icon: IconProps;
     loadingEnabled?: boolean;
@@ -26,7 +27,11 @@ export declare class Header extends React.PureComponent<Props, State> {
     private static s_debounceTimeout;
     private _debounceOnSearch;
     private _progressHandler;
+    private _isMounted;
     constructor(props: Props);
+    setState(value: State): void;
+    componentDidMount(): void;
+    componentWillUnmount(): void;
     render(): JSX.Element;
     collapse(): void;
     expand(): void;

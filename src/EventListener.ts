@@ -6,10 +6,7 @@ interface Listener<T> {
 }
 
 export default class EventListener<T> {
-  private _listeners: Array<Listener<T>>;
-  constructor() {
-    this._listeners = [];
-  }
+  private _listeners: Array<Listener<T>> = [];
 
   public addListener(event: T, handler: Handler) {
     // console.debug(`EventListener.addListener: ${event}`);
