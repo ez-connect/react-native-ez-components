@@ -72,6 +72,9 @@ class Daylight extends EventListener {
         this._bedTime = new Date().setHours(22, 0, 0);
         this._rgba = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
         this._handleInterval = 0;
+        this._handleOnUpdateSchedule = () => {
+            this._update();
+        };
         this._preset = preset || kDaylighPresets[0];
     }
     async setEnable(value) {
@@ -80,7 +83,7 @@ class Daylight extends EventListener {
             if (this._handleInterval) {
                 clearInterval(this._handleInterval);
             }
-            this._handleInterval = setInterval(this._update, kDaylightUpdateInterval);
+            this._handleInterval = setInterval(this._handleOnUpdateSchedule, kDaylightUpdateInterval);
             this._update();
         }
         else {
