@@ -14,15 +14,16 @@ class Theme extends EventListener {
     }
     setThemeItem(value) {
         Object.assign(this, value);
-        const { primary, onPrimary, secondary, onSecondary, background, onBackground, onSurface } = value;
+        const { primary, onPrimary, secondary, onSecondary, background, onBackground, surface, onSurface } = value;
         const theme = {
             Badge: {
                 badgeStyle: {
+                    backgroundColor: surface,
                     borderRadius: 24,
                     padding: 12,
                 },
                 textStyle: {
-                    color: onSecondary,
+                    color: onSurface,
                 },
             },
             Button: {
@@ -36,6 +37,10 @@ class Theme extends EventListener {
                 selectedTextStyle: { color: onSecondary },
                 textStyle: { color: onBackground, fontSize: 14 },
             },
+            CheckBox: {
+                containerStyle: { backgroundColor: background },
+                textStyle: { color: onBackground },
+            },
             Icon: {
                 type: this.iconset,
                 color: onBackground,
@@ -46,12 +51,11 @@ class Theme extends EventListener {
                 },
             },
             ListItem: {
-                containerStyle: {
-                    backgroundColor: 'transparent',
-                },
-                leftIcon: {
-                    color: onBackground,
-                },
+                containerStyle: { backgroundColor: 'transparent' },
+                leftIcon: { color: onBackground },
+                titleStyle: { color: onBackground },
+                subtitleStyle: { color: onSurface },
+                rightTitleStyle: { color: onBackground },
             },
             Text: {
                 style: {

@@ -104,7 +104,7 @@ class Daylight extends EventListener<DaylightEvent> {
       if (this._handleInterval) {
         clearInterval(this._handleInterval);
       }
-      this._handleInterval = setInterval(this._update, kDaylightUpdateInterval);
+      this._handleInterval = setInterval(this._handleOnUpdateSchedule, kDaylightUpdateInterval);
       this._update(); // force update
     } else {
       clearInterval(this._handleInterval);
@@ -256,6 +256,10 @@ class Daylight extends EventListener<DaylightEvent> {
       Object.assign(this._rgba, { red, green, blue });
       super.emit(DaylightEvent.OnChange, { mode, color: this._rgba });
     }
+  }
+
+  private _handleOnUpdateSchedule = () => {
+    this._update();
   }
 }
 
