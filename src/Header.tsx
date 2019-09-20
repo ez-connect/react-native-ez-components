@@ -40,7 +40,7 @@ export class Header extends React.PureComponent<Props, State> {
   // N milliseconds. If `immediate` is passed, trigger the function on the
   // leading edge, instead of the trailing.
   public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function () {
+    return function() {
       const context = this;
       const args = arguments;
       const later = () => {

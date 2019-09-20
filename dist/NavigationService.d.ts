@@ -1,10 +1,10 @@
-import { NavigationContainerComponent } from 'react-navigation';
+import { NavigationBackActionPayload, NavigationContainerComponent, NavigationNavigateActionPayload, NavigationPushActionPayload } from 'react-navigation';
 export declare class NavigationService {
     static setTopLevelNavigator(navigatorRef: NavigationContainerComponent | null): void;
-    static navigate(routeName: string, params?: any): void;
-    static push(routeName: string, params?: any): void;
-    static resetAndPushToTop(routeName: string, params?: any): void;
-    static goBack(): void;
+    static navigate(options: NavigationNavigateActionPayload): void;
+    static push(options: NavigationPushActionPayload): void;
+    static resetAndPushToTop(options: NavigationNavigateActionPayload): void;
+    static goBack(options?: NavigationBackActionPayload): void;
     static openDrawer(): void;
     static closeDrawer(): void;
     static toggleDrawer(): void;

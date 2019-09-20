@@ -1,30 +1,24 @@
-import { NavigationActions, StackActions } from 'react-navigation';
+import { NavigationActions, StackActions, } from 'react-navigation';
 import { DrawerActions } from 'react-navigation-drawer';
 export class NavigationService {
     static setTopLevelNavigator(navigatorRef) {
         NavigationService._navigator = navigatorRef;
     }
-    static navigate(routeName, params) {
-        NavigationService._navigator.dispatch(NavigationActions.navigate({
-            routeName,
-            params,
-        }));
+    static navigate(options) {
+        NavigationService._navigator.dispatch(NavigationActions.navigate(options));
     }
-    static push(routeName, params) {
-        NavigationService._navigator.dispatch(StackActions.push({
-            routeName,
-            params,
-        }));
+    static push(options) {
+        NavigationService._navigator.dispatch(StackActions.push(options));
     }
-    static resetAndPushToTop(routeName, params) {
+    static resetAndPushToTop(options) {
         const resetAction = StackActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName, params })],
+            actions: [NavigationActions.navigate(options)],
         });
         NavigationService._navigator.dispatch(resetAction);
     }
-    static goBack() {
-        NavigationService._navigator.dispatch(NavigationActions.back());
+    static goBack(options) {
+        NavigationService._navigator.dispatch(NavigationActions.back(options));
     }
     static openDrawer() {
         NavigationService._navigator.dispatch(DrawerActions.openDrawer());
