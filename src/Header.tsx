@@ -7,6 +7,8 @@ import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
 
+const SEARCH_DEBOUNCE = 500;
+
 interface Props {
   // compactElement?: React.ReactNode;
   backgroundColor?: string;
@@ -19,64 +21,34 @@ interface Props {
   placeholderTextColor?: string;
   progress?: number;
   rightElement?: React.ReactNode;
-  searchable?: boolean;
-  searchCancelIcon?: IconProps;
+  searchEnabled?: boolean; // force search
+  searchIcon?: IconProps;
   title?: string;
   onBack?(): void;
   onSearch?(query: string): void;
 }
 
 interface State {
-  isSearching?: boolean;
   progress?: number;
+  searchEnabled?: boolean;
   text?: string;
 }
 
 const PROGRESS_DELAY = 50; // fake progress on iOS - without `progress` props
 
 export class Header extends React.PureComponent<Props, State> {
-  // Returns a function, that, as long as it continues to be invoked, will not
-  // be triggered. The function will be called after it stops being called for
-  // N milliseconds. If `immediate` is passed, trigger the function on the
-  // leading edge, instead of the trailing.
-  public static debounce(fn: any, wait: number = 500, immediate: boolean = false) {
-    return function () {
-      const context = this;
-      const args = arguments;
-      const later = () => {
-        Header.s_debounceTimeout = null;
-        if (!immediate) {
-          fn.apply(context, args);
-        }
-      };
-
-      const isReady = immediate && !Header.s_debounceTimeout;
-      clearTimeout(Header.s_debounceTimeout);
-
-      Header.s_debounceTimeout = setTimeout(later, wait);
-      if (isReady) {
-        fn.apply(context, args);
-      }
-    };
-  }
-
-  // tslint:disable-next-line:variable-name
-  private static s_debounceTimeout = null;
-
-  ///////////////////////////////////////////////////////////////////
-
-  private _debounceOnSearch: any;
   private _progressHandler: any;
   private _isMounted = false;
+
+  private _lastSearchAt: Date = new Date();
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      isSearching: false,
       progress: this.props.progress || 0,
+      searchEnabled: this.props.searchEnabled || false,
     };
 
-    this._debounceOnSearch = Header.debounce(this.props.onSearch);
     if (Platform.OS === 'ios' && !this.props.progress) {
       this._progressHandler = setInterval(this._handleOnProgressInterval, PROGRESS_DELAY);
     }
@@ -119,7 +91,7 @@ export class Header extends React.PureComponent<Props, State> {
             {this._renderTitle()}
           </View>
           <View style={styles.rightContainer}>
-            {this.state.isSearching && this._renderCancelSearchComponent()}
+            {this._renderSearchComponent()}
             {rightElement}
           </View>
         </View>
@@ -147,12 +119,12 @@ export class Header extends React.PureComponent<Props, State> {
 
 
   private _renderTitle() {
-    const { title, placeholder, placeholderTextColor, searchable, onBackgroundColor } = this.props;
+    const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
     const titleStyle = StyleSheet.flatten<TextStyle>([
       styles.title,
       { color: onBackgroundColor || Theme.onPrimary },
     ]);
-    if (searchable) {
+    if (this.state.searchEnabled) {
       return (
         <Input
           autoFocus={true}
@@ -169,11 +141,11 @@ export class Header extends React.PureComponent<Props, State> {
     return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
   }
 
-  private _renderCancelSearchComponent() {
-    if (this.state.isSearching) {
-      const icon = this.props.searchCancelIcon || { name: 'close' };
+  private _renderSearchComponent() {
+    const searchIcon = this.props.searchIcon;
+    if (searchIcon && !this.state.searchEnabled) {
       return (
-        <TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressCancelSearch} />
+        <TouchableIcon style={styles.icon} {...searchIcon} onPress={this._handleOnPressSearch} />
       );
     }
 
@@ -182,26 +154,41 @@ export class Header extends React.PureComponent<Props, State> {
 
   ///////////////////////////////////////////////////////////////////
 
+  private _handleOnPressSearch = () => {
+    this.setState({ searchEnabled: true });
+  }
+
   private _handleOnSearch = (text: string) => {
     if (text !== '') {
-      this.setState({ isSearching: true, text });
+      this.setState({ text });
+      if (this.props.onSearch) {
+        const now = new Date();
+        const diff = now.getTime() - this._lastSearchAt.getTime();
+
+        if (diff > SEARCH_DEBOUNCE) {
+          this.props.onSearch(text);
+          this._lastSearchAt = now;
+        }
+      }
+    } else {
+      this.setState({ searchEnabled: false });
+      if (this.props.onSearch) {
+        this.props.onSearch(undefined);
+      }
     }
-    this._debounceOnSearch(text);
   }
 
   private _handleOnPressBack = () => {
-    if (this.state.isSearching) {
-      this.setState({ isSearching: false });
+    if (this.state.searchEnabled) {
+      this.setState({ searchEnabled: false });
+      if (this.props.onSearch) {
+        this.props.onSearch(undefined);
+      }
     } else if (this.props.onBack) {
       this.props.onBack();
     } else {
       NavigationService.goBack();
     }
-  }
-
-  private _handleOnPressCancelSearch = () => {
-    this._handleOnSearch('');
-    this.setState({ isSearching: false, text: undefined });
   }
 
   private _handleOnProgressInterval = () => {

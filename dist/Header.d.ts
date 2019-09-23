@@ -11,23 +11,21 @@ interface Props {
     placeholderTextColor?: string;
     progress?: number;
     rightElement?: React.ReactNode;
-    searchable?: boolean;
-    searchCancelIcon?: IconProps;
+    searchEnabled?: boolean;
+    searchIcon?: IconProps;
     title?: string;
     onBack?(): void;
     onSearch?(query: string): void;
 }
 interface State {
-    isSearching?: boolean;
     progress?: number;
+    searchEnabled?: boolean;
     text?: string;
 }
 export declare class Header extends React.PureComponent<Props, State> {
-    static debounce(fn: any, wait?: number, immediate?: boolean): () => void;
-    private static s_debounceTimeout;
-    private _debounceOnSearch;
     private _progressHandler;
     private _isMounted;
+    private _lastSearchAt;
     constructor(props: Props);
     setState(value: State): void;
     componentDidMount(): void;
@@ -36,10 +34,10 @@ export declare class Header extends React.PureComponent<Props, State> {
     collapse(): void;
     expand(): void;
     private _renderTitle;
-    private _renderCancelSearchComponent;
+    private _renderSearchComponent;
+    private _handleOnPressSearch;
     private _handleOnSearch;
     private _handleOnPressBack;
-    private _handleOnPressCancelSearch;
     private _handleOnProgressInterval;
 }
 export {};
