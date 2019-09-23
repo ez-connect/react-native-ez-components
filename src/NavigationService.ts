@@ -1,6 +1,7 @@
 import {
   NavigationActions, NavigationBackActionPayload, NavigationContainerComponent,
-  NavigationNavigateActionPayload, NavigationPushActionPayload, StackActions,
+  NavigationNavigateActionPayload, NavigationPopActionPayload,
+  NavigationPushActionPayload, StackActions,
 } from 'react-navigation';
 import { DrawerActions } from 'react-navigation-drawer';
 
@@ -16,6 +17,16 @@ export class NavigationService {
   public static push(options: NavigationPushActionPayload) {
     NavigationService._navigator.dispatch(
       StackActions.push(options),
+    );
+  }
+
+  public static pop(options?: NavigationPopActionPayload) {
+    if (!options) {
+      options = { n: 1, immediate: true };
+    }
+
+    NavigationService._navigator.dispatch(
+      StackActions.pop(options),
     );
   }
 

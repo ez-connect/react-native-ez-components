@@ -5,20 +5,35 @@ import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
 import { TouchableIcon } from './TouchableIcon';
+const SEARCH_DEBOUNCE = 500;
 const PROGRESS_DELAY = 50;
 export class Header extends React.PureComponent {
     constructor(props) {
         super(props);
         this._isMounted = false;
+        this._lastSearchAt = new Date();
+        this._handleOnPressSearch = () => {
+            this.setState({ searchEnabled: true });
+        };
         this._handleOnSearch = (text) => {
             if (text !== '') {
-                this.setState({ isSearching: true, text });
+                this.setState({ text });
             }
-            this._debounceOnSearch(text);
+            else {
+                this.setState({ searchEnabled: false });
+            }
+            if (this.props.onSearch) {
+                const now = new Date();
+                const diff = now.getTime() - this._lastSearchAt.getTime();
+                if (diff > SEARCH_DEBOUNCE) {
+                    this.props.onSearch(text);
+                    this._lastSearchAt = now;
+                }
+            }
         };
         this._handleOnPressBack = () => {
-            if (this.state.isSearching) {
-                this.setState({ isSearching: false });
+            if (this.state.searchEnabled) {
+                this.setState({ searchEnabled: false });
             }
             else if (this.props.onBack) {
                 this.props.onBack();
@@ -26,10 +41,6 @@ export class Header extends React.PureComponent {
             else {
                 NavigationService.goBack();
             }
-        };
-        this._handleOnPressCancelSearch = () => {
-            this._handleOnSearch('');
-            this.setState({ isSearching: false, text: undefined });
         };
         this._handleOnProgressInterval = () => {
             const progress = (this.state.progress + (PROGRESS_DELAY / 1000)) % 1;
@@ -39,31 +50,12 @@ export class Header extends React.PureComponent {
             this.setState({ progress });
         };
         this.state = {
-            isSearching: false,
             progress: this.props.progress || 0,
+            searchEnabled: this.props.searchEnabled || false,
         };
-        this._debounceOnSearch = Header.debounce(this.props.onSearch);
         if (Platform.OS === 'ios' && !this.props.progress) {
             this._progressHandler = setInterval(this._handleOnProgressInterval, PROGRESS_DELAY);
         }
-    }
-    static debounce(fn, wait = 500, immediate = false) {
-        return function () {
-            const context = this;
-            const args = arguments;
-            const later = () => {
-                Header.s_debounceTimeout = null;
-                if (!immediate) {
-                    fn.apply(context, args);
-                }
-            };
-            const isReady = immediate && !Header.s_debounceTimeout;
-            clearTimeout(Header.s_debounceTimeout);
-            Header.s_debounceTimeout = setTimeout(later, wait);
-            if (isReady) {
-                fn.apply(context, args);
-            }
-        };
     }
     setState(value) {
         if (this._isMounted) {
@@ -97,7 +89,7 @@ export class Header extends React.PureComponent {
             {this._renderTitle()}
           </View>
           <View style={styles.rightContainer}>
-            {this.state.isSearching && this._renderCancelSearchComponent()}
+            {this._renderSearchComponent()}
             {rightElement}
           </View>
         </View>
@@ -110,25 +102,24 @@ export class Header extends React.PureComponent {
     expand() {
     }
     _renderTitle() {
-        const { title, placeholder, placeholderTextColor, searchable, onBackgroundColor } = this.props;
+        const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
         const titleStyle = StyleSheet.flatten([
             styles.title,
             { color: onBackgroundColor || Theme.onPrimary },
         ]);
-        if (searchable) {
+        if (this.state.searchEnabled) {
             return (<Input autoFocus={true} inputContainerStyle={styles.input} inputStyle={{ color: onBackgroundColor || Theme.onPrimary }} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} underlineColorAndroid='transparent' onChangeText={this._handleOnSearch}/>);
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }
-    _renderCancelSearchComponent() {
-        if (this.state.isSearching) {
-            const icon = this.props.searchCancelIcon || { name: 'close' };
-            return (<TouchableIcon style={styles.icon} {...icon} onPress={this._handleOnPressCancelSearch}/>);
+    _renderSearchComponent() {
+        const searchIcon = this.props.searchIcon;
+        if (searchIcon && !this.state.searchEnabled) {
+            return (<TouchableIcon style={styles.icon} {...searchIcon} onPress={this._handleOnPressSearch}/>);
         }
         return null;
     }
 }
-Header.s_debounceTimeout = null;
 const styles = StyleSheet.create({
     mainContainer: {
         alignItems: 'center',

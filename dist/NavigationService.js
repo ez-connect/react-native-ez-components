@@ -10,6 +10,12 @@ export class NavigationService {
     static push(options) {
         NavigationService._navigator.dispatch(StackActions.push(options));
     }
+    static pop(options) {
+        if (!options) {
+            options = { n: 1, immediate: true };
+        }
+        NavigationService._navigator.dispatch(StackActions.pop(options));
+    }
     static resetAndPushToTop(options) {
         const resetAction = StackActions.reset({
             index: 0,
