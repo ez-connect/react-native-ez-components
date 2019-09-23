@@ -18,22 +18,28 @@ export class Header extends React.PureComponent {
         this._handleOnSearch = (text) => {
             if (text !== '') {
                 this.setState({ text });
+                if (this.props.onSearch) {
+                    const now = new Date();
+                    const diff = now.getTime() - this._lastSearchAt.getTime();
+                    if (diff > SEARCH_DEBOUNCE) {
+                        this.props.onSearch(text);
+                        this._lastSearchAt = now;
+                    }
+                }
             }
             else {
                 this.setState({ searchEnabled: false });
-            }
-            if (this.props.onSearch) {
-                const now = new Date();
-                const diff = now.getTime() - this._lastSearchAt.getTime();
-                if (diff > SEARCH_DEBOUNCE) {
-                    this.props.onSearch(text);
-                    this._lastSearchAt = now;
+                if (this.props.onSearch) {
+                    this.props.onSearch(undefined);
                 }
             }
         };
         this._handleOnPressBack = () => {
             if (this.state.searchEnabled) {
                 this.setState({ searchEnabled: false });
+                if (this.props.onSearch) {
+                    this.props.onSearch(undefined);
+                }
             }
             else if (this.props.onBack) {
                 this.props.onBack();
