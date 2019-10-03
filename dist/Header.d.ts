@@ -4,7 +4,7 @@ interface Props {
     backgroundColor?: string;
     borderColor?: string;
     height?: number;
-    icon: IconProps;
+    icon?: IconProps;
     loadingEnabled?: boolean;
     onBackgroundColor?: string;
     placeholder?: string;
@@ -14,7 +14,7 @@ interface Props {
     searchEnabled?: boolean;
     searchIcon?: IconProps;
     title?: string;
-    onBack?(): void;
+    onPressIcon?(): void;
     onSearch?(query: string): void;
 }
 interface State {
@@ -31,13 +31,12 @@ export declare class Header extends React.PureComponent<Props, State> {
     componentDidMount(): void;
     componentWillUnmount(): void;
     render(): JSX.Element;
-    collapse(): void;
-    expand(): void;
+    private _renderIcon;
     private _renderTitle;
     private _renderSearchComponent;
     private _handleOnPressSearch;
     private _handleOnSearch;
-    private _handleOnPressBack;
+    private _handleOnPressIcon;
     private _handleOnProgressInterval;
 }
 export {};

@@ -14,7 +14,7 @@ interface State {
   offsetAnim: Animated.Value;
 }
 
-const DEFAULT_SCROLL_THROTTLE = 20;
+const DEFAULT_SCROLL_THROTTLE = 16;
 
 export class AnimatedScrollView extends Component<Props, State> {
   public state: State = {

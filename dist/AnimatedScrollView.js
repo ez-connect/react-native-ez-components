@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-const DEFAULT_SCROLL_THROTTLE = 20;
+const DEFAULT_SCROLL_THROTTLE = 16;
 export class AnimatedScrollView extends Component {
     constructor() {
         super(...arguments);

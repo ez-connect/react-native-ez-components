@@ -14,7 +14,7 @@ interface Props {
   backgroundColor?: string;
   borderColor?: string;
   height?: number;
-  icon: IconProps;
+  icon?: IconProps;
   loadingEnabled?: boolean;
   onBackgroundColor?: string;
   placeholder?: string;
@@ -24,7 +24,7 @@ interface Props {
   searchEnabled?: boolean; // force search
   searchIcon?: IconProps;
   title?: string;
-  onBack?(): void;
+  onPressIcon?(): void;
   onSearch?(query: string): void;
 }
 
@@ -69,24 +69,22 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { icon, rightElement } = this.props;
+    const rightElement = this.props.rightElement;
     const backgroundColor = this.props.backgroundColor || Theme.primary;
     const containerStyle = [
       styles.mainContainer,
       { backgroundColor },
+      this.props.height && { height: this.props.height },
       this.props.borderColor && {
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: this.props.borderColor,
       },
     ];
-    const color = (icon && icon.color)
-      ? icon.color
-      : (this.props.onBackgroundColor || Theme.onPrimary);
 
     return (
       <View style={containerStyle}>
         <View style={styles.container}>
-          <TouchableIcon {...icon} color={color} onPress={this._handleOnPressBack} style={styles.closeIcon} />
+          {this._renderIcon()}
           <View style={styles.leftContainer}>
             {this._renderTitle()}
           </View>
@@ -109,14 +107,26 @@ export class Header extends React.PureComponent<Props, State> {
     );
   }
 
-  public collapse() {
-    //
-  }
+  ///////////////////////////////////////////////////////////////////
 
-  public expand() {
-    //
-  }
+  private _renderIcon() {
+    if (this.props.icon) {
+      const color = (this.props.icon && this.props.icon.color)
+        ? this.props.icon.color
+        : (this.props.onBackgroundColor || Theme.onPrimary);
 
+      return (
+        <TouchableIcon
+          {...this.props.icon}
+          color={color}
+          onPress={this._handleOnPressIcon}
+          style={styles.closeIcon}
+        />
+      );
+    }
+
+    return null;
+  }
 
   private _renderTitle() {
     const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
@@ -178,14 +188,14 @@ export class Header extends React.PureComponent<Props, State> {
     }
   }
 
-  private _handleOnPressBack = () => {
+  private _handleOnPressIcon = () => {
     if (this.state.searchEnabled) {
       this.setState({ searchEnabled: false });
       if (this.props.onSearch) {
         this.props.onSearch(undefined);
       }
-    } else if (this.props.onBack) {
-      this.props.onBack();
+    } else if (this.props.onPressIcon) {
+      this.props.onPressIcon();
     } else {
       NavigationService.goBack();
     }
@@ -205,8 +215,10 @@ export class Header extends React.PureComponent<Props, State> {
 const styles = StyleSheet.create({
   mainContainer: {
     alignItems: 'center',
+    height: 48,
   },
   container: {
+    flex: 1,
     flexDirection: 'row',
   },
   leftContainer: {
@@ -221,7 +233,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontSize: 18,
-    marginLeft: 10,
+    left: 24,
   },
   input: {
     borderBottomWidth: 0,
