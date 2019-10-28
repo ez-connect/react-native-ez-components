@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
-import { IconProps, Input, Text } from 'react-native-elements';
+import { Platform, StyleSheet, TextStyle, View } from 'react-native';
+import { Header as HeaderBase, IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
@@ -69,10 +69,8 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const rightElement = this.props.rightElement;
     const backgroundColor = this.props.backgroundColor || Theme.primary;
     const containerStyle = [
-      styles.mainContainer,
       { backgroundColor },
       this.props.height && { height: this.props.height },
       this.props.borderColor && {
@@ -81,19 +79,21 @@ export class Header extends React.PureComponent<Props, State> {
       },
     ];
 
-    return (
-      <View style={containerStyle}>
-        <View style={styles.container}>
-          {this._renderIcon()}
-          <View style={styles.leftContainer}>
-            {this._renderTitle()}
-          </View>
-          <View style={styles.rightContainer}>
-            {this._renderSearchComponent()}
-            {rightElement}
-          </View>
-        </View>
+    const placement: 'left' | 'center' = Platform.select({
+      android: 'left',
+      ios: 'center',
+    });
 
+    return (
+      <>
+        <HeaderBase
+          containerStyle={containerStyle}
+          statusBarProps={{ backgroundColor }}
+          placement={placement}
+          leftComponent={this._renderIcon()}
+          centerComponent={this._renderTitle()}
+          rightComponent={this._renderRightComponent()}
+        />
         <ProgressBar
           visible={this.props.loadingEnabled}
           style={styles.progress}
@@ -103,7 +103,7 @@ export class Header extends React.PureComponent<Props, State> {
           progressViewStyle='bar'
           styleAttr='Horizontal'
         />
-      </View>
+      </>
     );
   }
 
@@ -149,6 +149,15 @@ export class Header extends React.PureComponent<Props, State> {
     }
 
     return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
+  }
+
+  private _renderRightComponent() {
+    return (
+      <View>
+        {this._renderSearchComponent()}
+        {this.props.rightElement}
+      </View>
+    );
   }
 
   private _renderSearchComponent() {
@@ -213,10 +222,6 @@ export class Header extends React.PureComponent<Props, State> {
 ///////////////////////////////////////////////////////////////////
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    alignItems: 'center',
-    height: 48,
-  },
   container: {
     flex: 1,
     flexDirection: 'row',
@@ -231,9 +236,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   title: {
-    flex: 1,
     fontSize: 18,
-    left: 24,
   },
   input: {
     borderBottomWidth: 0,

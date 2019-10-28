@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import { Input, Text } from 'react-native-elements';
+import { Header as HeaderBase, Input, Text } from 'react-native-elements';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
@@ -75,10 +75,8 @@ export class Header extends React.PureComponent {
         this._isMounted = false;
     }
     render() {
-        const rightElement = this.props.rightElement;
         const backgroundColor = this.props.backgroundColor || Theme.primary;
         const containerStyle = [
-            styles.mainContainer,
             { backgroundColor },
             this.props.height && { height: this.props.height },
             this.props.borderColor && {
@@ -86,20 +84,14 @@ export class Header extends React.PureComponent {
                 borderColor: this.props.borderColor,
             },
         ];
-        return (<View style={containerStyle}>
-        <View style={styles.container}>
-          {this._renderIcon()}
-          <View style={styles.leftContainer}>
-            {this._renderTitle()}
-          </View>
-          <View style={styles.rightContainer}>
-            {this._renderSearchComponent()}
-            {rightElement}
-          </View>
-        </View>
-
+        const placement = Platform.select({
+            android: 'left',
+            ios: 'center',
+        });
+        return (<>
+        <HeaderBase containerStyle={containerStyle} statusBarProps={{ backgroundColor }} placement={placement} leftComponent={this._renderIcon()} centerComponent={this._renderTitle()} rightComponent={this._renderRightComponent()}/>
         <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.progress} progressTintColor={Theme.primary} progressViewStyle='bar' styleAttr='Horizontal'/>
-      </View>);
+      </>);
     }
     _renderIcon() {
         if (this.props.icon) {
@@ -121,6 +113,12 @@ export class Header extends React.PureComponent {
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }
+    _renderRightComponent() {
+        return (<View>
+        {this._renderSearchComponent()}
+        {this.props.rightElement}
+      </View>);
+    }
     _renderSearchComponent() {
         const searchIcon = this.props.searchIcon;
         if (searchIcon && !this.state.searchEnabled) {
@@ -130,10 +128,6 @@ export class Header extends React.PureComponent {
     }
 }
 const styles = StyleSheet.create({
-    mainContainer: {
-        alignItems: 'center',
-        height: 48,
-    },
     container: {
         flex: 1,
         flexDirection: 'row',
@@ -148,9 +142,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
     },
     title: {
-        flex: 1,
         fontSize: 18,
-        left: 24,
     },
     input: {
         borderBottomWidth: 0,

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StatusBarProps as BProps } from 'react-native';
 export interface StatusBarProps extends BProps {
+    backgroundColor?: string;
     height: number;
     isIphoneX: boolean;
 }

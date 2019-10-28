@@ -33,6 +33,7 @@ export declare class Header extends React.PureComponent<Props, State> {
     render(): JSX.Element;
     private _renderIcon;
     private _renderTitle;
+    private _renderRightComponent;
     private _renderSearchComponent;
     private _handleOnPressSearch;
     private _handleOnSearch;
