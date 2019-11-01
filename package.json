@@ -1,6 +1,6 @@
 {
   "name": "react-native-ez-components",
-  "version": "0.5.11",
+  "version": "0.5.12",
   "description": "Component collections",
   "main": "dist/index.js",
   "repository": "https://github.com/ez-connect/react-native-ez-components.git",
@@ -15,15 +15,15 @@
   },
   "devDependencies": {
     "@types/color": "^3.0.0",
-    "@types/react": "^16.9.2",
-    "@types/react-native": "^0.60.15",
-    "react-native-elements": "^1.2.1",
-    "react-navigation": "^4.0.0",
-    "react-navigation-drawer": "^2.1.0",
-    "react-navigation-stack": "^1.5.3",
+    "@types/react": "^16.9.11",
+    "@types/react-native": "^0.60.22",
+    "react-native-elements": "^1.2.7",
+    "react-navigation": "^4.0.10",
+    "react-navigation-drawer": "^2.3.3",
+    "react-navigation-stack": "^1.10.3",
     "tslint": "^5.20.0",
     "tslint-react": "^4.1.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.4"
   },
   "peerDependencies": {}
 }

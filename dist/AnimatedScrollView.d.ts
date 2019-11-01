@@ -1,13 +1,14 @@
 import { Component } from 'react';
-import { Animated, ScrollViewProps, ViewStyle } from 'react-native';
-interface Props extends ScrollViewProps {
-    header: JSX.Element;
+import { Animated, ViewStyle } from 'react-native';
+interface Props {
+    headerComponent: JSX.Element;
     headerHeight: number;
     style?: ViewStyle;
+    children: JSX.Element;
 }
 interface State {
-    scrollAnim: Animated.Value;
     offsetAnim: Animated.Value;
+    scrollAnim: Animated.Value;
 }
 export declare class AnimatedScrollView extends Component<Props, State> {
     state: State;
@@ -18,6 +19,7 @@ export declare class AnimatedScrollView extends Component<Props, State> {
     componentDidMount(): void;
     componentWillUnmount(): void;
     render(): JSX.Element;
+    private _renderScrollView;
     private _handleScroll;
     private _handleScrollEndDrag;
     private _handleMomentumScrollBegin;
