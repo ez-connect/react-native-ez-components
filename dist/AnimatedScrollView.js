@@ -65,7 +65,9 @@ export class AnimatedScrollView extends Component {
       </View>);
     }
     _renderScrollView() {
+        const style = [this.props.children.props.style, { paddingTop: this.props.headerHeight }];
         return React.cloneElement(this.props.children, {
+            style,
             onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }]),
             scrollEventThrottle: DEFAULT_SCROLL_THROTTLE,
             onMomentumScrollBegin: this._handleMomentumScrollBegin,
