@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { Animated, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { BackHandler } from 'react-native';
 import { ListItem, Text } from 'react-native-elements';
 import { Theme } from './Theme';
 const CONTAINER_OPACITY = 80;
 const ANIM_DURATION = 300;
 export class Sheet extends React.PureComponent {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super(...arguments);
+        this.state = {
+            items: [],
+            visible: false,
+        };
         this._anim = new Animated.Value(1000);
         this.close = () => {
             this.setState({ visible: false });
@@ -15,9 +20,8 @@ export class Sheet extends React.PureComponent {
             this.close();
             this._onSelectHandler && this._onSelectHandler(value);
         };
-        this.state = {
-            items: [],
-            visible: false,
+        this._handleOnBackPress = () => {
+            this.close();
         };
     }
     static setInstance(value) {
@@ -25,6 +29,12 @@ export class Sheet extends React.PureComponent {
     }
     static open(items, onSelectHandler, title, options) {
         Sheet._instance && Sheet._instance.open(items, onSelectHandler, title, options);
+    }
+    componentDidMount() {
+        this._backHandler = BackHandler.addEventListener('hardwareBackPress', this._handleOnBackPress);
+    }
+    componentWillUnmount() {
+        this._backHandler.remove();
     }
     open(items, onSelectHandler, title, option) {
         this._onSelectHandler = onSelectHandler;
@@ -40,7 +50,7 @@ export class Sheet extends React.PureComponent {
         if (this.state.visible) {
             const containerStyle = StyleSheet.flatten([
                 styles.mainContainer,
-                { backgroundColor: `${Theme.secondary}${CONTAINER_OPACITY}` },
+                { backgroundColor: `${Theme.surface}${CONTAINER_OPACITY}` },
                 this._options && this._options.containerStyle,
             ]);
             return (<View style={containerStyle}>

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle, NativeEventSubscription } from 'react-native';
+import { BackHandler } from 'react-native';
 import { ListItem, Text } from 'react-native-elements';
 
 import { Theme } from './Theme';
@@ -44,16 +45,22 @@ export class Sheet extends React.PureComponent<{}, State> {
 
   ///////////////////////////////////////////////////////////////////
 
+  public state: State = {
+    items: [],
+    visible: false,
+  };
+
   private _anim = new Animated.Value(1000);
   private _onSelectHandler?: (value: any) => void;
   private _options?: Options;
+  private _backHandler?: NativeEventSubscription;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      visible: false,
-    };
+  public componentDidMount() {
+    this._backHandler = BackHandler.addEventListener('hardwareBackPress', this._handleOnBackPress);
+  }
+
+  public componentWillUnmount() {
+    this._backHandler.remove();
   }
 
   public open(items: SheetItem[], onSelectHandler?: (value: any) => void, title?: string, option?: Options) {
@@ -76,7 +83,7 @@ export class Sheet extends React.PureComponent<{}, State> {
     if (this.state.visible) {
       const containerStyle = StyleSheet.flatten([
         styles.mainContainer,
-        { backgroundColor: `${Theme.secondary}${CONTAINER_OPACITY}` },
+        { backgroundColor: `${Theme.surface}${CONTAINER_OPACITY}` },
         this._options && this._options.containerStyle,
       ]);
       return (
@@ -148,6 +155,10 @@ export class Sheet extends React.PureComponent<{}, State> {
   private _handleOnPressItem = (value) => () => {
     this.close();
     this._onSelectHandler && this._onSelectHandler(value);
+  }
+
+  private _handleOnBackPress = () => {
+    this.close();
   }
 }
 
