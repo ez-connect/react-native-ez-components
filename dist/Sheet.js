@@ -50,7 +50,7 @@ export class Sheet extends React.PureComponent {
         if (this.state.visible) {
             const containerStyle = StyleSheet.flatten([
                 styles.mainContainer,
-                { backgroundColor: `${Theme.surface}${CONTAINER_OPACITY}` },
+                { backgroundColor: `${Theme.onBackground}${CONTAINER_OPACITY}` },
                 this._options && this._options.containerStyle,
             ]);
             return (<View style={containerStyle}>

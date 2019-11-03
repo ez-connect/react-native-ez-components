@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle, NativeEventSubscription } from 'react-native';
+import { Animated, Dimensions, NativeEventSubscription, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { BackHandler } from 'react-native';
 import { ListItem, Text } from 'react-native-elements';
 
@@ -83,7 +83,7 @@ export class Sheet extends React.PureComponent<{}, State> {
     if (this.state.visible) {
       const containerStyle = StyleSheet.flatten([
         styles.mainContainer,
-        { backgroundColor: `${Theme.surface}${CONTAINER_OPACITY}` },
+        { backgroundColor: `${Theme.onBackground}${CONTAINER_OPACITY}` },
         this._options && this._options.containerStyle,
       ]);
       return (
