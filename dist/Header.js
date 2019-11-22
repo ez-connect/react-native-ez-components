@@ -15,6 +15,9 @@ export class Header extends React.PureComponent {
         this._handleOnPressSearch = () => {
             this.setState({ searchEnabled: true });
         };
+        this._handleOnPressClear = () => {
+            this._input.clear();
+        };
         this._handleOnSearch = (text) => {
             if (text !== '') {
                 this.setState({ text });
@@ -35,13 +38,7 @@ export class Header extends React.PureComponent {
             }
         };
         this._handleOnPressIcon = () => {
-            if (this.state.searchEnabled) {
-                this.setState({ searchEnabled: false });
-                if (this.props.onSearch) {
-                    this.props.onSearch(undefined);
-                }
-            }
-            else if (this.props.onPressIcon) {
+            if (this.props.onPressIcon) {
                 this.props.onPressIcon();
             }
             else {
@@ -88,10 +85,10 @@ export class Header extends React.PureComponent {
             android: 'left',
             ios: 'center',
         });
-        return (<>
+        return (<View>
         <HeaderBase containerStyle={containerStyle} statusBarProps={{ backgroundColor }} placement={placement} leftComponent={this._renderIcon()} centerComponent={this._renderTitle()} rightComponent={this._renderRightComponent()}/>
         <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.progress} progressTintColor={Theme.primary} progressViewStyle='bar' styleAttr='Horizontal'/>
-      </>);
+      </View>);
     }
     _renderIcon() {
         if (this.props.icon) {
@@ -109,7 +106,7 @@ export class Header extends React.PureComponent {
             { color: onBackgroundColor || Theme.onPrimary },
         ]);
         if (this.state.searchEnabled) {
-            return (<Input autoFocus={true} inputContainerStyle={styles.input} inputStyle={{ color: onBackgroundColor || Theme.onPrimary }} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} underlineColorAndroid='transparent' onChangeText={this._handleOnSearch}/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.input} inputStyle={{ color: onBackgroundColor || Theme.onPrimary }} onChangeText={this._handleOnSearch} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} ref={(x) => this._input = x} underlineColorAndroid='transparent'/>);
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }
@@ -120,9 +117,13 @@ export class Header extends React.PureComponent {
       </View>);
     }
     _renderSearchComponent() {
-        const searchIcon = this.props.searchIcon;
+        const { searchIcon, clearIcon, onBackgroundColor } = this.props;
+        const color = onBackgroundColor || Theme.onPrimary;
         if (searchIcon && !this.state.searchEnabled) {
-            return (<TouchableIcon style={styles.icon} {...searchIcon} onPress={this._handleOnPressSearch}/>);
+            return (<TouchableIcon {...searchIcon} style={styles.icon} color={color} onPress={this._handleOnPressSearch}/>);
+        }
+        if (this.state.text && this.state.text.length > 0) {
+            return (<TouchableIcon {...clearIcon} style={styles.icon} color={color} onPress={this._handleOnPressClear}/>);
         }
         return null;
     }

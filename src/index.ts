@@ -5,8 +5,6 @@ import EventListener from './EventListener';
 import { Header } from './Header';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
-import { SafeAreaView } from './SafeAreaView';
-import { ScrollView } from './ScrollView';
 import { Sheet } from './Sheet';
 import { StatusBar } from './StatusBar';
 import { Storage } from './Storage';
@@ -25,8 +23,6 @@ export {
   Header,
   NavigationService,
   ProgressBar,
-  SafeAreaView,
-  ScrollView,
   Sheet,
   StatusBar,
   Storage,

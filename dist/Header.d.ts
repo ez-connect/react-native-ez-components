@@ -3,6 +3,7 @@ import { IconProps } from 'react-native-elements';
 interface Props {
     backgroundColor?: string;
     borderColor?: string;
+    clearIcon?: IconProps;
     height?: number;
     icon?: IconProps;
     loadingEnabled?: boolean;
@@ -25,6 +26,7 @@ interface State {
 export declare class Header extends React.PureComponent<Props, State> {
     private _progressHandler;
     private _isMounted;
+    private _input;
     private _lastSearchAt;
     constructor(props: Props);
     setState(value: State): void;
@@ -36,6 +38,7 @@ export declare class Header extends React.PureComponent<Props, State> {
     private _renderRightComponent;
     private _renderSearchComponent;
     private _handleOnPressSearch;
+    private _handleOnPressClear;
     private _handleOnSearch;
     private _handleOnPressIcon;
     private _handleOnProgressInterval;

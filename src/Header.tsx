@@ -13,6 +13,7 @@ interface Props {
   // compactElement?: React.ReactNode;
   backgroundColor?: string;
   borderColor?: string;
+  clearIcon?: IconProps;
   height?: number;
   icon?: IconProps;
   loadingEnabled?: boolean;
@@ -40,6 +41,7 @@ export class Header extends React.PureComponent<Props, State> {
   private _progressHandler: any;
   private _isMounted = false;
 
+  private _input: Input;
   private _lastSearchAt: Date = new Date();
 
   constructor(props: Props) {
@@ -85,7 +87,7 @@ export class Header extends React.PureComponent<Props, State> {
     });
 
     return (
-      <>
+      <View>
         <HeaderBase
           containerStyle={containerStyle}
           statusBarProps={{ backgroundColor }}
@@ -103,7 +105,7 @@ export class Header extends React.PureComponent<Props, State> {
           progressViewStyle='bar'
           styleAttr='Horizontal'
         />
-      </>
+      </View>
     );
   }
 
@@ -140,10 +142,11 @@ export class Header extends React.PureComponent<Props, State> {
           autoFocus={true}
           inputContainerStyle={styles.input}
           inputStyle={{ color: onBackgroundColor || Theme.onPrimary }}
+          onChangeText={this._handleOnSearch}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor || Theme.onSurface}
+          ref={(x) => this._input = x}
           underlineColorAndroid='transparent'
-          onChangeText={this._handleOnSearch}
         />
       );
     }
@@ -161,10 +164,28 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   private _renderSearchComponent() {
-    const searchIcon = this.props.searchIcon;
+    const { searchIcon, clearIcon, onBackgroundColor } = this.props;
+    const color = onBackgroundColor || Theme.onPrimary;
+
     if (searchIcon && !this.state.searchEnabled) {
       return (
-        <TouchableIcon style={styles.icon} {...searchIcon} onPress={this._handleOnPressSearch} />
+        <TouchableIcon
+          {...searchIcon}
+          style={styles.icon}
+          color={color}
+          onPress={this._handleOnPressSearch}
+        />
+      );
+    }
+
+    if (this.state.text && this.state.text.length > 0) {
+      return (
+        <TouchableIcon
+          {...clearIcon}
+          style={styles.icon}
+          color={color}
+          onPress={this._handleOnPressClear}
+        />
       );
     }
 
@@ -175,6 +196,10 @@ export class Header extends React.PureComponent<Props, State> {
 
   private _handleOnPressSearch = () => {
     this.setState({ searchEnabled: true });
+  }
+
+  private _handleOnPressClear = () => {
+    this._input.clear();
   }
 
   private _handleOnSearch = (text: string) => {
@@ -198,12 +223,13 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   private _handleOnPressIcon = () => {
-    if (this.state.searchEnabled) {
-      this.setState({ searchEnabled: false });
-      if (this.props.onSearch) {
-        this.props.onSearch(undefined);
-      }
-    } else if (this.props.onPressIcon) {
+    // if (this.state.searchEnabled) {
+    //   this.setState({ searchEnabled: false });
+    //   if (this.props.onSearch) {
+    //     this.props.onSearch(undefined);
+    //   }
+    // } else
+    if (this.props.onPressIcon) {
       this.props.onPressIcon();
     } else {
       NavigationService.goBack();

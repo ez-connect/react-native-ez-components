@@ -2,6 +2,7 @@ import color from 'color';
 import { FullTheme, ThemeProvider } from 'react-native-elements';
 
 import EventListener from './EventListener';
+import { TouchableFeedback } from './TouchableFeedback';
 
 interface ThemeItem {
   name: string;
@@ -91,47 +92,50 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
         badgeStyle: {
           backgroundColor: surface,
           borderRadius: 24,
+          borderWidth: 0,
           padding: 12,
         },
-        textStyle: {
-          color: onSurface,
-        },
+        // !DEV: without height not working on iOS
+        textStyle: { color: onBackground, height: 16 },
       },
       Button: {
-        titleStyle: {
-          color: onPrimary,
-        },
+        titleStyle: { color: onPrimary, fontSize: 14 },
+        TouchableComponent: TouchableFeedback,
       },
       ButtonGroup: {
         buttonStyle: { backgroundColor: background },
+        containerStyle: { height: 32 },
+        innerBorderStyle: { width: 0 },
         selectedButtonStyle: { backgroundColor: secondary },
-        selectedTextStyle: { color: onSecondary },
+        selectedTextStyle: { color: onSecondary, fontSize: 14 },
         textStyle: { color: onBackground, fontSize: 14 },
       },
       CheckBox: {
-        containerStyle: { backgroundColor: background },
-        textStyle: { color: onBackground },
+        containerStyle: { backgroundColor: background, borderWidth: 0 },
+        textStyle: { color: onBackground, fontWeight: 'normal' },
+      },
+      Divider: {
+        style: { backgroundColor: surface },
       },
       Icon: {
         type: this.iconset,
         color: onBackground,
       },
       Input: {
-        inputStyle: {
-          color: onBackground,
-        },
+        containerStyle: { paddingBottom: 12 },
+        inputStyle: { color: onBackground },
+        labelStyle: { fontSize: 14, fontWeight: 'normal' },
       },
       ListItem: {
+        Component: TouchableFeedback,
         containerStyle: { backgroundColor: 'transparent' },
         leftIcon: { color: onBackground },
-        titleStyle: { color: onBackground },
-        subtitleStyle: { color: onSurface },
         rightTitleStyle: { color: onBackground },
+        subtitleStyle: { color: onSurface },
+        titleStyle: { color: onBackground },
       },
       Text: {
-        style: {
-          color: onBackground,
-        },
+        style: { color: onBackground },
       },
       colors: {
         primary,
