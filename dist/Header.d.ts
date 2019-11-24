@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { StatusBarProperties } from 'react-native';
 import { IconProps } from 'react-native-elements';
 interface Props {
     backgroundColor?: string;
@@ -14,6 +15,7 @@ interface Props {
     rightElement?: React.ReactNode;
     searchEnabled?: boolean;
     searchIcon?: IconProps;
+    statusBarProps?: StatusBarProperties;
     title?: string;
     onPressIcon?(): void;
     onSearch?(query: string): void;

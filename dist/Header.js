@@ -81,12 +81,14 @@ export class Header extends React.PureComponent {
                 borderColor: this.props.borderColor,
             },
         ];
+        const statusBarProps = this.props.statusBarProps
+            ? this.props.statusBarProps : { backgroundColor };
         const placement = Platform.select({
             android: 'left',
             ios: 'center',
         });
         return (<View>
-        <HeaderBase containerStyle={containerStyle} statusBarProps={{ backgroundColor }} placement={placement} leftComponent={this._renderIcon()} centerComponent={this._renderTitle()} rightComponent={this._renderRightComponent()}/>
+        <HeaderBase containerStyle={containerStyle} statusBarProps={statusBarProps} placement={placement} leftComponent={this._renderIcon()} centerComponent={this._renderTitle()} rightComponent={this._renderRightComponent()}/>
         <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.progress} progressTintColor={Theme.primary} progressViewStyle='bar' styleAttr='Horizontal'/>
       </View>);
     }

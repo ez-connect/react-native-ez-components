@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TextStyle, View } from 'react-native';
+import { Platform, StatusBarProperties, StyleSheet, TextStyle, View } from 'react-native';
 import { Header as HeaderBase, IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
@@ -24,6 +24,7 @@ interface Props {
   rightElement?: React.ReactNode;
   searchEnabled?: boolean; // force search
   searchIcon?: IconProps;
+  statusBarProps?: StatusBarProperties;
   title?: string;
   onPressIcon?(): void;
   onSearch?(query: string): void;
@@ -80,6 +81,8 @@ export class Header extends React.PureComponent<Props, State> {
         borderColor: this.props.borderColor,
       },
     ];
+    const statusBarProps = this.props.statusBarProps
+      ? this.props.statusBarProps : { backgroundColor };
 
     const placement: 'left' | 'center' = Platform.select({
       android: 'left',
@@ -90,7 +93,7 @@ export class Header extends React.PureComponent<Props, State> {
       <View>
         <HeaderBase
           containerStyle={containerStyle}
-          statusBarProps={{ backgroundColor }}
+          statusBarProps={statusBarProps}
           placement={placement}
           leftComponent={this._renderIcon()}
           centerComponent={this._renderTitle()}
