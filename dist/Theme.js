@@ -1,5 +1,5 @@
 import color from 'color';
-import EventListener from './EventListener';
+import { EventListener } from './EventListener';
 import { TouchableFeedback } from './TouchableFeedback';
 var ThemeEvent;
 (function (ThemeEvent) {
@@ -10,8 +10,10 @@ class Theme extends EventListener {
         this._themeProvider = provider;
     }
     setTheme(value) {
-        this._themeProvider.updateTheme(value);
-        super.emit(ThemeEvent.OnChange);
+        if (this._themeProvider) {
+            this._themeProvider.updateTheme(value);
+            super.emit(ThemeEvent.OnChange);
+        }
     }
     setThemeItem(value) {
         Object.assign(this, value);

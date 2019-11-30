@@ -1,5 +1,5 @@
 import { RGBA } from './DaylightHelper';
-import EventListener from './EventListener';
+import { EventListener } from './EventListener';
 export declare const kDaylighPresets: {
     name: string;
     desc: string;

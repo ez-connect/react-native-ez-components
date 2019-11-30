@@ -5,7 +5,7 @@ interface Listener<T> {
   handler: Handler;
 }
 
-export default class EventListener<T> {
+export class EventListener<T> {
   private _listeners: Array<Listener<T>> = [];
 
   public addListener(event: T, handler: Handler) {

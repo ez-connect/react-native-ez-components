@@ -2,7 +2,15 @@
 // https://github.com/fengliu222/react-native-swipe-hidden-header
 
 import React, { Component } from 'react';
-import { Animated, StyleSheet, View, ViewStyle } from 'react-native';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
+
+export interface AnimatedScrollViewChilrenProps {
+    onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onMomentumScrollBegin?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onScrollEndDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onScrollBeginDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+}
 
 interface Props {
   headerComponent: JSX.Element; // auto hide when reach to range

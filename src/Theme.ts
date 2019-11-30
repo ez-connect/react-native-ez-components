@@ -1,7 +1,7 @@
 import color from 'color';
 import { FullTheme, ThemeProvider } from 'react-native-elements';
 
-import EventListener from './EventListener';
+import { EventListener } from './EventListener';
 import { TouchableFeedback } from './TouchableFeedback';
 
 interface ThemeItem {
@@ -79,8 +79,10 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
   }
 
   public setTheme(value: Partial<FullTheme>) {
-    this._themeProvider.updateTheme(value);
-    super.emit(ThemeEvent.OnChange);
+    if (this._themeProvider) {
+      this._themeProvider.updateTheme(value);
+      super.emit(ThemeEvent.OnChange);
+    }
   }
 
   public setThemeItem(value: ThemeItem) {
