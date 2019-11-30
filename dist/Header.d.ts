@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { StatusBarProperties } from 'react-native';
 import { IconProps } from 'react-native-elements';
 interface Props {
     backgroundColor?: string;
     borderColor?: string;
+    clearIcon?: IconProps;
     height?: number;
-    icon: IconProps;
+    icon?: IconProps;
     loadingEnabled?: boolean;
     onBackgroundColor?: string;
     placeholder?: string;
@@ -13,8 +15,9 @@ interface Props {
     rightElement?: React.ReactNode;
     searchEnabled?: boolean;
     searchIcon?: IconProps;
+    statusBarProps?: StatusBarProperties;
     title?: string;
-    onBack?(): void;
+    onPressIcon?(): void;
     onSearch?(query: string): void;
 }
 interface State {
@@ -25,19 +28,21 @@ interface State {
 export declare class Header extends React.PureComponent<Props, State> {
     private _progressHandler;
     private _isMounted;
+    private _input;
     private _lastSearchAt;
     constructor(props: Props);
     setState(value: State): void;
     componentDidMount(): void;
     componentWillUnmount(): void;
     render(): JSX.Element;
-    collapse(): void;
-    expand(): void;
+    private _renderIcon;
     private _renderTitle;
+    private _renderRightComponent;
     private _renderSearchComponent;
     private _handleOnPressSearch;
+    private _handleOnPressClear;
     private _handleOnSearch;
-    private _handleOnPressBack;
+    private _handleOnPressIcon;
     private _handleOnProgressInterval;
 }
 export {};

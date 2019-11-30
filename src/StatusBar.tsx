@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { StatusBar as Status, StatusBarProps as BProps, View } from 'react-native';
+import { Theme } from './Theme';
 
 export interface StatusBarProps extends BProps {
+  backgroundColor?: string;
   height: number;
   isIphoneX: boolean;
 }
@@ -33,7 +35,7 @@ export class StatusBar extends React.PureComponent<StatusBarProps, StatusBarStat
     const statusHeight = isIphoneX ? height : this.state.hidden ? 0 : height;
 
     return (
-      <View style={{ height: statusHeight }}>
+      <View style={{ backgroundColor: this.props.backgroundColor, height: statusHeight }}>
         <Status hidden={this.state.hidden} {...rest} />
       </View>
     );

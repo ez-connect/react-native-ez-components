@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Platform, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
-import { IconProps, Input, Text } from 'react-native-elements';
+import { Platform, StatusBarProperties, StyleSheet, TextStyle, View } from 'react-native';
+import { Header as HeaderBase, IconProps, Input, Text } from 'react-native-elements';
 
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
@@ -13,8 +13,9 @@ interface Props {
   // compactElement?: React.ReactNode;
   backgroundColor?: string;
   borderColor?: string;
+  clearIcon?: IconProps;
   height?: number;
-  icon: IconProps;
+  icon?: IconProps;
   loadingEnabled?: boolean;
   onBackgroundColor?: string;
   placeholder?: string;
@@ -23,8 +24,9 @@ interface Props {
   rightElement?: React.ReactNode;
   searchEnabled?: boolean; // force search
   searchIcon?: IconProps;
+  statusBarProps?: StatusBarProperties;
   title?: string;
-  onBack?(): void;
+  onPressIcon?(): void;
   onSearch?(query: string): void;
 }
 
@@ -40,6 +42,7 @@ export class Header extends React.PureComponent<Props, State> {
   private _progressHandler: any;
   private _isMounted = false;
 
+  private _input: Input;
   private _lastSearchAt: Date = new Date();
 
   constructor(props: Props) {
@@ -69,33 +72,33 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   public render() {
-    const { icon, rightElement } = this.props;
     const backgroundColor = this.props.backgroundColor || Theme.primary;
     const containerStyle = [
-      styles.mainContainer,
       { backgroundColor },
+      this.props.height && { height: this.props.height },
       this.props.borderColor && {
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: this.props.borderColor,
       },
     ];
-    const color = (icon && icon.color)
-      ? icon.color
-      : (this.props.onBackgroundColor || Theme.onPrimary);
+    const statusBarProps = this.props.statusBarProps
+      ? this.props.statusBarProps : { backgroundColor };
+
+    const placement: 'left' | 'center' = Platform.select({
+      android: 'left',
+      ios: 'center',
+    });
 
     return (
-      <View style={containerStyle}>
-        <View style={styles.container}>
-          <TouchableIcon {...icon} color={color} onPress={this._handleOnPressBack} style={styles.closeIcon} />
-          <View style={styles.leftContainer}>
-            {this._renderTitle()}
-          </View>
-          <View style={styles.rightContainer}>
-            {this._renderSearchComponent()}
-            {rightElement}
-          </View>
-        </View>
-
+      <View>
+        <HeaderBase
+          containerStyle={containerStyle}
+          statusBarProps={statusBarProps}
+          placement={placement}
+          leftComponent={this._renderIcon()}
+          centerComponent={this._renderTitle()}
+          rightComponent={this._renderRightComponent()}
+        />
         <ProgressBar
           visible={this.props.loadingEnabled}
           style={styles.progress}
@@ -109,14 +112,26 @@ export class Header extends React.PureComponent<Props, State> {
     );
   }
 
-  public collapse() {
-    //
-  }
+  ///////////////////////////////////////////////////////////////////
 
-  public expand() {
-    //
-  }
+  private _renderIcon() {
+    if (this.props.icon) {
+      const color = (this.props.icon && this.props.icon.color)
+        ? this.props.icon.color
+        : (this.props.onBackgroundColor || Theme.onPrimary);
 
+      return (
+        <TouchableIcon
+          {...this.props.icon}
+          color={color}
+          onPress={this._handleOnPressIcon}
+          style={styles.closeIcon}
+        />
+      );
+    }
+
+    return null;
+  }
 
   private _renderTitle() {
     const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
@@ -130,10 +145,11 @@ export class Header extends React.PureComponent<Props, State> {
           autoFocus={true}
           inputContainerStyle={styles.input}
           inputStyle={{ color: onBackgroundColor || Theme.onPrimary }}
+          onChangeText={this._handleOnSearch}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor || Theme.onSurface}
+          ref={(x) => this._input = x}
           underlineColorAndroid='transparent'
-          onChangeText={this._handleOnSearch}
         />
       );
     }
@@ -141,11 +157,38 @@ export class Header extends React.PureComponent<Props, State> {
     return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
   }
 
+  private _renderRightComponent() {
+    return (
+      <View>
+        {this._renderSearchComponent()}
+        {this.props.rightElement}
+      </View>
+    );
+  }
+
   private _renderSearchComponent() {
-    const searchIcon = this.props.searchIcon;
+    const { searchIcon, clearIcon, onBackgroundColor } = this.props;
+    const color = onBackgroundColor || Theme.onPrimary;
+
     if (searchIcon && !this.state.searchEnabled) {
       return (
-        <TouchableIcon style={styles.icon} {...searchIcon} onPress={this._handleOnPressSearch} />
+        <TouchableIcon
+          {...searchIcon}
+          style={styles.icon}
+          color={color}
+          onPress={this._handleOnPressSearch}
+        />
+      );
+    }
+
+    if (this.state.text && this.state.text.length > 0) {
+      return (
+        <TouchableIcon
+          {...clearIcon}
+          style={styles.icon}
+          color={color}
+          onPress={this._handleOnPressClear}
+        />
       );
     }
 
@@ -156,6 +199,10 @@ export class Header extends React.PureComponent<Props, State> {
 
   private _handleOnPressSearch = () => {
     this.setState({ searchEnabled: true });
+  }
+
+  private _handleOnPressClear = () => {
+    this._input.clear();
   }
 
   private _handleOnSearch = (text: string) => {
@@ -178,14 +225,15 @@ export class Header extends React.PureComponent<Props, State> {
     }
   }
 
-  private _handleOnPressBack = () => {
-    if (this.state.searchEnabled) {
-      this.setState({ searchEnabled: false });
-      if (this.props.onSearch) {
-        this.props.onSearch(undefined);
-      }
-    } else if (this.props.onBack) {
-      this.props.onBack();
+  private _handleOnPressIcon = () => {
+    // if (this.state.searchEnabled) {
+    //   this.setState({ searchEnabled: false });
+    //   if (this.props.onSearch) {
+    //     this.props.onSearch(undefined);
+    //   }
+    // } else
+    if (this.props.onPressIcon) {
+      this.props.onPressIcon();
     } else {
       NavigationService.goBack();
     }
@@ -203,10 +251,8 @@ export class Header extends React.PureComponent<Props, State> {
 ///////////////////////////////////////////////////////////////////
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    alignItems: 'center',
-  },
   container: {
+    flex: 1,
     flexDirection: 'row',
   },
   leftContainer: {
@@ -219,9 +265,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   title: {
-    flex: 1,
     fontSize: 18,
-    marginLeft: 10,
   },
   input: {
     borderBottomWidth: 0,

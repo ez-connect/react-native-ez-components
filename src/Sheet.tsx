@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Animated, Dimensions, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Animated, Dimensions, NativeEventSubscription, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { BackHandler } from 'react-native';
 import { ListItem, Text } from 'react-native-elements';
 
 import { Theme } from './Theme';
@@ -12,19 +13,26 @@ export interface SheetItem {
   value?: any;
 }
 
-interface Options {
+interface Props {
   animation?: 'none' | 'fade' | 'slide'; // TODO: support none & fade animations
+  position?: 'top' | 'bottom';
   bottomDivider?: boolean;
   containerStyle?: ViewStyle;
+
+  items?: SheetItem[];
   itemsStyle?: ViewStyle;
   itemStyle?: ViewStyle;
-  position?: 'top' | 'bottom';
+  title?: string;
   titleStyle?: TextStyle;
+
+  // Component
+  component?: JSX.Element;
+
+  onSelect?: (value: any) => void;
 }
 
 interface State {
-  items: SheetItem[];
-  title?: string;
+  props?: Props;
   visible: boolean;
 }
 
@@ -36,49 +44,54 @@ export class Sheet extends React.PureComponent<{}, State> {
     Sheet._instance = value;
   }
 
-  public static open(items: SheetItem[], onSelectHandler?: (value: any) => void, title?: string, options?: Options) {
-    Sheet._instance && Sheet._instance.open(items, onSelectHandler, title, options);
+  public static open(props: Props) {
+    if (Sheet._instance) {
+      Sheet._instance.open(props);
+    }
   }
 
   private static _instance: Sheet | null;
 
   ///////////////////////////////////////////////////////////////////
 
-  private _anim = new Animated.Value(1000);
-  private _onSelectHandler?: (value: any) => void;
-  private _options?: Options;
+  public state: State = {
+    visible: false,
+  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      visible: false,
-    };
+  private _anim = new Animated.Value(1000);
+  private _backHandler?: NativeEventSubscription;
+
+  public componentDidMount() {
+    this._backHandler = BackHandler.addEventListener('hardwareBackPress', this._handleOnBackPress);
   }
 
-  public open(items: SheetItem[], onSelectHandler?: (value: any) => void, title?: string, option?: Options) {
-    this._onSelectHandler = onSelectHandler;
-    this._options = option;
+  public componentWillUnmount() {
+    this._backHandler.remove();
+  }
+
+  public open(props: Props) {
     this._anim = new Animated.Value(-Dimensions.get('screen').height);
     Animated.timing(this._anim, {
       toValue: 0,
       duration: ANIM_DURATION,
     }).start();
 
-    this.setState({ items, title, visible: true });
+    this.setState({ props, visible: true });
   }
 
   public close = () => {
-    this.setState({ visible: false });
+    this.setState({ props: undefined, visible: false });
   }
 
   public render() {
-    if (this.state.visible) {
+    const { props, visible } = this.state;
+    if (visible && props) {
       const containerStyle = StyleSheet.flatten([
         styles.mainContainer,
-        { backgroundColor: `${Theme.secondary}${CONTAINER_OPACITY}` },
-        this._options && this._options.containerStyle,
+        { backgroundColor: `${Theme.onBackground}${CONTAINER_OPACITY}` },
+        props.containerStyle,
       ]);
+
       return (
         <View style={containerStyle}>
           <TouchableOpacity onPress={this.close} style={styles.overlay}>
@@ -87,67 +100,91 @@ export class Sheet extends React.PureComponent<{}, State> {
         </View>
       );
     }
+
     return null;
   }
 
   ///////////////////////////////////////////////////////////////////
 
   private _renderItems() {
-    const items = this.state.items;
-
-    const menuItems = items.map((item, index) => {
-      const { icon, title, value, disabled } = item;
-      const containerStyle = StyleSheet.flatten([
-        styles.item,
-        { backgroundColor: Theme.background },
-        this._options && this._options.itemsStyle,
-      ]);
-
-      if (title) {
-        const color = disabled ? Theme.onSurface : Theme.onBackground;
-        return (
-          <ListItem
-            bottomDivider={this._options && this._options.bottomDivider}
-            containerStyle={containerStyle}
-            key={index}
-            leftIcon={{ type: Theme.iconset, name: icon, color }}
-            onPress={disabled ? undefined : this._handleOnPressItem(value)}
-            subtitle={item.subtitle}
-            title={title}
-            titleStyle={{ color }}
-          />
-        );
+    const props = this.state.props;
+    if (props) {
+      const titleStyle = StyleSheet.flatten([styles.title, { backgroundColor: Theme.background }]);
+      const style: ViewStyle = { position: 'absolute', width: '100%' };
+      if (props.position === 'top') {
+        Object.assign(style, { top: this._anim });
       } else {
-        return <View key={index} style={{ backgroundColor: Theme.onSurface, ...styles.divider }} />;
+        Object.assign(style, { bottom: this._anim });
       }
-    });
 
+      const itemsStyle = StyleSheet.flatten([style, props.itemsStyle]);
 
-    const titleStyle = StyleSheet.flatten([styles.title, { backgroundColor: Theme.background }]);
-    const style: ViewStyle = { position: 'absolute', width: '100%' };
-    if (this._options && this._options.position === 'top') {
-      Object.assign(style, { top: this._anim });
-    } else {
-      Object.assign(style, { bottom: this._anim });
+      if (props.items) {
+        const menuItems = props.items.map((v, i) => {
+          return this._renderItem(v, i);
+        });
+
+        return (
+          <Animated.View style={itemsStyle}>
+            {props.title && <Text style={titleStyle}>{props.title}</Text>}
+            {menuItems}
+          </Animated.View>
+        );
+      }
+
+      return (
+        <Animated.View style={itemsStyle}>
+          {props.component}
+        </Animated.View>
+      );
     }
+  }
 
-    const itemsStyle = StyleSheet.flatten([
-      style,
-      this._options && this._options.itemsStyle,
+  private _renderItem(item: SheetItem, index: number) {
+    const props = this.state.props;
+    const { icon, title, value, disabled } = item;
+    const containerStyle = StyleSheet.flatten([
+      styles.item,
+      { backgroundColor: Theme.background },
+      props.itemsStyle,
     ]);
-    return (
-      <Animated.View style={itemsStyle}>
-        {this.state.title && <Text style={titleStyle}>{this.state.title}</Text>}
-        {menuItems}
-      </Animated.View>
-    );
+
+    if (title) {
+      const color = disabled ? Theme.onSurface : Theme.onBackground;
+      return (
+        <ListItem
+          bottomDivider={props.bottomDivider}
+          containerStyle={containerStyle}
+          key={index}
+          leftIcon={{ type: Theme.iconset, name: icon, color }}
+          onPress={disabled ? undefined : this._handleOnPressItem(value)}
+          subtitle={item.subtitle}
+          title={title}
+          titleStyle={{ color }}
+        />
+      );
+    } else {
+      return (
+        <View
+          key={index}
+          style={{ backgroundColor: Theme.onSurface, ...styles.divider }}
+        />
+      );
+    }
   }
 
   ///////////////////////////////////////////////////////////////////
 
   private _handleOnPressItem = (value) => () => {
+    const props = this.state.props;
     this.close();
-    this._onSelectHandler && this._onSelectHandler(value);
+    if (props && props.onSelect) {
+      props.onSelect(value);
+    }
+  }
+
+  private _handleOnBackPress = () => {
+    this.close();
   }
 }
 

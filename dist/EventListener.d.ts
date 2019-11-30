@@ -3,7 +3,7 @@ interface Listener<T> {
     event: T;
     handler: Handler;
 }
-export default class EventListener<T> {
+export declare class EventListener<T> {
     private _listeners;
     addListener(event: T, handler: Handler): void;
     removeListener(event: T, handler: Handler): void;

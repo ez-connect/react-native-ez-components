@@ -1,25 +1,36 @@
 // https://snack.expo.io/B1v5RS7ix
+// https://github.com/fengliu222/react-native-swipe-hidden-header
 
 import React, { Component } from 'react';
-import { Animated, ScrollViewProps, StyleSheet, View, ViewStyle } from 'react-native';
+import { Animated, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
 
-interface Props extends ScrollViewProps {
-  header: JSX.Element; // auto hide when reach to range
+export interface AnimatedScrollViewChilrenProps {
+    onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onMomentumScrollBegin?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onScrollEndDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onScrollBeginDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+}
+
+interface Props {
+  headerComponent: JSX.Element; // auto hide when reach to range
   headerHeight: number;
   style?: ViewStyle;
+
+  children: JSX.Element;
 }
 
 interface State {
-  scrollAnim: Animated.Value;
   offsetAnim: Animated.Value;
+  scrollAnim: Animated.Value;
 }
 
-const DEFAULT_SCROLL_THROTTLE = 20;
+const DEFAULT_SCROLL_THROTTLE = 16;
 
 export class AnimatedScrollView extends Component<Props, State> {
   public state: State = {
-    scrollAnim: new Animated.Value(0),
     offsetAnim: new Animated.Value(0),
+    scrollAnim: new Animated.Value(0),
   };
 
   private _previousScrollvalue: number = 0;
@@ -43,11 +54,6 @@ export class AnimatedScrollView extends Component<Props, State> {
       extrapolate: 'clamp',
     });
 
-    const { style, scrollEventThrottle, ...rest } = this.props;
-    const themeStyle = StyleSheet.flatten([
-      { paddingTop: this.props.headerHeight },
-      style && style,
-    ]);
     const headerStyle = [
       styles.header,
       {
@@ -57,27 +63,26 @@ export class AnimatedScrollView extends Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        <Animated.ScrollView
-          style={themeStyle}
-          scrollEventThrottle={scrollEventThrottle || DEFAULT_SCROLL_THROTTLE}
-          // tslint:disable-next-line: jsx-no-multiline-js
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }],
-          )}
-          onMomentumScrollBegin={this._handleMomentumScrollBegin}
-          onMomentumScrollEnd={this._handleMomentumScrollEnd}
-          onScrollEndDrag={this._handleScrollEndDrag}
-
-          {...rest}
-        >
-          {this.props.children}
-        </Animated.ScrollView>
-
+        {this._renderScrollView()}
         <Animated.View style={headerStyle}>
-          {this.props.header}
+          {this.props.headerComponent}
         </Animated.View>
-      </View>
+      </View >
     );
+  }
+
+  private _renderScrollView() {
+    const style = [this.props.children.props.style, { paddingTop: this.props.headerHeight }];
+    return React.cloneElement(this.props.children as any, {
+      style,
+      onScroll: Animated.event(
+        [{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }],
+      ),
+      scrollEventThrottle: DEFAULT_SCROLL_THROTTLE,
+      onMomentumScrollBegin: this._handleMomentumScrollBegin,
+      onMomentumScrollEnd: this._handleMomentumScrollEnd,
+      onScrollEndDrag: this._handleScrollEndDrag,
+    });
   }
 
   ///////////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
-import { Input, Text } from 'react-native-elements';
+import { Header as HeaderBase, Input, Text } from 'react-native-elements';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
@@ -14,6 +14,9 @@ export class Header extends React.PureComponent {
         this._lastSearchAt = new Date();
         this._handleOnPressSearch = () => {
             this.setState({ searchEnabled: true });
+        };
+        this._handleOnPressClear = () => {
+            this._input.clear();
         };
         this._handleOnSearch = (text) => {
             if (text !== '') {
@@ -34,15 +37,9 @@ export class Header extends React.PureComponent {
                 }
             }
         };
-        this._handleOnPressBack = () => {
-            if (this.state.searchEnabled) {
-                this.setState({ searchEnabled: false });
-                if (this.props.onSearch) {
-                    this.props.onSearch(undefined);
-                }
-            }
-            else if (this.props.onBack) {
-                this.props.onBack();
+        this._handleOnPressIcon = () => {
+            if (this.props.onPressIcon) {
+                this.props.onPressIcon();
             }
             else {
                 NavigationService.goBack();
@@ -75,37 +72,34 @@ export class Header extends React.PureComponent {
         this._isMounted = false;
     }
     render() {
-        const { icon, rightElement } = this.props;
         const backgroundColor = this.props.backgroundColor || Theme.primary;
         const containerStyle = [
-            styles.mainContainer,
             { backgroundColor },
+            this.props.height && { height: this.props.height },
             this.props.borderColor && {
                 borderBottomWidth: StyleSheet.hairlineWidth,
                 borderColor: this.props.borderColor,
             },
         ];
-        const color = (icon && icon.color)
-            ? icon.color
-            : (this.props.onBackgroundColor || Theme.onPrimary);
-        return (<View style={containerStyle}>
-        <View style={styles.container}>
-          <TouchableIcon {...icon} color={color} onPress={this._handleOnPressBack} style={styles.closeIcon}/>
-          <View style={styles.leftContainer}>
-            {this._renderTitle()}
-          </View>
-          <View style={styles.rightContainer}>
-            {this._renderSearchComponent()}
-            {rightElement}
-          </View>
-        </View>
-
+        const statusBarProps = this.props.statusBarProps
+            ? this.props.statusBarProps : { backgroundColor };
+        const placement = Platform.select({
+            android: 'left',
+            ios: 'center',
+        });
+        return (<View>
+        <HeaderBase containerStyle={containerStyle} statusBarProps={statusBarProps} placement={placement} leftComponent={this._renderIcon()} centerComponent={this._renderTitle()} rightComponent={this._renderRightComponent()}/>
         <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.progress} progressTintColor={Theme.primary} progressViewStyle='bar' styleAttr='Horizontal'/>
       </View>);
     }
-    collapse() {
-    }
-    expand() {
+    _renderIcon() {
+        if (this.props.icon) {
+            const color = (this.props.icon && this.props.icon.color)
+                ? this.props.icon.color
+                : (this.props.onBackgroundColor || Theme.onPrimary);
+            return (<TouchableIcon {...this.props.icon} color={color} onPress={this._handleOnPressIcon} style={styles.closeIcon}/>);
+        }
+        return null;
     }
     _renderTitle() {
         const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
@@ -114,23 +108,31 @@ export class Header extends React.PureComponent {
             { color: onBackgroundColor || Theme.onPrimary },
         ]);
         if (this.state.searchEnabled) {
-            return (<Input autoFocus={true} inputContainerStyle={styles.input} inputStyle={{ color: onBackgroundColor || Theme.onPrimary }} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} underlineColorAndroid='transparent' onChangeText={this._handleOnSearch}/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.input} inputStyle={{ color: onBackgroundColor || Theme.onPrimary }} onChangeText={this._handleOnSearch} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} ref={(x) => this._input = x} underlineColorAndroid='transparent'/>);
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }
+    _renderRightComponent() {
+        return (<View>
+        {this._renderSearchComponent()}
+        {this.props.rightElement}
+      </View>);
+    }
     _renderSearchComponent() {
-        const searchIcon = this.props.searchIcon;
+        const { searchIcon, clearIcon, onBackgroundColor } = this.props;
+        const color = onBackgroundColor || Theme.onPrimary;
         if (searchIcon && !this.state.searchEnabled) {
-            return (<TouchableIcon style={styles.icon} {...searchIcon} onPress={this._handleOnPressSearch}/>);
+            return (<TouchableIcon {...searchIcon} style={styles.icon} color={color} onPress={this._handleOnPressSearch}/>);
+        }
+        if (this.state.text && this.state.text.length > 0) {
+            return (<TouchableIcon {...clearIcon} style={styles.icon} color={color} onPress={this._handleOnPressClear}/>);
         }
         return null;
     }
 }
 const styles = StyleSheet.create({
-    mainContainer: {
-        alignItems: 'center',
-    },
     container: {
+        flex: 1,
         flexDirection: 'row',
     },
     leftContainer: {
@@ -143,9 +145,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
     },
     title: {
-        flex: 1,
         fontSize: 18,
-        marginLeft: 10,
     },
     input: {
         borderBottomWidth: 0,

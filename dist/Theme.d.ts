@@ -1,5 +1,5 @@
 import { FullTheme, ThemeProvider } from 'react-native-elements';
-import EventListener from './EventListener';
+import { EventListener } from './EventListener';
 interface ThemeItem {
     name: string;
     primary: string;

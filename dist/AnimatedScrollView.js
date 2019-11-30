@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
-const DEFAULT_SCROLL_THROTTLE = 20;
+const DEFAULT_SCROLL_THROTTLE = 16;
 export class AnimatedScrollView extends Component {
     constructor() {
         super(...arguments);
         this.state = {
-            scrollAnim: new Animated.Value(0),
             offsetAnim: new Animated.Value(0),
+            scrollAnim: new Animated.Value(0),
         };
         this._previousScrollvalue = 0;
         this._currentScrollValue = 0;
@@ -51,11 +51,6 @@ export class AnimatedScrollView extends Component {
             outputRange: [0, -this.props.headerHeight],
             extrapolate: 'clamp',
         });
-        const { style, scrollEventThrottle, ...rest } = this.props;
-        const themeStyle = StyleSheet.flatten([
-            { paddingTop: this.props.headerHeight },
-            style && style,
-        ]);
         const headerStyle = [
             styles.header,
             {
@@ -63,14 +58,22 @@ export class AnimatedScrollView extends Component {
             },
         ];
         return (<View style={styles.container}>
-        <Animated.ScrollView style={themeStyle} scrollEventThrottle={scrollEventThrottle || DEFAULT_SCROLL_THROTTLE} onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }])} onMomentumScrollBegin={this._handleMomentumScrollBegin} onMomentumScrollEnd={this._handleMomentumScrollEnd} onScrollEndDrag={this._handleScrollEndDrag} {...rest}>
-          {this.props.children}
-        </Animated.ScrollView>
-
+        {this._renderScrollView()}
         <Animated.View style={headerStyle}>
-          {this.props.header}
+          {this.props.headerComponent}
         </Animated.View>
       </View>);
+    }
+    _renderScrollView() {
+        const style = [this.props.children.props.style, { paddingTop: this.props.headerHeight }];
+        return React.cloneElement(this.props.children, {
+            style,
+            onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }]),
+            scrollEventThrottle: DEFAULT_SCROLL_THROTTLE,
+            onMomentumScrollBegin: this._handleMomentumScrollBegin,
+            onMomentumScrollEnd: this._handleMomentumScrollEnd,
+            onScrollEndDrag: this._handleScrollEndDrag,
+        });
     }
 }
 const styles = StyleSheet.create({
