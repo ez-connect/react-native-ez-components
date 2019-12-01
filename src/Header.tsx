@@ -134,20 +134,19 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   private _renderTitle() {
-    const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
-    const titleStyle = StyleSheet.flatten<TextStyle>([
-      styles.title,
-      { color: onBackgroundColor || Theme.onPrimary },
-    ]);
+    const { title, placeholder, placeholderTextColor } = this.props;
+    const color = Theme.onBackground || Theme.onPrimary;
+    const inputStyle = StyleSheet.flatten([styles.input, { color }]);
+    const titleStyle = StyleSheet.flatten<TextStyle>([styles.title, { color }]);
     if (this.state.searchEnabled) {
       return (
         <Input
           autoFocus={true}
-          inputContainerStyle={styles.input}
-          inputStyle={{ color: onBackgroundColor || Theme.onPrimary }}
+          inputContainerStyle={styles.inputContainer}
+          inputStyle={inputStyle}
           onChangeText={this._handleOnSearch}
           placeholder={placeholder}
-          placeholderTextColor={placeholderTextColor || Theme.onSurface}
+          placeholderTextColor={placeholderTextColor}
           ref={(x) => this._input = x}
           underlineColorAndroid='transparent'
         />
@@ -267,8 +266,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
   },
-  input: {
+  inputContainer: {
     borderBottomWidth: 0,
+  },
+  input: {
+    paddingBottom: 0,
   },
   progress: {
     position: 'absolute',

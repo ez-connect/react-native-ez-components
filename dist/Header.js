@@ -102,13 +102,12 @@ export class Header extends React.PureComponent {
         return null;
     }
     _renderTitle() {
-        const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
-        const titleStyle = StyleSheet.flatten([
-            styles.title,
-            { color: onBackgroundColor || Theme.onPrimary },
-        ]);
+        const { title, placeholder, placeholderTextColor } = this.props;
+        const color = Theme.onBackground || Theme.onPrimary;
+        const inputStyle = StyleSheet.flatten([styles.input, { color }]);
+        const titleStyle = StyleSheet.flatten([styles.title, { color }]);
         if (this.state.searchEnabled) {
-            return (<Input autoFocus={true} inputContainerStyle={styles.input} inputStyle={{ color: onBackgroundColor || Theme.onPrimary }} onChangeText={this._handleOnSearch} placeholder={placeholder} placeholderTextColor={placeholderTextColor || Theme.onSurface} ref={(x) => this._input = x} underlineColorAndroid='transparent'/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.inputContainer} inputStyle={inputStyle} onChangeText={this._handleOnSearch} placeholder={placeholder} placeholderTextColor={placeholderTextColor} ref={(x) => this._input = x} underlineColorAndroid='transparent'/>);
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }
@@ -147,8 +146,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
     },
-    input: {
+    inputContainer: {
         borderBottomWidth: 0,
+    },
+    input: {
+        paddingBottom: 0,
     },
     progress: {
         position: 'absolute',
