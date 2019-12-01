@@ -102,8 +102,8 @@ export class Header extends React.PureComponent {
         return null;
     }
     _renderTitle() {
-        const { title, placeholder, placeholderTextColor } = this.props;
-        const color = Theme.onBackground || Theme.onPrimary;
+        const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
+        const color = onBackgroundColor || Theme.onPrimary;
         const inputStyle = StyleSheet.flatten([styles.input, { color }]);
         const titleStyle = StyleSheet.flatten([styles.title, { color }]);
         if (this.state.searchEnabled) {
