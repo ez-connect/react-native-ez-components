@@ -1,6 +1,6 @@
 {
   "name": "react-native-ez-components",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Component collections",
   "main": "dist/index.js",
   "repository": "https://github.com/ez-connect/react-native-ez-components.git",

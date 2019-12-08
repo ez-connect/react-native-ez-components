@@ -37,6 +37,11 @@ export class Header extends React.PureComponent {
                 }
             }
         };
+        this._handleOnBlur = () => {
+            if (this.props.onBlur) {
+                this.props.onBlur();
+            }
+        };
         this._handleOnPressIcon = () => {
             if (this.props.onPressIcon) {
                 this.props.onPressIcon();
@@ -107,7 +112,7 @@ export class Header extends React.PureComponent {
         const inputStyle = StyleSheet.flatten([styles.input, { color }]);
         const titleStyle = StyleSheet.flatten([styles.title, { color }]);
         if (this.state.searchEnabled) {
-            return (<Input autoFocus={true} inputContainerStyle={styles.inputContainer} inputStyle={inputStyle} onChangeText={this._handleOnSearch} placeholder={placeholder} placeholderTextColor={placeholderTextColor} ref={(x) => this._input = x} underlineColorAndroid='transparent'/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.inputContainer} inputStyle={inputStyle} onBlur={this._handleOnBlur} onChangeText={this._handleOnSearch} placeholder={placeholder} placeholderTextColor={placeholderTextColor} ref={(x) => this._input = x} underlineColorAndroid='transparent'/>);
         }
         return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
     }

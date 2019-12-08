@@ -26,6 +26,8 @@ interface Props {
   searchIcon?: IconProps;
   statusBarProps?: StatusBarProperties;
   title?: string;
+
+  onBlur?(): void;
   onPressIcon?(): void;
   onSearch?(query: string): void;
 }
@@ -144,6 +146,7 @@ export class Header extends React.PureComponent<Props, State> {
           autoFocus={true}
           inputContainerStyle={styles.inputContainer}
           inputStyle={inputStyle}
+          onBlur={this._handleOnBlur}
           onChangeText={this._handleOnSearch}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
@@ -221,6 +224,12 @@ export class Header extends React.PureComponent<Props, State> {
       if (this.props.onSearch) {
         this.props.onSearch(undefined);
       }
+    }
+  }
+
+  private _handleOnBlur = () => {
+    if (this.props.onBlur) {
+      this.props.onBlur();
     }
   }
 
