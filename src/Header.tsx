@@ -219,7 +219,7 @@ export class Header extends React.PureComponent<Props, State> {
           this._lastSearchAt = now;
         }
       }
-    } else {
+    } else if (!this.props.searchEnabled) {
       this.setState({ searchEnabled: false });
       if (this.props.onSearch) {
         this.props.onSearch(undefined);
