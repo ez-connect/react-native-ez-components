@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         borderBottomWidth: 0,
-        backgroundColor: 'blue',
         paddingTop: 12,
     },
     progress: {
