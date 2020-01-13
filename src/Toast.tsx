@@ -100,9 +100,9 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     const backgroundColor = Theme.secondary;
     const color = Theme.onSecondary;
 
-    itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
-    titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
-    messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
+    itemStyle = StyleSheet.flatten([styles.item, { backgroundColor }, itemStyle]);
+    titleStyle = StyleSheet.flatten([styles.title, { color }, titleStyle]);
+    messageStyle = StyleSheet.flatten([styles.message, { color }, messageStyle]);
 
     const { title, message } = this.state.item;
 
