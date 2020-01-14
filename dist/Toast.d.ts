@@ -8,7 +8,7 @@ export declare enum ToastType {
 export declare enum ToastDuration {
     Short = 1000,
     Length = 3000,
-    Forever = 0
+    Forever = -1
 }
 interface ToastItem {
     title?: string;

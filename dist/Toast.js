@@ -14,7 +14,7 @@ export var ToastDuration;
 (function (ToastDuration) {
     ToastDuration[ToastDuration["Short"] = 1000] = "Short";
     ToastDuration[ToastDuration["Length"] = 3000] = "Length";
-    ToastDuration[ToastDuration["Forever"] = 0] = "Forever";
+    ToastDuration[ToastDuration["Forever"] = -1] = "Forever";
 })(ToastDuration || (ToastDuration = {}));
 export class Toast extends React.Component {
     constructor(props) {
@@ -31,7 +31,9 @@ export class Toast extends React.Component {
         this._add = (item) => {
             item.duration = item.duration || ToastDuration.Length;
             this._timeoutHandler && clearTimeout(this._timeoutHandler);
-            this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+            if (item.duration != ToastDuration.Forever) {
+                this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+            }
             this.setState({ item });
         };
         this._remove = () => {

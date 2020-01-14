@@ -16,7 +16,7 @@ export enum ToastType {
 export enum ToastDuration {
   Short = 1000, // 1 sec
   Length = 3000, // 3sec
-  Forever = 0, // until dismiss
+  Forever = -1, // until dismiss
 }
 
 interface ToastItem {
@@ -163,7 +163,10 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   private _add = (item: ToastItem) => {
     item.duration = item.duration || ToastDuration.Length;
     this._timeoutHandler && clearTimeout(this._timeoutHandler);
-    this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+    if (item.duration != ToastDuration.Forever) {
+      this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+    }
+
     this.setState({ item });
   }
 
