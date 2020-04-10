@@ -72,6 +72,7 @@ export class Sheet extends React.PureComponent<{}, State> {
   public open(props: Props) {
     this._anim = new Animated.Value(-Dimensions.get('screen').height);
     Animated.timing(this._anim, {
+      useNativeDriver: true,
       toValue: 0,
       duration: ANIM_DURATION,
     }).start();

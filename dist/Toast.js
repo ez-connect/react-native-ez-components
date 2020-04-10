@@ -23,6 +23,7 @@ export class Toast extends React.Component {
         this._anim = new Animated.Value(ANIM_OFFSET);
         this._show = (item) => () => {
             Animated.timing(this._anim, {
+                useNativeDriver: true,
                 toValue: 0,
                 duration: ANIM_DURATION,
             }).start();
@@ -31,7 +32,7 @@ export class Toast extends React.Component {
         this._add = (item) => {
             item.duration = item.duration || ToastDuration.Length;
             this._timeoutHandler && clearTimeout(this._timeoutHandler);
-            if (item.duration != ToastDuration.Forever) {
+            if (item.duration !== ToastDuration.Forever) {
                 this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
             }
             this.setState({ item });
@@ -117,6 +118,7 @@ export class Toast extends React.Component {
     _hide(callback) {
         this._timeoutHandler && clearTimeout(this._timeoutHandler);
         Animated.timing(this._anim, {
+            useNativeDriver: true,
             toValue: ANIM_OFFSET,
             duration: ANIM_DURATION,
         }).start(callback);
