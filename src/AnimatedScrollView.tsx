@@ -107,14 +107,14 @@ export class AnimatedScrollView extends Component<Props, State> {
     if (previous > current || current < this.props.headerHeight) {
       // User scrolled down or scroll amount was too less, lets snap back our header
       Animated.spring(this.state.offsetAnim, {
-        useNativeDriver: true,
+        useNativeDriver: false,
         toValue: -current,
         tension: 300,
         friction: 35,
       }).start();
     } else {
       Animated.timing(this.state.offsetAnim, {
-        useNativeDriver: true,
+        useNativeDriver: false,
         toValue: 0,
         duration: 500,
       }).start();

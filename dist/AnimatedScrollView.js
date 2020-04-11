@@ -25,7 +25,7 @@ export class AnimatedScrollView extends Component {
             const current = this._currentScrollValue;
             if (previous > current || current < this.props.headerHeight) {
                 Animated.spring(this.state.offsetAnim, {
-                    useNativeDriver: true,
+                    useNativeDriver: false,
                     toValue: -current,
                     tension: 300,
                     friction: 35,
@@ -33,7 +33,7 @@ export class AnimatedScrollView extends Component {
             }
             else {
                 Animated.timing(this.state.offsetAnim, {
-                    useNativeDriver: true,
+                    useNativeDriver: false,
                     toValue: 0,
                     duration: 500,
                 }).start();
