@@ -184,8 +184,9 @@ export class Sheet extends React.PureComponent<{}, State> {
     }
   }
 
-  private _handleOnBackPress = () => {
+  private _handleOnBackPress = (): boolean => {
     this.close();
+    return true;
   }
 }
 

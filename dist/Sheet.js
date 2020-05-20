@@ -24,6 +24,7 @@ export class Sheet extends React.PureComponent {
         };
         this._handleOnBackPress = () => {
             this.close();
+            return true;
         };
     }
     static setInstance(value) {

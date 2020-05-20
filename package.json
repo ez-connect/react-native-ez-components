@@ -14,16 +14,16 @@
     "color": "^3.1.2"
   },
   "devDependencies": {
-    "@types/color": "^3.0.0",
-    "@types/react": "^16.9.11",
-    "@types/react-native": "^0.60.22",
-    "react-native-elements": "^1.2.7",
-    "react-navigation": "^4.0.10",
-    "react-navigation-drawer": "^2.3.3",
-    "react-navigation-stack": "^1.10.3",
-    "tslint": "^5.20.0",
-    "tslint-react": "^4.1.0",
-    "typescript": "^3.6.4"
+    "@types/color": "^3.0.1",
+    "@types/react": "^16.9.35",
+    "@types/react-native": "^0.62.10",
+    "react-native-elements": "^2.0.0",
+    "react-navigation": "^4.3.9",
+    "react-navigation-drawer": "^2.4.13",
+    "react-navigation-stack": "^2.5.1",
+    "tslint": "^6.1.2",
+    "tslint-react": "^5.0.0",
+    "typescript": "^3.9.3"
   },
   "peerDependencies": {}
 }
