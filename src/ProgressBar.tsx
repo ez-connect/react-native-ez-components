@@ -1,12 +1,14 @@
 import React from 'react';
-import { Platform, ProgressBarAndroid, ProgressBarAndroidProps, ProgressViewIOS, ProgressViewIOSProps } from 'react-native';
+import { Platform } from 'react-native';
+import { ProgressView, ProgressViewProps } from '@react-native-community/progress-view';
+import { ProgressBar as ProgressBarAndroid, ProgressBarAndroidProps } from '@react-native-community/progress-bar-android';
 
 const Component = Platform.select({
   android: ProgressBarAndroid,
-  ios: ProgressViewIOS,
+  ios: ProgressView,
 });
 
-interface ProgressBarProps extends ProgressBarAndroidProps, ProgressViewIOSProps {
+interface ProgressBarProps extends ProgressBarAndroidProps, ProgressViewProps {
   visible?: boolean;
 }
 

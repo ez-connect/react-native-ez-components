@@ -11,12 +11,14 @@
     "build": "yarn tsc"
   },
   "dependencies": {
+    "@react-native-community/progress-bar-android": "^1.0.2",
+    "@react-native-community/progress-view": "^1.0.2",
     "color": "^3.1.2"
   },
   "devDependencies": {
     "@types/color": "^3.0.1",
     "@types/react": "^16.9.35",
-    "@types/react-native": "^0.62.10",
+    "@types/react-native": "^0.62.12",
     "react-native-elements": "^2.0.0",
     "react-navigation": "^4.3.9",
     "react-navigation-drawer": "^2.4.13",
