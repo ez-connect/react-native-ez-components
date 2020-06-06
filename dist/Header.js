@@ -79,6 +79,7 @@ export class Header extends React.PureComponent {
     render() {
         const backgroundColor = this.props.backgroundColor || Theme.primary;
         const containerStyle = [
+            styles.container,
             { backgroundColor },
             this.props.height && { height: this.props.height },
             this.props.borderColor && {
@@ -102,7 +103,7 @@ export class Header extends React.PureComponent {
             const color = (this.props.icon && this.props.icon.color)
                 ? this.props.icon.color
                 : (this.props.onBackgroundColor || Theme.onPrimary);
-            return (<TouchableIcon {...this.props.icon} color={color} onPress={this._handleOnPressIcon} style={styles.closeIcon}/>);
+            return (<TouchableIcon {...this.props.icon} color={color} onPress={this._handleOnPressIcon}/>);
         }
         return null;
     }
@@ -135,8 +136,7 @@ export class Header extends React.PureComponent {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: 'row',
+        alignItems: 'center',
     },
     leftContainer: {
         flex: 1,
@@ -161,10 +161,6 @@ const styles = StyleSheet.create({
             android: -8,
             ios: 0,
         }),
-    },
-    closeIcon: {
-        width: 64,
-        height: 48,
     },
     icon: {
         width: 48,
