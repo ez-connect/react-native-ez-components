@@ -6,7 +6,7 @@ interface Listener<T> {
 }
 
 export class EventListener<T> {
-  private _listeners: Array<Listener<T>> = [];
+  private _listeners: Listener<T>[] = [];
 
   public addListener(event: T, handler: Handler) {
     // console.debug(`EventListener.addListener: ${event}`);
@@ -22,13 +22,13 @@ export class EventListener<T> {
     }
   }
 
-  public addListeners(listeners: Array<Listener<T>>) {
+  public addListeners(listeners: Listener<T>[]) {
     for (const listener of listeners) {
       this._listeners.push(listener);
     }
   }
 
-  public removeListeners(listeners: Array<Listener<T>>) {
+  public removeListeners(listeners: Listener<T>[]) {
     for (const listener of listeners) {
       this.removeListener(listener.event, listener.handler);
     }

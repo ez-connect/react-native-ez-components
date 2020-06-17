@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     borderBottomWidth: 0,
-    paddingTop: 12,
+    paddingTop: 24,
   },
   progress: {
     position: 'absolute',
