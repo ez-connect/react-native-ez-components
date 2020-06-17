@@ -14,7 +14,7 @@ export var ToastDuration;
 (function (ToastDuration) {
     ToastDuration[ToastDuration["Short"] = 1000] = "Short";
     ToastDuration[ToastDuration["Length"] = 3000] = "Length";
-    ToastDuration[ToastDuration["Forever"] = 0] = "Forever";
+    ToastDuration[ToastDuration["Forever"] = -1] = "Forever";
 })(ToastDuration || (ToastDuration = {}));
 export class Toast extends React.Component {
     constructor(props) {
@@ -23,6 +23,7 @@ export class Toast extends React.Component {
         this._anim = new Animated.Value(ANIM_OFFSET);
         this._show = (item) => () => {
             Animated.timing(this._anim, {
+                useNativeDriver: false,
                 toValue: 0,
                 duration: ANIM_DURATION,
             }).start();
@@ -31,7 +32,9 @@ export class Toast extends React.Component {
         this._add = (item) => {
             item.duration = item.duration || ToastDuration.Length;
             this._timeoutHandler && clearTimeout(this._timeoutHandler);
-            this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+            if (item.duration !== ToastDuration.Forever) {
+                this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+            }
             this.setState({ item });
         };
         this._remove = () => {
@@ -85,9 +88,9 @@ export class Toast extends React.Component {
         let { itemStyle, titleStyle, messageStyle } = this.props;
         const backgroundColor = Theme.secondary;
         const color = Theme.onSecondary;
-        itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
-        titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
-        messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
+        itemStyle = StyleSheet.flatten([styles.item, { backgroundColor }, itemStyle]);
+        titleStyle = StyleSheet.flatten([styles.title, { color }, titleStyle]);
+        messageStyle = StyleSheet.flatten([styles.message, { color }, messageStyle]);
         const { title, message } = this.state.item;
         return (<TouchableOpacity onPress={this._handleOnPress}>
         <Animated.View style={{ bottom: this._anim }}>
@@ -115,6 +118,7 @@ export class Toast extends React.Component {
     _hide(callback) {
         this._timeoutHandler && clearTimeout(this._timeoutHandler);
         Animated.timing(this._anim, {
+            useNativeDriver: false,
             toValue: ANIM_OFFSET,
             duration: ANIM_DURATION,
         }).start(callback);

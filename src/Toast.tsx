@@ -16,7 +16,7 @@ export enum ToastType {
 export enum ToastDuration {
   Short = 1000, // 1 sec
   Length = 3000, // 3sec
-  Forever = 0, // until dismiss
+  Forever = -1, // until dismiss
 }
 
 interface ToastItem {
@@ -100,9 +100,9 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     const backgroundColor = Theme.secondary;
     const color = Theme.onSecondary;
 
-    itemStyle = StyleSheet.flatten([styles.item, itemStyle, { backgroundColor }]);
-    titleStyle = StyleSheet.flatten([styles.title, titleStyle, { color }]);
-    messageStyle = StyleSheet.flatten([styles.message, messageStyle, { color }]);
+    itemStyle = StyleSheet.flatten([styles.item, { backgroundColor }, itemStyle]);
+    titleStyle = StyleSheet.flatten([styles.title, { color }, titleStyle]);
+    messageStyle = StyleSheet.flatten([styles.message, { color }, messageStyle]);
 
     const { title, message } = this.state.item;
 
@@ -145,6 +145,7 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   private _show = (item: ToastItem) => () => {
     Animated.timing(this._anim, {
+      useNativeDriver: false,
       toValue: 0,
       duration: ANIM_DURATION,
     }).start();
@@ -155,6 +156,7 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   private _hide(callback: Animated.EndCallback) {
     this._timeoutHandler && clearTimeout(this._timeoutHandler);
     Animated.timing(this._anim, {
+      useNativeDriver: false,
       toValue: ANIM_OFFSET,
       duration: ANIM_DURATION,
     }).start(callback);
@@ -163,7 +165,10 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   private _add = (item: ToastItem) => {
     item.duration = item.duration || ToastDuration.Length;
     this._timeoutHandler && clearTimeout(this._timeoutHandler);
-    this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+    if (item.duration !== ToastDuration.Forever) {
+      this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+    }
+
     this.setState({ item });
   }
 

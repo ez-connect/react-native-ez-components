@@ -26,6 +26,8 @@ interface Props {
   searchIcon?: IconProps;
   statusBarProps?: StatusBarProperties;
   title?: string;
+
+  onBlur?(): void;
   onPressIcon?(): void;
   onSearch?(query: string): void;
 }
@@ -74,6 +76,7 @@ export class Header extends React.PureComponent<Props, State> {
   public render() {
     const backgroundColor = this.props.backgroundColor || Theme.primary;
     const containerStyle = [
+      styles.container,
       { backgroundColor },
       this.props.height && { height: this.props.height },
       this.props.borderColor && {
@@ -125,7 +128,6 @@ export class Header extends React.PureComponent<Props, State> {
           {...this.props.icon}
           color={color}
           onPress={this._handleOnPressIcon}
-          style={styles.closeIcon}
         />
       );
     }
@@ -135,19 +137,18 @@ export class Header extends React.PureComponent<Props, State> {
 
   private _renderTitle() {
     const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
-    const titleStyle = StyleSheet.flatten<TextStyle>([
-      styles.title,
-      { color: onBackgroundColor || Theme.onPrimary },
-    ]);
+    const color = onBackgroundColor || Theme.onPrimary;
+    const titleStyle = StyleSheet.flatten<TextStyle>([styles.title, { color }]);
     if (this.state.searchEnabled) {
       return (
         <Input
           autoFocus={true}
-          inputContainerStyle={styles.input}
-          inputStyle={{ color: onBackgroundColor || Theme.onPrimary }}
+          inputContainerStyle={styles.inputContainer}
+          inputStyle={{ color }}
+          onBlur={this._handleOnBlur}
           onChangeText={this._handleOnSearch}
           placeholder={placeholder}
-          placeholderTextColor={placeholderTextColor || Theme.onSurface}
+          placeholderTextColor={placeholderTextColor}
           ref={(x) => this._input = x}
           underlineColorAndroid='transparent'
         />
@@ -217,11 +218,17 @@ export class Header extends React.PureComponent<Props, State> {
           this._lastSearchAt = now;
         }
       }
-    } else {
+    } else if (!this.props.searchEnabled) {
       this.setState({ searchEnabled: false });
       if (this.props.onSearch) {
         this.props.onSearch(undefined);
       }
+    }
+  }
+
+  private _handleOnBlur = () => {
+    if (this.props.onBlur) {
+      this.props.onBlur();
     }
   }
 
@@ -252,8 +259,7 @@ export class Header extends React.PureComponent<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
+    alignItems: 'center',
   },
   leftContainer: {
     flex: 1,
@@ -267,8 +273,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
   },
-  input: {
+  inputContainer: {
     borderBottomWidth: 0,
+    paddingTop: 24,
   },
   progress: {
     position: 'absolute',
@@ -277,10 +284,6 @@ const styles = StyleSheet.create({
       android: -8,
       ios: 0,
     }),
-  },
-  closeIcon: {
-    width: 64,
-    height: 48,
   },
   icon: {
     width: 48,

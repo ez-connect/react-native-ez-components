@@ -5,11 +5,11 @@ import React, { Component } from 'react';
 import { Animated, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
 
 export interface AnimatedScrollViewChilrenProps {
-    onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-    onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-    onMomentumScrollBegin?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-    onScrollEndDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-    onScrollBeginDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  onMomentumScrollBegin?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  onScrollEndDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  onScrollBeginDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 interface Props {
@@ -77,6 +77,7 @@ export class AnimatedScrollView extends Component<Props, State> {
       style,
       onScroll: Animated.event(
         [{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }],
+        { useNativeDriver: false },
       ),
       scrollEventThrottle: DEFAULT_SCROLL_THROTTLE,
       onMomentumScrollBegin: this._handleMomentumScrollBegin,
@@ -107,12 +108,14 @@ export class AnimatedScrollView extends Component<Props, State> {
     if (previous > current || current < this.props.headerHeight) {
       // User scrolled down or scroll amount was too less, lets snap back our header
       Animated.spring(this.state.offsetAnim, {
+        useNativeDriver: false,
         toValue: -current,
         tension: 300,
         friction: 35,
       }).start();
     } else {
       Animated.timing(this.state.offsetAnim, {
+        useNativeDriver: false,
         toValue: 0,
         duration: 500,
       }).start();

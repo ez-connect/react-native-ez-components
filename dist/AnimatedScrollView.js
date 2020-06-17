@@ -25,6 +25,7 @@ export class AnimatedScrollView extends Component {
             const current = this._currentScrollValue;
             if (previous > current || current < this.props.headerHeight) {
                 Animated.spring(this.state.offsetAnim, {
+                    useNativeDriver: false,
                     toValue: -current,
                     tension: 300,
                     friction: 35,
@@ -32,6 +33,7 @@ export class AnimatedScrollView extends Component {
             }
             else {
                 Animated.timing(this.state.offsetAnim, {
+                    useNativeDriver: false,
                     toValue: 0,
                     duration: 500,
                 }).start();
@@ -68,7 +70,7 @@ export class AnimatedScrollView extends Component {
         const style = [this.props.children.props.style, { paddingTop: this.props.headerHeight }];
         return React.cloneElement(this.props.children, {
             style,
-            onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }]),
+            onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }], { useNativeDriver: false }),
             scrollEventThrottle: DEFAULT_SCROLL_THROTTLE,
             onMomentumScrollBegin: this._handleMomentumScrollBegin,
             onMomentumScrollEnd: this._handleMomentumScrollEnd,

@@ -17,6 +17,7 @@ interface Props {
     searchIcon?: IconProps;
     statusBarProps?: StatusBarProperties;
     title?: string;
+    onBlur?(): void;
     onPressIcon?(): void;
     onSearch?(query: string): void;
 }
@@ -42,6 +43,7 @@ export declare class Header extends React.PureComponent<Props, State> {
     private _handleOnPressSearch;
     private _handleOnPressClear;
     private _handleOnSearch;
+    private _handleOnBlur;
     private _handleOnPressIcon;
     private _handleOnProgressInterval;
 }

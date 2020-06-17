@@ -1,6 +1,6 @@
 {
   "name": "react-native-ez-components",
-  "version": "0.6.0",
+  "version": "0.6.6",
   "description": "Component collections",
   "main": "dist/index.js",
   "repository": "https://github.com/ez-connect/react-native-ez-components.git",
@@ -11,19 +11,21 @@
     "build": "yarn tsc"
   },
   "dependencies": {
+    "@react-native-community/progress-bar-android": "^1.0.3",
+    "@react-native-community/progress-view": "^1.0.3",
     "color": "^3.1.2"
   },
   "devDependencies": {
-    "@types/color": "^3.0.0",
-    "@types/react": "^16.9.11",
-    "@types/react-native": "^0.60.22",
-    "react-native-elements": "^1.2.7",
-    "react-navigation": "^4.0.10",
-    "react-navigation-drawer": "^2.3.3",
-    "react-navigation-stack": "^1.10.3",
-    "tslint": "^5.20.0",
-    "tslint-react": "^4.1.0",
-    "typescript": "^3.6.4"
+    "@types/color": "^3.0.1",
+    "@types/react": "^16.9.37",
+    "@types/react-native": "^0.62.13",
+    "react-native-elements": "^2.0.2",
+    "react-navigation": "^4.3.9",
+    "react-navigation-drawer": "^2.4.13",
+    "react-navigation-stack": "^2.7.0",
+    "tslint": "^6.1.2",
+    "tslint-react": "^5.0.0",
+    "typescript": "^3.9.5"
   },
   "peerDependencies": {}
 }

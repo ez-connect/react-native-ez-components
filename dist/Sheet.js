@@ -24,6 +24,7 @@ export class Sheet extends React.PureComponent {
         };
         this._handleOnBackPress = () => {
             this.close();
+            return true;
         };
     }
     static setInstance(value) {
@@ -43,6 +44,7 @@ export class Sheet extends React.PureComponent {
     open(props) {
         this._anim = new Animated.Value(-Dimensions.get('screen').height);
         Animated.timing(this._anim, {
+            useNativeDriver: false,
             toValue: 0,
             duration: ANIM_DURATION,
         }).start();
