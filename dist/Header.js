@@ -117,7 +117,7 @@ export class Header extends React.PureComponent {
       </Text>);
     }
     _renderRightComponent() {
-        return (<View>
+        return (<View style={styles.rightContainer}>
         {this._renderSearchComponent()}
         {this.props.rightElement}
       </View>);
@@ -126,10 +126,10 @@ export class Header extends React.PureComponent {
         const { searchIcon, clearIcon, onBackgroundColor } = this.props;
         const color = onBackgroundColor || Theme.onPrimary;
         if (searchIcon && !this.state.searchEnabled) {
-            return (<TouchableIcon {...searchIcon} style={styles.icon} color={color} onPress={this._handleOnPressSearch}/>);
+            return (<TouchableIcon {...searchIcon} color={color} onPress={this._handleOnPressSearch}/>);
         }
         if (this.state.text && this.state.text.length > 0) {
-            return (<TouchableIcon {...clearIcon} style={styles.icon} color={color} onPress={this._handleOnPressClear}/>);
+            return (<TouchableIcon {...clearIcon} color={color} onPress={this._handleOnPressClear}/>);
         }
         return null;
     }
@@ -161,9 +161,5 @@ const styles = StyleSheet.create({
             android: -8,
             ios: 0,
         }),
-    },
-    icon: {
-        width: 48,
-        height: 48,
     },
 });

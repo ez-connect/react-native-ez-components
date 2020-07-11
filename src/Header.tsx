@@ -182,7 +182,7 @@ export class Header extends React.PureComponent<Props, State> {
 
   private _renderRightComponent() {
     return (
-      <View>
+      <View style={styles.rightContainer}>
         {this._renderSearchComponent()}
         {this.props.rightElement}
       </View>
@@ -197,7 +197,6 @@ export class Header extends React.PureComponent<Props, State> {
       return (
         <TouchableIcon
           {...searchIcon}
-          style={styles.icon}
           color={color}
           onPress={this._handleOnPressSearch}
         />
@@ -208,7 +207,6 @@ export class Header extends React.PureComponent<Props, State> {
       return (
         <TouchableIcon
           {...clearIcon}
-          style={styles.icon}
           color={color}
           onPress={this._handleOnPressClear}
         />
@@ -306,9 +304,5 @@ const styles = StyleSheet.create({
       android: -8,
       ios: 0,
     }),
-  },
-  icon: {
-    width: 48,
-    height: 48,
   },
 });
