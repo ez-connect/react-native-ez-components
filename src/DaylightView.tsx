@@ -1,21 +1,27 @@
 import * as React from 'react';
-import { Dimensions, StyleSheet, View, ViewProps } from 'react-native';
+import {Dimensions, StyleSheet, View, ViewProps} from 'react-native';
 
-import { Daylight, DaylightEvent } from './Daylight';
+import {Daylight, DaylightEvent} from './Daylight';
 
 export interface DaylightState extends ViewProps {
   enable: boolean;
   backgroundColor?: string;
 }
 
-export class DaylightView extends React.PureComponent<ViewProps, DaylightState> {
+export class DaylightView extends React.PureComponent<
+  ViewProps,
+  DaylightState
+> {
   constructor(props) {
     super(props);
-    this.state = { enable: false };
+    this.state = {enable: false};
   }
 
   public componentDidMount() {
-    Daylight.addListener(DaylightEvent.OnEnableChange, this._handleOnDaylightEnableChange);
+    Daylight.addListener(
+      DaylightEvent.OnEnableChange,
+      this._handleOnDaylightEnableChange,
+    );
     Daylight.addListener(DaylightEvent.OnChange, this._handleOnDaylightChange);
   }
 
@@ -25,23 +31,26 @@ export class DaylightView extends React.PureComponent<ViewProps, DaylightState> 
 
   public render() {
     if (this.state.enable) {
-      const { backgroundColor } = this.state;
-      const style = StyleSheet.flatten([styles.mainContainer, { backgroundColor }]);
-      return <View style={style} pointerEvents='none' {...this.props} />;
+      const {backgroundColor} = this.state;
+      const style = StyleSheet.flatten([
+        styles.mainContainer,
+        {backgroundColor},
+      ]);
+      return <View style={style} pointerEvents="none" {...this.props} />;
     }
 
     return null;
   }
 
   private _handleOnDaylightEnableChange = (enable: boolean) => {
-    this.setState({ enable });
-  }
+    this.setState({enable});
+  };
 
-  private _handleOnDaylightChange = ({ color }) => {
-    const { red, green, blue, alpha } = color;
+  private _handleOnDaylightChange = ({color}) => {
+    const {red, green, blue, alpha} = color;
     const backgroundColor = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-    this.setState({ backgroundColor });
-  }
+    this.setState({backgroundColor});
+  };
 }
 
 const styles = StyleSheet.create({

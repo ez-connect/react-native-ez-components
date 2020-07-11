@@ -1,5 +1,5 @@
-import { DaylightHelper, RGBA } from './DaylightHelper';
-import { EventListener } from './EventListener';
+import {DaylightHelper, RGBA} from './DaylightHelper';
+import {EventListener} from './EventListener';
 
 export const kDaylighPresets = [
   {
@@ -73,8 +73,8 @@ export enum DaylightEvent {
 }
 
 const kDaylightUpdateInterval = 1 * 60 * 1000;
-const kAlphaMin = 0.05;
-const kAlphaMax = 0.3;
+// const kAlphaMin = 0.05;
+// const kAlphaMax = 0.3;
 const kAlphaDefault = 0.2;
 
 class Daylight extends EventListener<DaylightEvent> {
@@ -89,7 +89,7 @@ class Daylight extends EventListener<DaylightEvent> {
   private _bedTime: number = new Date().setHours(22, 0, 0);
 
   private _preset: DaylightPreset;
-  private _rgba: RGBA = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
+  private _rgba: RGBA = {red: 0, green: 0, blue: 0, alpha: kAlphaDefault};
 
   private _handleInterval: number = 0;
 
@@ -104,7 +104,10 @@ class Daylight extends EventListener<DaylightEvent> {
       if (this._handleInterval) {
         clearInterval(this._handleInterval);
       }
-      this._handleInterval = setInterval(this._handleOnUpdateSchedule, kDaylightUpdateInterval);
+      this._handleInterval = setInterval(
+        this._handleOnUpdateSchedule,
+        kDaylightUpdateInterval,
+      );
       this._update(); // force update
     } else {
       clearInterval(this._handleInterval);
@@ -117,18 +120,23 @@ class Daylight extends EventListener<DaylightEvent> {
   public async setSunTime() {
     const sun = await DaylightHelper.getSunTime();
     if (sun) {
-      const { dawn, sunrise, sunset, dusk } = sun;
+      const {dawn, sunrise, sunset, dusk} = sun;
       this._dawn = dawn;
       this._sunrise = sunrise;
       this._sunset = sunset;
       this._dusk = dusk;
 
-      super.emit(DaylightEvent.OnSunChange, { dawn, sunrise, sunset, dusk });
+      super.emit(DaylightEvent.OnSunChange, {dawn, sunrise, sunset, dusk});
     }
   }
 
   public getSunTime() {
-    return { dawn: this._dawn, sunrise: this._sunrise, sunset: this._sunset, dusk: this._dusk };
+    return {
+      dawn: this._dawn,
+      sunrise: this._sunrise,
+      sunset: this._sunset,
+      dusk: this._dusk,
+    };
   }
 
   public setUserTime(wakeTime: number, bedTime: number) {
@@ -149,7 +157,8 @@ class Daylight extends EventListener<DaylightEvent> {
   }
 
   public setPreset(name: string) {
-    const preset = kDaylighPresets.find((x) => x.name === name) || kDaylighPresets[0];
+    const preset =
+      kDaylighPresets.find((x) => x.name === name) || kDaylighPresets[0];
     this._preset = preset;
 
     this._update();
@@ -181,7 +190,7 @@ class Daylight extends EventListener<DaylightEvent> {
         const time = new Date().setHours(hour, minute, 0);
         const kelvin = this._getTemperature(time).kelvin;
         const rgba = DaylightHelper.kelvinToRGB(kelvin);
-        items.push({ time, kelvin, rgba });
+        items.push({time, kelvin, rgba});
       }
     }
 
@@ -199,22 +208,26 @@ class Daylight extends EventListener<DaylightEvent> {
       height: this._preset.late / this._preset.day,
     };
 
-    const { kelvin } = this._getTemperature(new Date().getTime());
+    const {kelvin} = this._getTemperature(new Date().getTime());
     const now = {
       argb: DaylightHelper.kelvinToRGB(kelvin),
       height: kelvin / this._preset.day,
     };
 
-    return { day, night, late, now, items };
+    return {day, night, late, now, items};
   }
 
   ///////////////////////////////////////////////////////////////////
 
-  private _getTemperature(time?: number, wakeTime?: number, bedTime?: number): Temperature {
+  private _getTemperature(
+    time?: number,
+    wakeTime?: number,
+    bedTime?: number,
+  ): Temperature {
     // TODO: Smooth change in 1 hours
     let mode: string;
     let kelvin: number;
-    const { day, night, late } = this._preset;
+    const {day, night, late} = this._preset;
     const now = time || new Date().getTime();
     wakeTime = wakeTime || this._wakeTime;
     bedTime = bedTime || this._bedTime;
@@ -226,14 +239,16 @@ class Daylight extends EventListener<DaylightEvent> {
       mode = 'night';
       kelvin = night;
     } else if (now > this._sunset) {
-      const diff = (now - this._sunset) * (night - day) / (this._dusk - this._sunset);
+      const diff =
+        ((now - this._sunset) * (night - day)) / (this._dusk - this._sunset);
       mode = 'dusk';
       kelvin = day + diff;
     } else if (now > this._sunrise) {
       mode = 'day';
       kelvin = day;
     } else if (now > this._dawn) {
-      const diff = (now - this._dawn) * (day - night) / (this._sunrise - this._dawn);
+      const diff =
+        ((now - this._dawn) * (day - night)) / (this._sunrise - this._dawn);
       mode = 'dawn';
       kelvin = night + diff;
     } else {
@@ -246,22 +261,32 @@ class Daylight extends EventListener<DaylightEvent> {
       }
     }
 
-    return { mode, kelvin };
+    return {mode, kelvin};
   }
 
-  private _update(shouldForceUpdate = false, time?: number, wakeTime?: number, bedTime?: number) {
-    const { mode, kelvin } = this._getTemperature(time, wakeTime, bedTime);
-    const { red, green, blue } = DaylightHelper.kelvinToRGB(kelvin);
-    if (shouldForceUpdate || this._rgba.red !== red || this._rgba.green !== green || this._rgba.blue !== blue) {
-      Object.assign(this._rgba, { red, green, blue });
-      super.emit(DaylightEvent.OnChange, { mode, color: this._rgba });
+  private _update(
+    shouldForceUpdate = false,
+    time?: number,
+    wakeTime?: number,
+    bedTime?: number,
+  ) {
+    const {mode, kelvin} = this._getTemperature(time, wakeTime, bedTime);
+    const {red, green, blue} = DaylightHelper.kelvinToRGB(kelvin);
+    if (
+      shouldForceUpdate ||
+      this._rgba.red !== red ||
+      this._rgba.green !== green ||
+      this._rgba.blue !== blue
+    ) {
+      Object.assign(this._rgba, {red, green, blue});
+      super.emit(DaylightEvent.OnChange, {mode, color: this._rgba});
     }
   }
 
   private _handleOnUpdateSchedule = () => {
     this._update();
-  }
+  };
 }
 
-const daylightStatic = new Daylight();
-export { daylightStatic as Daylight };
+const singleton = new Daylight();
+export {singleton as Daylight};

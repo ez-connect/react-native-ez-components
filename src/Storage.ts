@@ -5,13 +5,18 @@ export class Storage {
     Storage._storageBase = value;
   }
 
-  public static async save(key: string, item: object | string, excludes: string[] = [], encodeHandler?: CryptHandler): Promise<void> {
+  public static async save(
+    key: string,
+    item: object | string,
+    excludes: string[] = [],
+    encodeHandler?: CryptHandler,
+  ): Promise<void> {
     Storage._logEnabled && console.info(`Storage.save: ${key}`);
     try {
       const data = {};
-      for (const key of Object.keys(item)) {
-        if (!excludes.includes(key)) {
-          data[key] = item[key];
+      for (const k of Object.keys(item)) {
+        if (!excludes.includes(k)) {
+          data[k] = item[k];
         }
       }
 
@@ -38,7 +43,11 @@ export class Storage {
   }
 
   // Add `excludes` for safe in update, if before version was saved them
-  public static async load(key: string, excludes: string[] = [], decodeHandler?: CryptHandler): Promise<any> {
+  public static async load(
+    key: string,
+    excludes: string[] = [],
+    decodeHandler?: CryptHandler,
+  ): Promise<any> {
     Storage._logEnabled && console.info(`Store.load: ${key}`);
     try {
       const buf = await Storage._storageBase.getItem(key);
@@ -59,9 +68,9 @@ export class Storage {
           data = JSON.parse(buf);
         }
 
-        for (const key of excludes) {
-          if (data.hasOwnProperty(key)) {
-            delete data[key];
+        for (const k of excludes) {
+          if (data.hasOwnProperty(k)) {
+            delete data[k];
           }
         }
 

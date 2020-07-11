@@ -10,11 +10,13 @@ export class EventListener<T> {
 
   public addListener(event: T, handler: Handler) {
     // console.debug(`EventListener.addListener: ${event}`);
-    this._listeners.push({ event, handler });
+    this._listeners.push({event, handler});
   }
 
   public removeListener(event: T, handler: Handler) {
-    const listener = this._listeners.find((x) => x.event === event && x.handler === handler);
+    const listener = this._listeners.find(
+      (x) => x.event === event && x.handler === handler,
+    );
     const index = this._listeners.indexOf(listener);
     if (index > -1) {
       // console.debug(`EventListener.removeListener: ${event}`);

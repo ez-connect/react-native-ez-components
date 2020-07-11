@@ -1,8 +1,16 @@
 import * as React from 'react';
-import { Animated, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { Button } from 'react-native-elements';
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
+import {Button} from 'react-native-elements';
 
-import { Theme } from './Theme';
+import {Theme} from './Theme';
 
 const ANIM_OFFSET = -50;
 const ANIM_DURATION = 300;
@@ -66,12 +74,11 @@ export class Toast extends React.Component<ToastProps, ToastState> {
 
   public render() {
     if (this.state.item) {
-      const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
-      return (
-        <View style={style}>
-          {this._renderItem()}
-        </View>
-      );
+      const style = StyleSheet.flatten([
+        styles.mainContainer,
+        this.props.containerStyle,
+      ]);
+      return <View style={style}>{this._renderItem()}</View>;
     }
     return null;
   }
@@ -79,13 +86,15 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   ///////////////////////////////////////////////////////////////////
 
   public show(item: ToastItem) {
-    if (!item.timeout) { // immediately
+    if (!item.timeout) {
+      // immediately
       if (this.state.item) {
         this._hide(this._show(item));
       } else {
         this._show(item)();
       }
-    } else { // delay to show
+    } else {
+      // delay to show
       setTimeout(() => {
         item.timeout = 0;
         this.show(item);
@@ -96,19 +105,19 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   ///////////////////////////////////////////////////////////////////
 
   private _renderItem() {
-    let { itemStyle, titleStyle, messageStyle } = this.props;
+    let {itemStyle, titleStyle, messageStyle} = this.props;
     const backgroundColor = Theme.secondary;
     const color = Theme.onSecondary;
 
-    itemStyle = StyleSheet.flatten([styles.item, { backgroundColor }, itemStyle]);
-    titleStyle = StyleSheet.flatten([styles.title, { color }, titleStyle]);
-    messageStyle = StyleSheet.flatten([styles.message, { color }, messageStyle]);
+    itemStyle = StyleSheet.flatten([styles.item, {backgroundColor}, itemStyle]);
+    titleStyle = StyleSheet.flatten([styles.title, {color}, titleStyle]);
+    messageStyle = StyleSheet.flatten([styles.message, {color}, messageStyle]);
 
-    const { title, message } = this.state.item;
+    const {title, message} = this.state.item;
 
     return (
       <TouchableOpacity onPress={this._handleOnPress}>
-        <Animated.View style={{ bottom: this._anim }}>
+        <Animated.View style={{bottom: this._anim}}>
           <View style={itemStyle}>
             <View style={styles.body}>
               {title && <Text style={titleStyle}>{title}</Text>}
@@ -124,7 +133,7 @@ export class Toast extends React.Component<ToastProps, ToastState> {
   private _renderItemAction() {
     const action = this.state.item.action;
     const color = (action && action.color) || Theme.onSecondary;
-    const titleStyle = StyleSheet.flatten([styles.button, { color }]);
+    const titleStyle = StyleSheet.flatten([styles.button, {color}]);
 
     if (action) {
       return (
@@ -132,7 +141,7 @@ export class Toast extends React.Component<ToastProps, ToastState> {
           <Button
             title={action.title}
             titleStyle={titleStyle}
-            type='clear'
+            type="clear"
             onPress={this._handleOnAction}
           />
         </View>
@@ -151,7 +160,7 @@ export class Toast extends React.Component<ToastProps, ToastState> {
     }).start();
 
     this._add(item);
-  }
+  };
 
   private _hide(callback: Animated.EndCallback) {
     this._timeoutHandler && clearTimeout(this._timeoutHandler);
@@ -169,28 +178,28 @@ export class Toast extends React.Component<ToastProps, ToastState> {
       this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
     }
 
-    this.setState({ item });
-  }
+    this.setState({item});
+  };
 
   private _remove = () => {
-    this.setState({ item: undefined });
-  }
+    this.setState({item: undefined});
+  };
 
   ///////////////////////////////////////////////////////////////////
 
   private _handleOnTimeout = () => {
     this._hide(this._remove);
-  }
+  };
 
   private _handleOnPress = () => {
     this._hide(this._handleOnTimeout);
-  }
+  };
 
   private _handleOnAction = () => {
     this._hide(this._remove);
     const callback = this.state.item.action.onPress || this._handleOnPress;
     callback();
-  }
+  };
 }
 
 ///////////////////////////////////////////////////////////////////

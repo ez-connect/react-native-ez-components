@@ -34,4 +34,4 @@ const theme = {
         },
     },
 };
-export { theme as ThemeDefaul, };
+export { theme as ThemeDefaul };

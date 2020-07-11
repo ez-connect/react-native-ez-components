@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, StyleSheet, Text, TouchableOpacity, View, } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Theme } from './Theme';
 const ANIM_OFFSET = -50;
@@ -61,10 +61,11 @@ export class Toast extends React.Component {
     }
     render() {
         if (this.state.item) {
-            const style = StyleSheet.flatten([styles.mainContainer, this.props.containerStyle]);
-            return (<View style={style}>
-          {this._renderItem()}
-        </View>);
+            const style = StyleSheet.flatten([
+                styles.mainContainer,
+                this.props.containerStyle,
+            ]);
+            return <View style={style}>{this._renderItem()}</View>;
         }
         return null;
     }
@@ -110,7 +111,7 @@ export class Toast extends React.Component {
         const titleStyle = StyleSheet.flatten([styles.button, { color }]);
         if (action) {
             return (<View style={styles.action}>
-          <Button title={action.title} titleStyle={titleStyle} type='clear' onPress={this._handleOnAction}/>
+          <Button title={action.title} titleStyle={titleStyle} type="clear" onPress={this._handleOnAction}/>
         </View>);
         }
         return null;

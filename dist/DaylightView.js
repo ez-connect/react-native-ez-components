@@ -24,8 +24,11 @@ export class DaylightView extends React.PureComponent {
     render() {
         if (this.state.enable) {
             const { backgroundColor } = this.state;
-            const style = StyleSheet.flatten([styles.mainContainer, { backgroundColor }]);
-            return <View style={style} pointerEvents='none' {...this.props}/>;
+            const style = StyleSheet.flatten([
+                styles.mainContainer,
+                { backgroundColor },
+            ]);
+            return <View style={style} pointerEvents="none" {...this.props}/>;
         }
         return null;
     }

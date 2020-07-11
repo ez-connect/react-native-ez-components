@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
-import { Header as HeaderBase, Input, Text } from 'react-native-elements';
+import { Platform, StyleSheet, View, } from 'react-native';
+import { Header as HeaderBase, Input, Text, } from 'react-native-elements';
 import { NavigationService } from './NavigationService';
 import { ProgressBar } from './ProgressBar';
 import { Theme } from './Theme';
@@ -51,7 +51,7 @@ export class Header extends React.PureComponent {
             }
         };
         this._handleOnProgressInterval = () => {
-            const progress = (this.state.progress + (PROGRESS_DELAY / 1000)) % 1;
+            const progress = (this.state.progress + PROGRESS_DELAY / 1000) % 1;
             if (!this.props.loadingEnabled && progress > 0.9) {
                 clearInterval(this._progressHandler);
             }
@@ -87,34 +87,34 @@ export class Header extends React.PureComponent {
                 borderColor: this.props.borderColor,
             },
         ];
-        const statusBarProps = this.props.statusBarProps
-            ? this.props.statusBarProps : { backgroundColor };
         const placement = Platform.select({
             android: 'left',
             ios: 'center',
         });
         return (<View>
-        <HeaderBase containerStyle={containerStyle} statusBarProps={statusBarProps} placement={placement} leftComponent={this._renderIcon()} centerComponent={this._renderTitle()} rightComponent={this._renderRightComponent()}/>
-        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.progress} progressTintColor={Theme.primary} progressViewStyle='bar' styleAttr='Horizontal'/>
+        <HeaderBase containerStyle={containerStyle} statusBarProps={this.props.statusBarProps} placement={placement} leftComponent={this._renderIcon()} centerComponent={this._renderTitle()} rightComponent={this._renderRightComponent()}/>
+        <ProgressBar visible={this.props.loadingEnabled} style={styles.progress} color={Theme.secondary} progress={this.state.progress} progressTintColor={Theme.primary} progressViewStyle="bar" styleAttr="Horizontal"/>
       </View>);
     }
     _renderIcon() {
         if (this.props.icon) {
-            const color = (this.props.icon && this.props.icon.color)
+            const color = this.props.icon && this.props.icon.color
                 ? this.props.icon.color
-                : (this.props.onBackgroundColor || Theme.onPrimary);
+                : this.props.onBackgroundColor || Theme.onPrimary;
             return (<TouchableIcon {...this.props.icon} color={color} onPress={this._handleOnPressIcon}/>);
         }
         return null;
     }
     _renderTitle() {
-        const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
+        const { title, placeholder, placeholderTextColor, onBackgroundColor, } = this.props;
         const color = onBackgroundColor || Theme.onPrimary;
         const titleStyle = StyleSheet.flatten([styles.title, { color }]);
         if (this.state.searchEnabled) {
-            return (<Input autoFocus={true} inputContainerStyle={styles.inputContainer} inputStyle={{ color }} onBlur={this._handleOnBlur} onChangeText={this._handleOnSearch} placeholder={placeholder} placeholderTextColor={placeholderTextColor} ref={(x) => this._input = x} underlineColorAndroid='transparent'/>);
+            return (<Input autoFocus={true} inputContainerStyle={styles.inputContainer} inputStyle={{ color }} onBlur={this._handleOnBlur} onChangeText={this._handleOnSearch} placeholder={placeholder} placeholderTextColor={placeholderTextColor} ref={(x) => (this._input = x)} underlineColorAndroid="transparent"/>);
         }
-        return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
+        return (<Text style={titleStyle} numberOfLines={1}>
+        {title}
+      </Text>);
     }
     _renderRightComponent() {
         return (<View>

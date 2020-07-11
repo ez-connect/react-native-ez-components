@@ -1,13 +1,24 @@
 // https://snack.expo.io/B1v5RS7ix
 // https://github.com/fengliu222/react-native-swipe-hidden-header
 
-import React, { Component } from 'react';
-import { Animated, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle } from 'react-native';
+import React, {Component} from 'react';
+import {
+  Animated,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 export interface AnimatedScrollViewChilrenProps {
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-  onMomentumScrollEnd?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-  onMomentumScrollBegin?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  onMomentumScrollEnd?: (
+    event: NativeSyntheticEvent<NativeScrollEvent>,
+  ) => void;
+  onMomentumScrollBegin?: (
+    event: NativeSyntheticEvent<NativeScrollEvent>,
+  ) => void;
   onScrollEndDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   onScrollBeginDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
@@ -39,15 +50,18 @@ export class AnimatedScrollView extends Component<Props, State> {
   private _scrollAnimEvent?: string;
 
   public componentDidMount() {
-    this._scrollAnimEvent = this.state.scrollAnim.addListener(this._handleScroll);
+    this._scrollAnimEvent = this.state.scrollAnim.addListener(
+      this._handleScroll,
+    );
   }
 
   public componentWillUnmount() {
-    this._scrollAnimEvent && this.state.scrollAnim.removeListener(this._scrollAnimEvent);
+    this._scrollAnimEvent &&
+      this.state.scrollAnim.removeListener(this._scrollAnimEvent);
   }
 
   public render() {
-    const { scrollAnim, offsetAnim } = this.state;
+    const {scrollAnim, offsetAnim} = this.state;
     const translateY = Animated.add(scrollAnim, offsetAnim).interpolate({
       inputRange: [0, this.props.headerHeight],
       outputRange: [0, -this.props.headerHeight],
@@ -57,7 +71,8 @@ export class AnimatedScrollView extends Component<Props, State> {
     const headerStyle = [
       styles.header,
       {
-        height: this.props.headerHeight, transform: [{ translateY }],
+        height: this.props.headerHeight,
+        transform: [{translateY}],
       },
     ];
 
@@ -67,17 +82,20 @@ export class AnimatedScrollView extends Component<Props, State> {
         <Animated.View style={headerStyle}>
           {this.props.headerComponent}
         </Animated.View>
-      </View >
+      </View>
     );
   }
 
   private _renderScrollView() {
-    const style = [this.props.children.props.style, { paddingTop: this.props.headerHeight }];
+    const style = [
+      this.props.children.props.style,
+      {paddingTop: this.props.headerHeight},
+    ];
     return React.cloneElement(this.props.children as any, {
       style,
       onScroll: Animated.event(
-        [{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }],
-        { useNativeDriver: false },
+        [{nativeEvent: {contentOffset: {y: this.state.scrollAnim}}}],
+        {useNativeDriver: false},
       ),
       scrollEventThrottle: DEFAULT_SCROLL_THROTTLE,
       onMomentumScrollBegin: this._handleMomentumScrollBegin,
@@ -88,18 +106,18 @@ export class AnimatedScrollView extends Component<Props, State> {
 
   ///////////////////////////////////////////////////////////////////
 
-  private _handleScroll = ({ value }) => {
+  private _handleScroll = ({value}) => {
     this._previousScrollvalue = this._currentScrollValue;
     this._currentScrollValue = value;
-  }
+  };
 
   private _handleScrollEndDrag = () => {
     this._scrollEndTimer = setTimeout(this._handleMomentumScrollEnd, 250);
-  }
+  };
 
   private _handleMomentumScrollBegin = () => {
     clearTimeout(this._scrollEndTimer);
-  }
+  };
 
   private _handleMomentumScrollEnd = () => {
     const previous = this._previousScrollvalue;
@@ -120,7 +138,7 @@ export class AnimatedScrollView extends Component<Props, State> {
         duration: 500,
       }).start();
     }
-  }
+  };
 }
 
 ///////////////////////////////////////////////////////////////////

@@ -58,8 +58,6 @@ export var DaylightEvent;
     DaylightEvent[DaylightEvent["OnChange"] = 3] = "OnChange";
 })(DaylightEvent || (DaylightEvent = {}));
 const kDaylightUpdateInterval = 1 * 60 * 1000;
-const kAlphaMin = 0.05;
-const kAlphaMax = 0.3;
 const kAlphaDefault = 0.2;
 class Daylight extends EventListener {
     constructor(preset) {
@@ -104,7 +102,12 @@ class Daylight extends EventListener {
         }
     }
     getSunTime() {
-        return { dawn: this._dawn, sunrise: this._sunrise, sunset: this._sunset, dusk: this._dusk };
+        return {
+            dawn: this._dawn,
+            sunrise: this._sunrise,
+            sunset: this._sunset,
+            dusk: this._dusk,
+        };
     }
     setUserTime(wakeTime, bedTime) {
         let time = new Date(wakeTime);
@@ -169,7 +172,7 @@ class Daylight extends EventListener {
             kelvin = night;
         }
         else if (now > this._sunset) {
-            const diff = (now - this._sunset) * (night - day) / (this._dusk - this._sunset);
+            const diff = ((now - this._sunset) * (night - day)) / (this._dusk - this._sunset);
             mode = 'dusk';
             kelvin = day + diff;
         }
@@ -178,7 +181,7 @@ class Daylight extends EventListener {
             kelvin = day;
         }
         else if (now > this._dawn) {
-            const diff = (now - this._dawn) * (day - night) / (this._sunrise - this._dawn);
+            const diff = ((now - this._dawn) * (day - night)) / (this._sunrise - this._dawn);
             mode = 'dawn';
             kelvin = night + diff;
         }
@@ -197,11 +200,14 @@ class Daylight extends EventListener {
     _update(shouldForceUpdate = false, time, wakeTime, bedTime) {
         const { mode, kelvin } = this._getTemperature(time, wakeTime, bedTime);
         const { red, green, blue } = DaylightHelper.kelvinToRGB(kelvin);
-        if (shouldForceUpdate || this._rgba.red !== red || this._rgba.green !== green || this._rgba.blue !== blue) {
+        if (shouldForceUpdate ||
+            this._rgba.red !== red ||
+            this._rgba.green !== green ||
+            this._rgba.blue !== blue) {
             Object.assign(this._rgba, { red, green, blue });
             super.emit(DaylightEvent.OnChange, { mode, color: this._rgba });
         }
     }
 }
-const daylightStatic = new Daylight();
-export { daylightStatic as Daylight };
+const singleton = new Daylight();
+export { singleton as Daylight };

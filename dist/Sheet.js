@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Animated, Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, StyleSheet, TouchableOpacity, View, } from 'react-native';
 import { BackHandler } from 'react-native';
 import { ListItem, Text } from 'react-native-elements';
 import { Theme } from './Theme';
@@ -69,7 +69,10 @@ export class Sheet extends React.PureComponent {
     _renderItems() {
         const props = this.state.props;
         if (props) {
-            const titleStyle = StyleSheet.flatten([styles.title, { backgroundColor: Theme.background }]);
+            const titleStyle = StyleSheet.flatten([
+                styles.title,
+                { backgroundColor: Theme.background },
+            ]);
             const style = { position: 'absolute', width: '100%' };
             if (props.position === 'top') {
                 Object.assign(style, { top: this._anim });
@@ -87,9 +90,7 @@ export class Sheet extends React.PureComponent {
             {menuItems}
           </Animated.View>);
             }
-            return (<Animated.View style={itemsStyle}>
-          {props.component}
-        </Animated.View>);
+            return (<Animated.View style={itemsStyle}>{props.component}</Animated.View>);
         }
     }
     _renderItem(item, index) {

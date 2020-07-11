@@ -1,10 +1,10 @@
 import color from 'color';
-import { FullTheme, ThemeProvider } from 'react-native-elements';
+import {FullTheme, ThemeProvider} from 'react-native-elements';
 
-import { EventListener } from './EventListener';
-import { TouchableFeedback } from './TouchableFeedback';
+import {EventListener} from './EventListener';
+import {TouchableFeedback} from './TouchableFeedback';
 
-interface ThemeItem {
+export interface ThemeItem {
   name: string;
 
   // A primary color is the color displayed most frequently across your app’s screens and components.
@@ -50,7 +50,7 @@ interface ThemeItem {
   iconset?: string;
 }
 
-enum ThemeEvent {
+export enum ThemeEvent {
   OnChange = 2,
 }
 
@@ -88,7 +88,16 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
   public setThemeItem(value: ThemeItem) {
     Object.assign(this, value);
 
-    const { primary, onPrimary, secondary, onSecondary, background, onBackground, surface, onSurface } = value;
+    const {
+      primary,
+      onPrimary,
+      secondary,
+      onSecondary,
+      background,
+      onBackground,
+      surface,
+      onSurface,
+    } = value;
     const theme: Partial<FullTheme> = {
       Badge: {
         badgeStyle: {
@@ -98,46 +107,46 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
           padding: 12,
         },
         // !DEV: without height not working on iOS
-        textStyle: { color: onBackground, height: 16 },
+        textStyle: {color: onBackground, height: 16},
       },
       Button: {
-        titleStyle: { color: onPrimary, fontSize: 14 },
+        titleStyle: {color: onPrimary, fontSize: 14},
         TouchableComponent: TouchableFeedback,
       },
       ButtonGroup: {
-        buttonStyle: { backgroundColor: background },
-        containerStyle: { height: 32 },
-        innerBorderStyle: { width: 0 },
-        selectedButtonStyle: { backgroundColor: secondary },
-        selectedTextStyle: { color: onSecondary, fontSize: 14 },
-        textStyle: { color: onBackground, fontSize: 14 },
+        buttonStyle: {backgroundColor: background},
+        containerStyle: {height: 32},
+        innerBorderStyle: {width: 0},
+        selectedButtonStyle: {backgroundColor: secondary},
+        selectedTextStyle: {color: onSecondary, fontSize: 14},
+        textStyle: {color: onBackground, fontSize: 14},
       },
       CheckBox: {
-        containerStyle: { backgroundColor: background, borderWidth: 0 },
-        textStyle: { color: onBackground, fontWeight: 'normal' },
+        containerStyle: {backgroundColor: background, borderWidth: 0},
+        textStyle: {color: onBackground, fontWeight: 'normal'},
       },
       Divider: {
-        style: { backgroundColor: surface },
+        style: {backgroundColor: surface},
       },
       Icon: {
         type: this.iconset,
         color: onBackground,
       },
       Input: {
-        containerStyle: { paddingBottom: 12 },
-        inputStyle: { color: onBackground },
-        labelStyle: { fontSize: 14, fontWeight: 'normal' },
+        containerStyle: {paddingBottom: 12},
+        inputStyle: {color: onBackground},
+        labelStyle: {fontSize: 14, fontWeight: 'normal'},
       },
       ListItem: {
         Component: TouchableFeedback,
-        containerStyle: { backgroundColor: 'transparent' },
-        leftIcon: { color: onBackground },
-        rightTitleStyle: { color: onBackground },
-        subtitleStyle: { color: onSurface },
-        titleStyle: { color: onBackground },
+        containerStyle: {backgroundColor: 'transparent'},
+        leftIcon: {color: onBackground},
+        rightTitleStyle: {color: onBackground},
+        subtitleStyle: {color: onSurface},
+        titleStyle: {color: onBackground},
       },
       Text: {
-        style: { color: onBackground },
+        style: {color: onBackground},
       },
       colors: {
         primary,
@@ -158,7 +167,6 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
     this.setTheme(theme);
   }
 
-
   public getTheme(): FullTheme | undefined {
     const theme = this._themeProvider
       ? this._themeProvider.getTheme()
@@ -167,9 +175,5 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
   }
 }
 
-const themeStatic = new Theme();
-export {
-  themeStatic as Theme,
-  ThemeEvent,
-  ThemeItem,
-};
+const singleton = new Theme();
+export {singleton as Theme};

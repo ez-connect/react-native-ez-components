@@ -1,5 +1,4 @@
-
-interface RGBA {
+export interface RGBA {
   red: number;
   green: number;
   blue: number;
@@ -67,14 +66,20 @@ class DaylightHelper {
       }
     }
 
-    return { red, green, blue };
+    return {red, green, blue};
   }
 
   public async getSunTime() {
     try {
-      const res = await fetch('https://sun.p.rapidapi.com/api/sun/?ip_address=174.20.20.55&date=2016-07-18', {
-        headers: { 'X-RapidAPI-Key': 'WCJzCLMx65mshtSVxIToCLKUgNUpp1jLyIljsntAp3bd7WhRJE' },
-      });
+      const res = await fetch(
+        'https://sun.p.rapidapi.com/api/sun/?ip_address=174.20.20.55&date=2016-07-18',
+        {
+          headers: {
+            'X-RapidAPI-Key':
+              'WCJzCLMx65mshtSVxIToCLKUgNUpp1jLyIljsntAp3bd7WhRJE',
+          },
+        },
+      );
 
       if (res) {
         const items = await res.json();
@@ -96,8 +101,13 @@ class DaylightHelper {
         }
 
         if (dawn && sunset && sunrise && dusk) {
-          if (dawn.getDate() && sunset.getDate() && sunrise.getDate() && dusk.getDate()) {
-            return { dawn, sunset, sunrise, dusk };
+          if (
+            dawn.getDate() &&
+            sunset.getDate() &&
+            sunrise.getDate() &&
+            dusk.getDate()
+          ) {
+            return {dawn, sunset, sunrise, dusk};
           }
         }
       }
@@ -108,8 +118,5 @@ class DaylightHelper {
   }
 }
 
-const daylightHelperStatic = new DaylightHelper();
-export {
-  daylightHelperStatic as DaylightHelper,
-  RGBA,
-};
+const singleton = new DaylightHelper();
+export {singleton as DaylightHelper};

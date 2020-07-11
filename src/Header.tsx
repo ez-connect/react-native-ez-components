@@ -1,11 +1,22 @@
 import * as React from 'react';
-import { Platform, StatusBarProperties, StyleSheet, TextStyle, View } from 'react-native';
-import { Header as HeaderBase, IconProps, Input, Text } from 'react-native-elements';
+import {
+  Platform,
+  StatusBarProperties,
+  StyleSheet,
+  TextStyle,
+  View,
+} from 'react-native';
+import {
+  Header as HeaderBase,
+  IconProps,
+  Input,
+  Text,
+} from 'react-native-elements';
 
-import { NavigationService } from './NavigationService';
-import { ProgressBar } from './ProgressBar';
-import { Theme } from './Theme';
-import { TouchableIcon } from './TouchableIcon';
+import {NavigationService} from './NavigationService';
+import {ProgressBar} from './ProgressBar';
+import {Theme} from './Theme';
+import {TouchableIcon} from './TouchableIcon';
 
 const SEARCH_DEBOUNCE = 500;
 
@@ -55,7 +66,10 @@ export class Header extends React.PureComponent<Props, State> {
     };
 
     if (Platform.OS === 'ios' && !this.props.progress) {
-      this._progressHandler = setInterval(this._handleOnProgressInterval, PROGRESS_DELAY);
+      this._progressHandler = setInterval(
+        this._handleOnProgressInterval,
+        PROGRESS_DELAY,
+      );
     }
   }
 
@@ -77,15 +91,13 @@ export class Header extends React.PureComponent<Props, State> {
     const backgroundColor = this.props.backgroundColor || Theme.primary;
     const containerStyle = [
       styles.container,
-      { backgroundColor },
-      this.props.height && { height: this.props.height },
+      {backgroundColor},
+      this.props.height && {height: this.props.height},
       this.props.borderColor && {
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: this.props.borderColor,
       },
     ];
-    const statusBarProps = this.props.statusBarProps
-      ? this.props.statusBarProps : { backgroundColor };
 
     const placement: 'left' | 'center' = Platform.select({
       android: 'left',
@@ -96,7 +108,7 @@ export class Header extends React.PureComponent<Props, State> {
       <View>
         <HeaderBase
           containerStyle={containerStyle}
-          statusBarProps={statusBarProps}
+          statusBarProps={this.props.statusBarProps}
           placement={placement}
           leftComponent={this._renderIcon()}
           centerComponent={this._renderTitle()}
@@ -108,8 +120,8 @@ export class Header extends React.PureComponent<Props, State> {
           color={Theme.secondary}
           progress={this.state.progress}
           progressTintColor={Theme.primary}
-          progressViewStyle='bar'
-          styleAttr='Horizontal'
+          progressViewStyle="bar"
+          styleAttr="Horizontal"
         />
       </View>
     );
@@ -119,9 +131,10 @@ export class Header extends React.PureComponent<Props, State> {
 
   private _renderIcon() {
     if (this.props.icon) {
-      const color = (this.props.icon && this.props.icon.color)
-        ? this.props.icon.color
-        : (this.props.onBackgroundColor || Theme.onPrimary);
+      const color =
+        this.props.icon && this.props.icon.color
+          ? this.props.icon.color
+          : this.props.onBackgroundColor || Theme.onPrimary;
 
       return (
         <TouchableIcon
@@ -136,26 +149,35 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   private _renderTitle() {
-    const { title, placeholder, placeholderTextColor, onBackgroundColor } = this.props;
+    const {
+      title,
+      placeholder,
+      placeholderTextColor,
+      onBackgroundColor,
+    } = this.props;
     const color = onBackgroundColor || Theme.onPrimary;
-    const titleStyle = StyleSheet.flatten<TextStyle>([styles.title, { color }]);
+    const titleStyle = StyleSheet.flatten<TextStyle>([styles.title, {color}]);
     if (this.state.searchEnabled) {
       return (
         <Input
           autoFocus={true}
           inputContainerStyle={styles.inputContainer}
-          inputStyle={{ color }}
+          inputStyle={{color}}
           onBlur={this._handleOnBlur}
           onChangeText={this._handleOnSearch}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
-          ref={(x) => this._input = x}
-          underlineColorAndroid='transparent'
+          ref={(x) => (this._input = x)}
+          underlineColorAndroid="transparent"
         />
       );
     }
 
-    return <Text style={titleStyle} numberOfLines={1}>{title}</Text>;
+    return (
+      <Text style={titleStyle} numberOfLines={1}>
+        {title}
+      </Text>
+    );
   }
 
   private _renderRightComponent() {
@@ -168,7 +190,7 @@ export class Header extends React.PureComponent<Props, State> {
   }
 
   private _renderSearchComponent() {
-    const { searchIcon, clearIcon, onBackgroundColor } = this.props;
+    const {searchIcon, clearIcon, onBackgroundColor} = this.props;
     const color = onBackgroundColor || Theme.onPrimary;
 
     if (searchIcon && !this.state.searchEnabled) {
@@ -199,16 +221,16 @@ export class Header extends React.PureComponent<Props, State> {
   ///////////////////////////////////////////////////////////////////
 
   private _handleOnPressSearch = () => {
-    this.setState({ searchEnabled: true });
-  }
+    this.setState({searchEnabled: true});
+  };
 
   private _handleOnPressClear = () => {
     this._input.clear();
-  }
+  };
 
   private _handleOnSearch = (text: string) => {
     if (text !== '') {
-      this.setState({ text });
+      this.setState({text});
       if (this.props.onSearch) {
         const now = new Date();
         const diff = now.getTime() - this._lastSearchAt.getTime();
@@ -219,18 +241,18 @@ export class Header extends React.PureComponent<Props, State> {
         }
       }
     } else if (!this.props.searchEnabled) {
-      this.setState({ searchEnabled: false });
+      this.setState({searchEnabled: false});
       if (this.props.onSearch) {
         this.props.onSearch(undefined);
       }
     }
-  }
+  };
 
   private _handleOnBlur = () => {
     if (this.props.onBlur) {
       this.props.onBlur();
     }
-  }
+  };
 
   private _handleOnPressIcon = () => {
     // if (this.state.searchEnabled) {
@@ -244,15 +266,15 @@ export class Header extends React.PureComponent<Props, State> {
     } else {
       NavigationService.goBack();
     }
-  }
+  };
 
   private _handleOnProgressInterval = () => {
-    const progress = (this.state.progress + (PROGRESS_DELAY / 1000)) % 1;
+    const progress = (this.state.progress + PROGRESS_DELAY / 1000) % 1;
     if (!this.props.loadingEnabled && progress > 0.9) {
       clearInterval(this._progressHandler);
     }
-    this.setState({ progress });
-  }
+    this.setState({progress});
+  };
 }
 
 ///////////////////////////////////////////////////////////////////

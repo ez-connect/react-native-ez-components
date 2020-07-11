@@ -1,7 +1,7 @@
 import color from 'color';
 import { EventListener } from './EventListener';
 import { TouchableFeedback } from './TouchableFeedback';
-var ThemeEvent;
+export var ThemeEvent;
 (function (ThemeEvent) {
     ThemeEvent[ThemeEvent["OnChange"] = 2] = "OnChange";
 })(ThemeEvent || (ThemeEvent = {}));
@@ -17,7 +17,7 @@ class Theme extends EventListener {
     }
     setThemeItem(value) {
         Object.assign(this, value);
-        const { primary, onPrimary, secondary, onSecondary, background, onBackground, surface, onSurface } = value;
+        const { primary, onPrimary, secondary, onSecondary, background, onBackground, surface, onSurface, } = value;
         const theme = {
             Badge: {
                 badgeStyle: {
@@ -90,5 +90,5 @@ class Theme extends EventListener {
         return theme;
     }
 }
-const themeStatic = new Theme();
-export { themeStatic as Theme, ThemeEvent, };
+const singleton = new Theme();
+export { singleton as Theme };

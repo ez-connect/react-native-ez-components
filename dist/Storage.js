@@ -6,9 +6,9 @@ export class Storage {
         Storage._logEnabled && console.info(`Storage.save: ${key}`);
         try {
             const data = {};
-            for (const key of Object.keys(item)) {
-                if (!excludes.includes(key)) {
-                    data[key] = item[key];
+            for (const k of Object.keys(item)) {
+                if (!excludes.includes(k)) {
+                    data[k] = item[k];
                 }
             }
             Storage._logEnabled && console.info(` -> ${JSON.stringify(data).length}`);
@@ -54,9 +54,9 @@ export class Storage {
                 else {
                     data = JSON.parse(buf);
                 }
-                for (const key of excludes) {
-                    if (data.hasOwnProperty(key)) {
-                        delete data[key];
+                for (const k of excludes) {
+                    if (data.hasOwnProperty(k)) {
+                        delete data[k];
                     }
                 }
                 return data;

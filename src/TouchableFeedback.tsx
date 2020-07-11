@@ -1,11 +1,20 @@
 import * as React from 'react';
-import { Platform, TouchableNativeFeedback, TouchableNativeFeedbackProps, TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import {
+  Platform,
+  TouchableNativeFeedback,
+  TouchableNativeFeedbackProps,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from 'react-native';
 
 interface Props extends TouchableNativeFeedbackProps, TouchableOpacityProps {
   backgroundColor: string;
 }
 
-export class TouchableFeedback extends React.PureComponent<TouchableNativeFeedbackProps | TouchableOpacityProps, {}> {
+export class TouchableFeedback extends React.PureComponent<
+  TouchableNativeFeedbackProps | TouchableOpacityProps,
+  {}
+> {
   public static setRippleColor(value: string) {
     TouchableFeedback._rippleColor = value;
   }
@@ -14,10 +23,16 @@ export class TouchableFeedback extends React.PureComponent<TouchableNativeFeedba
 
   public render() {
     if (Platform.OS === 'android') {
-      const background = Platform.Version >= 21
-        ? TouchableNativeFeedback.Ripple(TouchableFeedback._rippleColor, false)
-        : TouchableNativeFeedback.SelectableBackground();
-      return <TouchableNativeFeedback background={background} {...this.props} />;
+      const background =
+        Platform.Version >= 21
+          ? TouchableNativeFeedback.Ripple(
+              TouchableFeedback._rippleColor,
+              false,
+            )
+          : TouchableNativeFeedback.SelectableBackground();
+      return (
+        <TouchableNativeFeedback background={background} {...this.props} />
+      );
     }
 
     return <TouchableOpacity {...this.props} />;

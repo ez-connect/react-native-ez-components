@@ -1,4 +1,4 @@
-interface RGBA {
+export interface RGBA {
     red: number;
     green: number;
     blue: number;
@@ -13,5 +13,5 @@ declare class DaylightHelper {
         dusk: any;
     }>;
 }
-declare const daylightHelperStatic: DaylightHelper;
-export { daylightHelperStatic as DaylightHelper, RGBA, };
+declare const singleton: DaylightHelper;
+export { singleton as DaylightHelper };

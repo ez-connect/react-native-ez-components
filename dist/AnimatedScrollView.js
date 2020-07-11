@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, StyleSheet, View, } from 'react-native';
 const DEFAULT_SCROLL_THROTTLE = 16;
 export class AnimatedScrollView extends Component {
     constructor() {
@@ -44,7 +44,8 @@ export class AnimatedScrollView extends Component {
         this._scrollAnimEvent = this.state.scrollAnim.addListener(this._handleScroll);
     }
     componentWillUnmount() {
-        this._scrollAnimEvent && this.state.scrollAnim.removeListener(this._scrollAnimEvent);
+        this._scrollAnimEvent &&
+            this.state.scrollAnim.removeListener(this._scrollAnimEvent);
     }
     render() {
         const { scrollAnim, offsetAnim } = this.state;
@@ -56,7 +57,8 @@ export class AnimatedScrollView extends Component {
         const headerStyle = [
             styles.header,
             {
-                height: this.props.headerHeight, transform: [{ translateY }],
+                height: this.props.headerHeight,
+                transform: [{ translateY }],
             },
         ];
         return (<View style={styles.container}>
@@ -67,7 +69,10 @@ export class AnimatedScrollView extends Component {
       </View>);
     }
     _renderScrollView() {
-        const style = [this.props.children.props.style, { paddingTop: this.props.headerHeight }];
+        const style = [
+            this.props.children.props.style,
+            { paddingTop: this.props.headerHeight },
+        ];
         return React.cloneElement(this.props.children, {
             style,
             onScroll: Animated.event([{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }], { useNativeDriver: false }),

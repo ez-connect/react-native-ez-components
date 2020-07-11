@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { FullTheme } from 'react-native-elements';
+import {StyleSheet} from 'react-native';
+import {FullTheme} from 'react-native-elements';
 
 const theme: Partial<FullTheme> = {
   colors: {
@@ -38,6 +38,4 @@ const theme: Partial<FullTheme> = {
   },
 };
 
-export {
-  theme as ThemeDefaul,
-};
+export {theme as ThemeDefaul};

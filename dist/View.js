@@ -11,5 +11,5 @@ export const View = (props) => {
         { borderColor },
         style && style,
     ]);
-    return (<BView style={themeStyle} {...rest}/>);
+    return <BView style={themeStyle} {...rest}/>;
 };

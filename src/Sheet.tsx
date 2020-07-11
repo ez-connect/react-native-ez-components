@@ -1,9 +1,18 @@
 import * as React from 'react';
-import { Animated, Dimensions, NativeEventSubscription, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { BackHandler } from 'react-native';
-import { ListItem, Text } from 'react-native-elements';
+import {
+  Animated,
+  Dimensions,
+  NativeEventSubscription,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
+import {BackHandler} from 'react-native';
+import {ListItem, Text} from 'react-native-elements';
 
-import { Theme } from './Theme';
+import {Theme} from './Theme';
 
 export interface SheetItem {
   disabled?: boolean;
@@ -62,7 +71,10 @@ export class Sheet extends React.PureComponent<{}, State> {
   private _backHandler?: NativeEventSubscription;
 
   public componentDidMount() {
-    this._backHandler = BackHandler.addEventListener('hardwareBackPress', this._handleOnBackPress);
+    this._backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      this._handleOnBackPress,
+    );
   }
 
   public componentWillUnmount() {
@@ -77,19 +89,19 @@ export class Sheet extends React.PureComponent<{}, State> {
       duration: ANIM_DURATION,
     }).start();
 
-    this.setState({ props, visible: true });
+    this.setState({props, visible: true});
   }
 
   public close = () => {
-    this.setState({ props: undefined, visible: false });
-  }
+    this.setState({props: undefined, visible: false});
+  };
 
   public render() {
-    const { props, visible } = this.state;
+    const {props, visible} = this.state;
     if (visible && props) {
       const containerStyle = StyleSheet.flatten([
         styles.mainContainer,
-        { backgroundColor: `${Theme.onBackground}${CONTAINER_OPACITY}` },
+        {backgroundColor: `${Theme.onBackground}${CONTAINER_OPACITY}`},
         props.containerStyle,
       ]);
 
@@ -110,12 +122,15 @@ export class Sheet extends React.PureComponent<{}, State> {
   private _renderItems() {
     const props = this.state.props;
     if (props) {
-      const titleStyle = StyleSheet.flatten([styles.title, { backgroundColor: Theme.background }]);
-      const style: ViewStyle = { position: 'absolute', width: '100%' };
+      const titleStyle = StyleSheet.flatten([
+        styles.title,
+        {backgroundColor: Theme.background},
+      ]);
+      const style: ViewStyle = {position: 'absolute', width: '100%'};
       if (props.position === 'top') {
-        Object.assign(style, { top: this._anim });
+        Object.assign(style, {top: this._anim});
       } else {
-        Object.assign(style, { bottom: this._anim });
+        Object.assign(style, {bottom: this._anim});
       }
 
       const itemsStyle = StyleSheet.flatten([style, props.itemsStyle]);
@@ -134,19 +149,17 @@ export class Sheet extends React.PureComponent<{}, State> {
       }
 
       return (
-        <Animated.View style={itemsStyle}>
-          {props.component}
-        </Animated.View>
+        <Animated.View style={itemsStyle}>{props.component}</Animated.View>
       );
     }
   }
 
   private _renderItem(item: SheetItem, index: number) {
     const props = this.state.props;
-    const { icon, title, value, disabled } = item;
+    const {icon, title, value, disabled} = item;
     const containerStyle = StyleSheet.flatten([
       styles.item,
-      { backgroundColor: Theme.background },
+      {backgroundColor: Theme.background},
       props.itemsStyle,
     ]);
 
@@ -157,18 +170,18 @@ export class Sheet extends React.PureComponent<{}, State> {
           bottomDivider={props.bottomDivider}
           containerStyle={containerStyle}
           key={index}
-          leftIcon={{ type: Theme.iconset, name: icon, color }}
+          leftIcon={{type: Theme.iconset, name: icon, color}}
           onPress={disabled ? undefined : this._handleOnPressItem(value)}
           subtitle={item.subtitle}
           title={title}
-          titleStyle={{ color }}
+          titleStyle={{color}}
         />
       );
     } else {
       return (
         <View
           key={index}
-          style={{ backgroundColor: Theme.onSurface, ...styles.divider }}
+          style={{backgroundColor: Theme.onSurface, ...styles.divider}}
         />
       );
     }
@@ -182,12 +195,12 @@ export class Sheet extends React.PureComponent<{}, State> {
     if (props && props.onSelect) {
       props.onSelect(value);
     }
-  }
+  };
 
   private _handleOnBackPress = (): boolean => {
     this.close();
     return true;
-  }
+  };
 }
 
 ///////////////////////////////////////////////////////////////////

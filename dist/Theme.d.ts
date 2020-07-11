@@ -1,6 +1,6 @@
 import { FullTheme, ThemeProvider } from 'react-native-elements';
 import { EventListener } from './EventListener';
-interface ThemeItem {
+export interface ThemeItem {
     name: string;
     primary: string;
     primaryDark?: string;
@@ -16,7 +16,7 @@ interface ThemeItem {
     onSurface: string;
     iconset?: string;
 }
-declare enum ThemeEvent {
+export declare enum ThemeEvent {
     OnChange = 2
 }
 declare class Theme extends EventListener<ThemeEvent> implements ThemeItem {
@@ -40,5 +40,5 @@ declare class Theme extends EventListener<ThemeEvent> implements ThemeItem {
     setThemeItem(value: ThemeItem): void;
     getTheme(): FullTheme | undefined;
 }
-declare const themeStatic: Theme;
-export { themeStatic as Theme, ThemeEvent, ThemeItem, };
+declare const singleton: Theme;
+export { singleton as Theme };
