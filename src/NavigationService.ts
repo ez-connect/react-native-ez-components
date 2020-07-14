@@ -1,59 +1,52 @@
 import {
-  NavigationActions,
-  NavigationBackActionPayload,
-  NavigationContainerComponent,
-  NavigationNavigateActionPayload,
-  NavigationPopActionPayload,
-  NavigationPushActionPayload,
+  NavigationContainerRef,
   StackActions,
-} from 'react-navigation';
-import {DrawerActions} from 'react-navigation-drawer';
+  NavigationState,
+  PartialState,
+  DrawerActions,
+} from '@react-navigation/native';
 
 export class NavigationService {
   public static setTopLevelNavigator(
-    navigatorRef: NavigationContainerComponent | null,
+    navigatorRef: React.RefObject<NavigationContainerRef>,
   ) {
     NavigationService._navigator = navigatorRef;
   }
 
-  public static navigate(options: NavigationNavigateActionPayload) {
-    NavigationService._navigator.dispatch(NavigationActions.navigate(options));
+  public static navigate(name: string, params?: object) {
+    NavigationService._navigator.current?.navigate(name, params);
   }
 
-  public static push(options: NavigationPushActionPayload) {
-    NavigationService._navigator.dispatch(StackActions.push(options));
+  public static push(name: string, params?: object) {
+    NavigationService._navigator.current?.dispatch(
+      StackActions.push(name, params),
+    );
   }
 
-  public static pop(options?: NavigationPopActionPayload) {
-    if (!options) {
-      options = {n: 1, immediate: true};
-    }
-
-    NavigationService._navigator.dispatch(StackActions.pop(options));
+  public static pop(count?: number) {
+    NavigationService._navigator.current?.dispatch(StackActions.pop(count));
   }
 
-  public static resetAndPushToTop(options: NavigationNavigateActionPayload) {
-    const resetAction = StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate(options)],
-    });
-    NavigationService._navigator.dispatch(resetAction);
+  public static resetAndPushToTop(state: PartialState<NavigationState>) {
+    NavigationService._navigator.current?.reset(state);
   }
 
-  public static goBack(options?: NavigationBackActionPayload) {
-    NavigationService._navigator.dispatch(NavigationActions.back(options));
+  public static goBack() {
+    NavigationService._navigator.current?.goBack();
   }
 
   public static openDrawer() {
-    NavigationService._navigator.dispatch(DrawerActions.openDrawer());
+    NavigationService._navigator.current?.dispatch(DrawerActions.openDrawer());
   }
 
   public static closeDrawer() {
-    NavigationService._navigator.dispatch(DrawerActions.closeDrawer());
+    NavigationService._navigator.current?.dispatch(DrawerActions.closeDrawer());
   }
 
   public static toggleDrawer() {
-    NavigationService._navigator.dispatch(DrawerActions.toggleDrawer());
+    NavigationService._navigator.current?.dispatch(
+      DrawerActions.toggleDrawer(),
+    );
   }
 
   // public static getPrevRoute(): string {
@@ -74,7 +67,7 @@ export class NavigationService {
 
   ///////////////////////////////////////////////////////////////////
 
-  private static _navigator: NavigationContainerComponent;
+  private static _navigator: React.RefObject<NavigationContainerRef>;
   // private static _prevRoute?: string;
   // private static _currentRoute?: string;
 

@@ -1,39 +1,31 @@
-import { NavigationActions, StackActions, } from 'react-navigation';
-import { DrawerActions } from 'react-navigation-drawer';
+import { StackActions, DrawerActions, } from '@react-navigation/native';
 export class NavigationService {
     static setTopLevelNavigator(navigatorRef) {
         NavigationService._navigator = navigatorRef;
     }
-    static navigate(options) {
-        NavigationService._navigator.dispatch(NavigationActions.navigate(options));
+    static navigate(name, params) {
+        NavigationService._navigator.current?.navigate(name, params);
     }
-    static push(options) {
-        NavigationService._navigator.dispatch(StackActions.push(options));
+    static push(name, params) {
+        NavigationService._navigator.current?.dispatch(StackActions.push(name, params));
     }
-    static pop(options) {
-        if (!options) {
-            options = { n: 1, immediate: true };
-        }
-        NavigationService._navigator.dispatch(StackActions.pop(options));
+    static pop(count) {
+        NavigationService._navigator.current?.dispatch(StackActions.pop(count));
     }
-    static resetAndPushToTop(options) {
-        const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate(options)],
-        });
-        NavigationService._navigator.dispatch(resetAction);
+    static resetAndPushToTop(state) {
+        NavigationService._navigator.current?.reset(state);
     }
-    static goBack(options) {
-        NavigationService._navigator.dispatch(NavigationActions.back(options));
+    static goBack() {
+        NavigationService._navigator.current?.goBack();
     }
     static openDrawer() {
-        NavigationService._navigator.dispatch(DrawerActions.openDrawer());
+        NavigationService._navigator.current?.dispatch(DrawerActions.openDrawer());
     }
     static closeDrawer() {
-        NavigationService._navigator.dispatch(DrawerActions.closeDrawer());
+        NavigationService._navigator.current?.dispatch(DrawerActions.closeDrawer());
     }
     static toggleDrawer() {
-        NavigationService._navigator.dispatch(DrawerActions.toggleDrawer());
+        NavigationService._navigator.current?.dispatch(DrawerActions.toggleDrawer());
     }
     static _getActiveRouteName(navigationState) {
         if (!navigationState) {

@@ -1,11 +1,12 @@
-import { NavigationBackActionPayload, NavigationContainerComponent, NavigationNavigateActionPayload, NavigationPopActionPayload, NavigationPushActionPayload } from 'react-navigation';
+/// <reference types="react" />
+import { NavigationContainerRef, NavigationState, PartialState } from '@react-navigation/native';
 export declare class NavigationService {
-    static setTopLevelNavigator(navigatorRef: NavigationContainerComponent | null): void;
-    static navigate(options: NavigationNavigateActionPayload): void;
-    static push(options: NavigationPushActionPayload): void;
-    static pop(options?: NavigationPopActionPayload): void;
-    static resetAndPushToTop(options: NavigationNavigateActionPayload): void;
-    static goBack(options?: NavigationBackActionPayload): void;
+    static setTopLevelNavigator(navigatorRef: React.RefObject<NavigationContainerRef>): void;
+    static navigate(name: string, params?: object): void;
+    static push(name: string, params?: object): void;
+    static pop(count?: number): void;
+    static resetAndPushToTop(state: PartialState<NavigationState>): void;
+    static goBack(): void;
     static openDrawer(): void;
     static closeDrawer(): void;
     static toggleDrawer(): void;
