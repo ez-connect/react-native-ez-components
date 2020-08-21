@@ -103,7 +103,7 @@ export class Sheet extends React.PureComponent {
         ]);
         if (title) {
             const color = disabled ? Theme.onSurface : Theme.onBackground;
-            return (<ListItem bottomDivider={props.bottomDivider} containerStyle={containerStyle} key={index} leftIcon={{ type: Theme.iconset, name: icon, color }} onPress={disabled ? undefined : this._handleOnPressItem(value)} subtitle={item.subtitle} title={title} titleStyle={{ color }}/>);
+            return (<ListItem bottomDivider={props.bottomDivider} containerStyle={containerStyle} key={index} leftIcon={{ type: Theme.iconset, name: icon, color }} onPress={disabled ? undefined : this._handleOnPressItem(value)} subtitle={item.subtitle} title={title} titleStyle={{ color }} children={null}/>);
         }
         else {
             return (<View key={index} style={{ backgroundColor: Theme.onSurface, ...styles.divider }}/>);

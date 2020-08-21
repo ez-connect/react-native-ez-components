@@ -175,6 +175,7 @@ export class Sheet extends React.PureComponent<{}, State> {
           subtitle={item.subtitle}
           title={title}
           titleStyle={{color}}
+          children={null}
         />
       );
     } else {
