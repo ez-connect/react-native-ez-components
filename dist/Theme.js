@@ -6,6 +6,21 @@ export var ThemeEvent;
     ThemeEvent[ThemeEvent["OnChange"] = 2] = "OnChange";
 })(ThemeEvent || (ThemeEvent = {}));
 class Theme extends EventListener {
+    name;
+    primary;
+    primaryDark;
+    primaryLight;
+    onPrimary;
+    secondary;
+    secondaryDark;
+    secondaryLight;
+    onSecondary;
+    background;
+    onBackground;
+    surface;
+    onSurface;
+    iconset;
+    _themeProvider;
     init(provider) {
         this._themeProvider = provider;
     }
@@ -59,10 +74,6 @@ class Theme extends EventListener {
             ListItem: {
                 Component: TouchableFeedback,
                 containerStyle: { backgroundColor: 'transparent' },
-                leftIcon: { color: onBackground },
-                rightTitleStyle: { color: onBackground },
-                subtitleStyle: { color: onSurface },
-                titleStyle: { color: onBackground },
             },
             Text: {
                 style: { color: onBackground },

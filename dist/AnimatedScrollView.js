@@ -2,44 +2,14 @@ import React, { Component } from 'react';
 import { Animated, StyleSheet, View, } from 'react-native';
 const DEFAULT_SCROLL_THROTTLE = 16;
 export class AnimatedScrollView extends Component {
-    constructor() {
-        super(...arguments);
-        this.state = {
-            offsetAnim: new Animated.Value(0),
-            scrollAnim: new Animated.Value(0),
-        };
-        this._previousScrollvalue = 0;
-        this._currentScrollValue = 0;
-        this._handleScroll = ({ value }) => {
-            this._previousScrollvalue = this._currentScrollValue;
-            this._currentScrollValue = value;
-        };
-        this._handleScrollEndDrag = () => {
-            this._scrollEndTimer = setTimeout(this._handleMomentumScrollEnd, 250);
-        };
-        this._handleMomentumScrollBegin = () => {
-            clearTimeout(this._scrollEndTimer);
-        };
-        this._handleMomentumScrollEnd = () => {
-            const previous = this._previousScrollvalue;
-            const current = this._currentScrollValue;
-            if (previous > current || current < this.props.headerHeight) {
-                Animated.spring(this.state.offsetAnim, {
-                    useNativeDriver: false,
-                    toValue: -current,
-                    tension: 300,
-                    friction: 35,
-                }).start();
-            }
-            else {
-                Animated.timing(this.state.offsetAnim, {
-                    useNativeDriver: false,
-                    toValue: 0,
-                    duration: 500,
-                }).start();
-            }
-        };
-    }
+    state = {
+        offsetAnim: new Animated.Value(0),
+        scrollAnim: new Animated.Value(0),
+    };
+    _previousScrollvalue = 0;
+    _currentScrollValue = 0;
+    _scrollEndTimer;
+    _scrollAnimEvent;
     componentDidMount() {
         this._scrollAnimEvent = this.state.scrollAnim.addListener(this._handleScroll);
     }
@@ -82,6 +52,35 @@ export class AnimatedScrollView extends Component {
             onScrollEndDrag: this._handleScrollEndDrag,
         });
     }
+    _handleScroll = ({ value }) => {
+        this._previousScrollvalue = this._currentScrollValue;
+        this._currentScrollValue = value;
+    };
+    _handleScrollEndDrag = () => {
+        this._scrollEndTimer = setTimeout(this._handleMomentumScrollEnd, 250);
+    };
+    _handleMomentumScrollBegin = () => {
+        clearTimeout(this._scrollEndTimer);
+    };
+    _handleMomentumScrollEnd = () => {
+        const previous = this._previousScrollvalue;
+        const current = this._currentScrollValue;
+        if (previous > current || current < this.props.headerHeight) {
+            Animated.spring(this.state.offsetAnim, {
+                useNativeDriver: false,
+                toValue: -current,
+                tension: 300,
+                friction: 35,
+            }).start();
+        }
+        else {
+            Animated.timing(this.state.offsetAnim, {
+                useNativeDriver: false,
+                toValue: 0,
+                duration: 500,
+            }).start();
+        }
+    };
 }
 const styles = StyleSheet.create({
     container: {

@@ -1,32 +1,11 @@
 import * as React from 'react';
 import { Animated, Dimensions, StyleSheet, TouchableOpacity, View, } from 'react-native';
 import { BackHandler } from 'react-native';
-import { ListItem, Text } from 'react-native-elements';
+import { Icon, ListItem, Text } from 'react-native-elements';
 import { Theme } from './Theme';
 const CONTAINER_OPACITY = 80;
 const ANIM_DURATION = 300;
 export class Sheet extends React.PureComponent {
-    constructor() {
-        super(...arguments);
-        this.state = {
-            visible: false,
-        };
-        this._anim = new Animated.Value(1000);
-        this.close = () => {
-            this.setState({ props: undefined, visible: false });
-        };
-        this._handleOnPressItem = (value) => () => {
-            const props = this.state.props;
-            this.close();
-            if (props && props.onSelect) {
-                props.onSelect(value);
-            }
-        };
-        this._handleOnBackPress = () => {
-            this.close();
-            return true;
-        };
-    }
     static setInstance(value) {
         Sheet._instance = value;
     }
@@ -35,6 +14,12 @@ export class Sheet extends React.PureComponent {
             Sheet._instance.open(props);
         }
     }
+    static _instance;
+    state = {
+        visible: false,
+    };
+    _anim = new Animated.Value(1000);
+    _backHandler;
     componentDidMount() {
         this._backHandler = BackHandler.addEventListener('hardwareBackPress', this._handleOnBackPress);
     }
@@ -50,6 +35,9 @@ export class Sheet extends React.PureComponent {
         }).start();
         this.setState({ props, visible: true });
     }
+    close = () => {
+        this.setState({ props: undefined, visible: false });
+    };
     render() {
         const { props, visible } = this.state;
         if (visible && props) {
@@ -83,7 +71,7 @@ export class Sheet extends React.PureComponent {
             const itemsStyle = StyleSheet.flatten([style, props.itemsStyle]);
             if (props.items) {
                 const menuItems = props.items.map((v, i) => {
-                    return this._renderItem(v, i);
+                    return this._renderItem(props, v, i);
                 });
                 return (<Animated.View style={itemsStyle}>
             {props.title && <Text style={titleStyle}>{props.title}</Text>}
@@ -93,22 +81,36 @@ export class Sheet extends React.PureComponent {
             return (<Animated.View style={itemsStyle}>{props.component}</Animated.View>);
         }
     }
-    _renderItem(item, index) {
-        const props = this.state.props;
-        const { icon, title, value, disabled } = item;
-        const containerStyle = StyleSheet.flatten([
-            styles.item,
-            { backgroundColor: Theme.background },
-            props.itemsStyle,
-        ]);
+    _renderItem(props, item, index) {
+        const { icon, title, subtitle, value, disabled } = item;
+        const containerStyle = StyleSheet.flatten([styles.item, props.itemsStyle]);
         if (title) {
             const color = disabled ? Theme.onSurface : Theme.onBackground;
-            return (<ListItem bottomDivider={props.bottomDivider} containerStyle={containerStyle} key={index} leftIcon={{ type: Theme.iconset, name: icon, color }} onPress={disabled ? undefined : this._handleOnPressItem(value)} subtitle={item.subtitle} title={title} titleStyle={{ color }} children={null}/>);
+            return (<ListItem containerStyle={containerStyle} key={index} bottomDivider={props.bottomDivider} onPress={disabled ? undefined : this._handleOnPressItem(value)}>
+          <Icon type={Theme.iconset} name={icon} color={color}/>
+          <ListItem.Content>
+            <ListItem.Title style={{ color: color }}>{title}</ListItem.Title>
+            <ListItem.Subtitle style={{ color: color }}>
+              {subtitle}
+            </ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>);
         }
         else {
             return (<View key={index} style={{ backgroundColor: Theme.onSurface, ...styles.divider }}/>);
         }
     }
+    _handleOnPressItem = (value) => () => {
+        const props = this.state.props;
+        this.close();
+        if (props && props.onSelect) {
+            props.onSelect(value);
+        }
+    };
+    _handleOnBackPress = () => {
+        this.close();
+        return true;
+    };
 }
 const styles = StyleSheet.create({
     mainContainer: {

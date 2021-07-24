@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import {BackHandler} from 'react-native';
-import {ListItem, Text} from 'react-native-elements';
+import {Icon, ListItem, Text} from 'react-native-elements';
 
 import {Theme} from './Theme';
 
@@ -137,7 +137,7 @@ export class Sheet extends React.PureComponent<{}, State> {
 
       if (props.items) {
         const menuItems = props.items.map((v, i) => {
-          return this._renderItem(v, i);
+          return this._renderItem(props, v, i);
         });
 
         return (
@@ -154,29 +154,26 @@ export class Sheet extends React.PureComponent<{}, State> {
     }
   }
 
-  private _renderItem(item: SheetItem, index: number) {
-    const props = this.state.props;
-    const {icon, title, value, disabled} = item;
-    const containerStyle = StyleSheet.flatten([
-      styles.item,
-      {backgroundColor: Theme.background},
-      props.itemsStyle,
-    ]);
+  private _renderItem(props: Props, item: SheetItem, index: number) {
+    const {icon, title, subtitle, value, disabled} = item;
+    const containerStyle = StyleSheet.flatten([styles.item, props.itemsStyle]);
 
     if (title) {
       const color = disabled ? Theme.onSurface : Theme.onBackground;
       return (
         <ListItem
-          bottomDivider={props.bottomDivider}
           containerStyle={containerStyle}
           key={index}
-          leftIcon={{type: Theme.iconset, name: icon, color}}
-          onPress={disabled ? undefined : this._handleOnPressItem(value)}
-          subtitle={item.subtitle}
-          title={title}
-          titleStyle={{color}}
-          children={null}
-        />
+          bottomDivider={props.bottomDivider}
+          onPress={disabled ? undefined : this._handleOnPressItem(value)}>
+          <Icon type={Theme.iconset} name={icon} color={color} />
+          <ListItem.Content>
+            <ListItem.Title style={{color: color}}>{title}</ListItem.Title>
+            <ListItem.Subtitle style={{color: color}}>
+              {subtitle}
+            </ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
       );
     } else {
       return (
@@ -190,7 +187,7 @@ export class Sheet extends React.PureComponent<{}, State> {
 
   ///////////////////////////////////////////////////////////////////
 
-  private _handleOnPressItem = (value) => () => {
+  private _handleOnPressItem = (value: any) => () => {
     const props = this.state.props;
     this.close();
     if (props && props.onSelect) {

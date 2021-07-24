@@ -4,14 +4,6 @@ import { Daylight, DaylightEvent } from './Daylight';
 export class DaylightView extends React.PureComponent {
     constructor(props) {
         super(props);
-        this._handleOnDaylightEnableChange = (enable) => {
-            this.setState({ enable });
-        };
-        this._handleOnDaylightChange = ({ color }) => {
-            const { red, green, blue, alpha } = color;
-            const backgroundColor = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-            this.setState({ backgroundColor });
-        };
         this.state = { enable: false };
     }
     componentDidMount() {
@@ -32,6 +24,14 @@ export class DaylightView extends React.PureComponent {
         }
         return null;
     }
+    _handleOnDaylightEnableChange = (enable) => {
+        this.setState({ enable });
+    };
+    _handleOnDaylightChange = ({ color }) => {
+        const { red, green, blue, alpha } = color;
+        const backgroundColor = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+        this.setState({ backgroundColor });
+    };
 }
 const styles = StyleSheet.create({
     mainContainer: {

@@ -8,13 +8,10 @@ import {
 } from 'react-native';
 
 interface Props extends TouchableNativeFeedbackProps, TouchableOpacityProps {
-  backgroundColor: string;
+  backgroundColor?: string;
 }
 
-export class TouchableFeedback extends React.PureComponent<
-  TouchableNativeFeedbackProps | TouchableOpacityProps,
-  {}
-> {
+export class TouchableFeedback extends React.PureComponent<Props, {}> {
   public static setRippleColor(value: string) {
     TouchableFeedback._rippleColor = value;
   }

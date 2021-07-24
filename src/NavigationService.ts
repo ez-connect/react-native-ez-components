@@ -1,9 +1,9 @@
 import {
+  DrawerActions,
   NavigationContainerRef,
-  StackActions,
   NavigationState,
   PartialState,
-  DrawerActions,
+  StackActions,
 } from '@react-navigation/native';
 
 export class NavigationService {

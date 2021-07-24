@@ -1,4 +1,4 @@
-import { StackActions, DrawerActions, } from '@react-navigation/native';
+import { DrawerActions, StackActions, } from '@react-navigation/native';
 export class NavigationService {
     static setTopLevelNavigator(navigatorRef) {
         NavigationService._navigator = navigatorRef;
@@ -27,6 +27,7 @@ export class NavigationService {
     static toggleDrawer() {
         NavigationService._navigator.current?.dispatch(DrawerActions.toggleDrawer());
     }
+    static _navigator;
     static _getActiveRouteName(navigationState) {
         if (!navigationState) {
             return null;

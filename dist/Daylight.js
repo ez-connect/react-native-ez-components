@@ -60,19 +60,18 @@ export var DaylightEvent;
 const kDaylightUpdateInterval = 1 * 60 * 1000;
 const kAlphaDefault = 0.2;
 class Daylight extends EventListener {
+    _enable;
+    _dawn = new Date().setHours(5, 0, 0);
+    _sunrise = new Date().setHours(6, 0, 0);
+    _sunset = new Date().setHours(17, 0, 0);
+    _dusk = new Date().setHours(18, 0, 0);
+    _wakeTime = new Date().setHours(6, 0, 0);
+    _bedTime = new Date().setHours(22, 0, 0);
+    _preset;
+    _rgba = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
+    _handleInterval = 0;
     constructor(preset) {
         super();
-        this._dawn = new Date().setHours(5, 0, 0);
-        this._sunrise = new Date().setHours(6, 0, 0);
-        this._sunset = new Date().setHours(17, 0, 0);
-        this._dusk = new Date().setHours(18, 0, 0);
-        this._wakeTime = new Date().setHours(6, 0, 0);
-        this._bedTime = new Date().setHours(22, 0, 0);
-        this._rgba = { red: 0, green: 0, blue: 0, alpha: kAlphaDefault };
-        this._handleInterval = 0;
-        this._handleOnUpdateSchedule = () => {
-            this._update();
-        };
         this._preset = preset || kDaylighPresets[0];
     }
     async setEnable(value) {
@@ -208,6 +207,9 @@ class Daylight extends EventListener {
             super.emit(DaylightEvent.OnChange, { mode, color: this._rgba });
         }
     }
+    _handleOnUpdateSchedule = () => {
+        this._update();
+    };
 }
 const singleton = new Daylight();
 export { singleton as Daylight };

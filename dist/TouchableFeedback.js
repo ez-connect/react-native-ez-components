@@ -4,6 +4,7 @@ export class TouchableFeedback extends React.PureComponent {
     static setRippleColor(value) {
         TouchableFeedback._rippleColor = value;
     }
+    static _rippleColor = 'grey';
     render() {
         if (Platform.OS === 'android') {
             const background = Platform.Version >= 21
@@ -14,4 +15,3 @@ export class TouchableFeedback extends React.PureComponent {
         return <TouchableOpacity {...this.props}/>;
     }
 }
-TouchableFeedback._rippleColor = 'grey';

@@ -17,47 +17,18 @@ export var ToastDuration;
     ToastDuration[ToastDuration["Forever"] = -1] = "Forever";
 })(ToastDuration || (ToastDuration = {}));
 export class Toast extends React.Component {
-    constructor(props) {
-        super(props);
-        this._timeoutHandler = null;
-        this._anim = new Animated.Value(ANIM_OFFSET);
-        this._show = (item) => () => {
-            Animated.timing(this._anim, {
-                useNativeDriver: false,
-                toValue: 0,
-                duration: ANIM_DURATION,
-            }).start();
-            this._add(item);
-        };
-        this._add = (item) => {
-            item.duration = item.duration || ToastDuration.Length;
-            this._timeoutHandler && clearTimeout(this._timeoutHandler);
-            if (item.duration !== ToastDuration.Forever) {
-                this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
-            }
-            this.setState({ item });
-        };
-        this._remove = () => {
-            this.setState({ item: undefined });
-        };
-        this._handleOnTimeout = () => {
-            this._hide(this._remove);
-        };
-        this._handleOnPress = () => {
-            this._hide(this._handleOnTimeout);
-        };
-        this._handleOnAction = () => {
-            this._hide(this._remove);
-            const callback = this.state.item.action.onPress || this._handleOnPress;
-            callback();
-        };
-        this.state = {};
-    }
     static setInstance(ref) {
         Toast._instance = ref;
     }
     static show(item) {
         Toast._instance.show(item);
+    }
+    static _instance;
+    _timeoutHandler = null;
+    _anim = new Animated.Value(ANIM_OFFSET);
+    constructor(props) {
+        super(props);
+        this.state = {};
     }
     render() {
         if (this.state.item) {
@@ -116,6 +87,14 @@ export class Toast extends React.Component {
         }
         return null;
     }
+    _show = (item) => () => {
+        Animated.timing(this._anim, {
+            useNativeDriver: false,
+            toValue: 0,
+            duration: ANIM_DURATION,
+        }).start();
+        this._add(item);
+    };
     _hide(callback) {
         this._timeoutHandler && clearTimeout(this._timeoutHandler);
         Animated.timing(this._anim, {
@@ -124,6 +103,28 @@ export class Toast extends React.Component {
             duration: ANIM_DURATION,
         }).start(callback);
     }
+    _add = (item) => {
+        item.duration = item.duration || ToastDuration.Length;
+        this._timeoutHandler && clearTimeout(this._timeoutHandler);
+        if (item.duration !== ToastDuration.Forever) {
+            this._timeoutHandler = setTimeout(this._handleOnTimeout, item.duration);
+        }
+        this.setState({ item });
+    };
+    _remove = () => {
+        this.setState({ item: undefined });
+    };
+    _handleOnTimeout = () => {
+        this._hide(this._remove);
+    };
+    _handleOnPress = () => {
+        this._hide(this._handleOnTimeout);
+    };
+    _handleOnAction = () => {
+        this._hide(this._remove);
+        const callback = this.state.item.action.onPress || this._handleOnPress;
+        callback();
+    };
 }
 const styles = StyleSheet.create({
     mainContainer: {

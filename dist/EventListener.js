@@ -1,7 +1,5 @@
 export class EventListener {
-    constructor() {
-        this._listeners = [];
-    }
+    _listeners = [];
     addListener(event, handler) {
         this._listeners.push({ event, handler });
     }

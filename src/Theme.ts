@@ -72,9 +72,9 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
 
   public iconset?: string;
 
-  private _themeProvider?: ThemeProvider<any>;
+  private _themeProvider?: ThemeProvider;
 
-  public init(provider: ThemeProvider<any>) {
+  public init(provider: ThemeProvider) {
     this._themeProvider = provider;
   }
 
@@ -140,10 +140,6 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
       ListItem: {
         Component: TouchableFeedback,
         containerStyle: {backgroundColor: 'transparent'},
-        leftIcon: {color: onBackground},
-        rightTitleStyle: {color: onBackground},
-        subtitleStyle: {color: onSurface},
-        titleStyle: {color: onBackground},
       },
       Text: {
         style: {color: onBackground},
@@ -167,7 +163,7 @@ class Theme extends EventListener<ThemeEvent> implements ThemeItem {
     this.setTheme(theme);
   }
 
-  public getTheme(): FullTheme | undefined {
+  public getTheme(): Partial<FullTheme> | undefined {
     const theme = this._themeProvider
       ? this._themeProvider.getTheme()
       : undefined;

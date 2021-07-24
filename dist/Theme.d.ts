@@ -35,10 +35,10 @@ declare class Theme extends EventListener<ThemeEvent> implements ThemeItem {
     onSurface: string;
     iconset?: string;
     private _themeProvider?;
-    init(provider: ThemeProvider<any>): void;
+    init(provider: ThemeProvider): void;
     setTheme(value: Partial<FullTheme>): void;
     setThemeItem(value: ThemeItem): void;
-    getTheme(): FullTheme | undefined;
+    getTheme(): Partial<FullTheme> | undefined;
 }
 declare const singleton: Theme;
 export { singleton as Theme };

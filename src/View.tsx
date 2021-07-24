@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {StyleSheet, View as BView, ViewProps, ViewStyle} from 'react-native';
+
 import {Theme} from './Theme';
 
 export const View = (props: ViewProps | any) => {

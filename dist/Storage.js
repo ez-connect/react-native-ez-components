@@ -70,4 +70,6 @@ export class Storage {
     static setLogEnabled(value) {
         Storage._logEnabled = value;
     }
+    static _logEnabled;
+    static _storageBase;
 }
